@@ -9,4 +9,12 @@
     <string name="title_list">List</string>
     <string name="title_activity_groceries">Groceries</string>
     <string name="title_groceries_list">Groceries List</string>
+    <string name="item_apple">Apple</string>
+    <string name="item_bread">Bread</string>
+    <string name="item_milk">Milk</string>
+    <string name="item_eggs">Eggs</string>
+    <string name="item_cheese">Cheese</string>
+    <string name="item_water">Water</string>
+    <string name="item_butter">Butter</string>
+    <string name="item_yogurt">Yogurt</string>
 </resources>
