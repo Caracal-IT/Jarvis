@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Jarvis</string>
     <string name="greeting">J.A.R.V.I.S. SYSTEM ONLINE</string>
+    <string name="title_groceries">Groceries</string>
+    <string name="title_system">System</string>
+    <string name="title_comms">Network</string>
+    <string name="title_power">Armor</string>
 </resources>

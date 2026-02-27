@@ -5,4 +5,6 @@
     <color name="iron_man_red">#7A0019</color>
     <color name="iron_man_gold">#F1D56D</color>
     <color name="iron_man_gold_dark">#CFB53B</color>
+    <color name="iron_man_cyan">#00E5FF</color>
+    <color name="iron_man_dark_tech">#020810</color>
 </resources>
