@@ -5,6 +5,11 @@
         <item name="colorPrimary">@color/iron_man_red</item>
         <item name="colorSecondary">@color/iron_man_gold</item>
         <item name="android:statusBarColor">@color/iron_man_red</item>
+        <item name="android:windowBackground">@color/black</item>
+        <!-- Splash Screen API 31+ -->
+        <item name="android:windowSplashScreenBackground">@color/black</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/black</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
     </style>
 
     <style name="Theme.Jarvis" parent="Base.Theme.Jarvis" />
