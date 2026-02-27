@@ -25,6 +25,7 @@ class GroceryAdapter(private val items: List<GroceryItem>) :
     override fun onBindViewHolder(holder: GroceryViewHolder, position: Int) {
         val item = items[position]
         holder.icon.setImageResource(item.iconRes)
+        holder.icon.setBackgroundResource(item.iconBgRes)
         holder.name.setText(item.nameRes)
     }
 

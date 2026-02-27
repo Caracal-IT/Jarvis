@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <!-- Left peanut shell -->
+  <path android:fillColor="#C8860A"
+      android:pathData="M7,5c-2.76,0 -5,2.24 -5,5 0,2.76 2.24,5 5,5h1.5v-10Z"/>
+  <!-- Right peanut shell -->
+  <path android:fillColor="#C8860A"
+      android:pathData="M17,5c2.76,0 5,2.24 5,5 0,2.76 -2.24,5 -5,5h-1.5v-10Z"/>
+  <!-- Centre body -->
+  <path android:fillColor="#D4920C"
+      android:pathData="M8.5,4h7c0.55,0 1,0.45 1,1v12c0,0.55 -0.45,1 -1,1h-7c-0.55,0 -1,-0.45 -1,-1V5c0,-0.55 0.45,-1 1,-1z"/>
+  <!-- Texture lines -->
+  <path android:fillColor="#B5730A"
+      android:pathData="M9,8h6M9,10h6M9,12h6"
+      android:strokeColor="#B5730A"
+      android:strokeWidth="0.8"/>
+  <!-- Centre pinch/waist -->
+  <path android:fillColor="#A0620A"
+      android:pathData="M8,9.5q4,-1.5 8,0q-4,1.5 -8,0z"/>
+</vector>

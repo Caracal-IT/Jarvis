@@ -10,8 +10,9 @@
 
     <ImageView
         android:id="@+id/imgGroceryIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
         android:contentDescription="@string/title_groceries"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
