@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Widget.Jarvis.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconSize">36dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="itemPaddingTop">20dp</item>
+        <item name="itemPaddingBottom">0dp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.Jarvis.BottomNavItem</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.Jarvis.BottomNavItem</item>
+    </style>
+
+    <style name="TextAppearance.Jarvis.BottomNavItem" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">10sp</item>
+    </style>
+
     <style name="Widget.Jarvis.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/iron_man_red</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Jarvis.SmallComponent</item>

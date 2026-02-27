@@ -22,9 +22,10 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view_groceries"
+        style="@style/Widget.Jarvis.BottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#020810"
+        android:background="@color/iron_man_dark_tech"
         app:itemIconTint="@color/bottom_nav_text_colors"
         app:itemTextColor="@color/bottom_nav_text_colors"
         app:itemActiveIndicatorStyle="@null"
