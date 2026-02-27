@@ -8,10 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 
-class GroceryAdapter(private val items: List<GroceryItem>) :
+class GroceryAdapter(private val items: MutableList<GroceryItem>) :
     RecyclerView.Adapter<GroceryAdapter.GroceryViewHolder>() {
 
     class GroceryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val iconContainer: View = itemView.findViewById(R.id.iconContainer)
         val icon: ImageView = itemView.findViewById(R.id.imgGroceryIcon)
         val name: TextView = itemView.findViewById(R.id.tvGroceryName)
     }
@@ -24,10 +25,15 @@ class GroceryAdapter(private val items: List<GroceryItem>) :
 
     override fun onBindViewHolder(holder: GroceryViewHolder, position: Int) {
         val item = items[position]
+        holder.iconContainer.setBackgroundResource(item.iconBgRes)
         holder.icon.setImageResource(item.iconRes)
-        holder.icon.setBackgroundResource(item.iconBgRes)
         holder.name.setText(item.nameRes)
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }
