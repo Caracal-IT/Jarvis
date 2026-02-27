@@ -5,4 +5,8 @@
     <string name="title_system">System</string>
     <string name="title_comms">Network</string>
     <string name="title_power">Armor</string>
+    <string name="title_inventory">Inventory</string>
+    <string name="title_list">List</string>
+    <string name="title_activity_groceries">Groceries</string>
+    <string name="title_groceries_list">Groceries List</string>
 </resources>
