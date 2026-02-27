@@ -1,7 +1,9 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Jarvis" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/iron_man_red</item>
+        <item name="colorSecondary">@color/iron_man_gold</item>
+        <item name="android:statusBarColor">@color/iron_man_red</item>
     </style>
 </resources>

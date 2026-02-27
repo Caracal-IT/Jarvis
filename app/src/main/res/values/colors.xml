@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="iron_man_red">#7A0019</color>
+    <color name="iron_man_gold">#F1D56D</color>
+    <color name="iron_man_gold_dark">#CFB53B</color>
 </resources>

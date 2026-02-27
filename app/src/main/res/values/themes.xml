@@ -1,8 +1,10 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Jarvis" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/iron_man_red</item>
+        <item name="colorSecondary">@color/iron_man_gold</item>
+        <item name="android:statusBarColor">@color/iron_man_red</item>
     </style>
 
     <style name="Theme.Jarvis" parent="Base.Theme.Jarvis" />
