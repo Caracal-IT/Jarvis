@@ -10,6 +10,18 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingTop="12dp"
-        android:paddingBottom="12dp" />
+        android:paddingBottom="80dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabScanGrocery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/scan_to_add"
+        android:src="@drawable/ic_barcode"
+        app:backgroundTint="@color/iron_man_red"
+        app:tint="@color/iron_man_cyan"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
 
 </FrameLayout>

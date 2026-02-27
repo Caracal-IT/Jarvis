@@ -1,15 +1,23 @@
 package com.github.caracal.jarvis
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.github.caracal.jarvis.groceries.BarcodeScannerFragment
+import com.github.caracal.jarvis.groceries.BarcodeScannerHost
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class GroceriesActivity : AppCompatActivity() {
+class GroceriesActivity : AppCompatActivity(), BarcodeScannerHost {
+
+    private var scannerCallback: ((String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +31,51 @@ class GroceriesActivity : AppCompatActivity() {
         }
 
         val navView = findViewById<BottomNavigationView>(R.id.nav_view_groceries)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_groceries) as NavHostFragment
-        val navController = navHostFragment.navController
-        navView.setupWithNavController(navController)
+        val navHostFragment = supportFragmentManager.findFragmentById(
+            R.id.nav_host_fragment_activity_groceries
+        ) as NavHostFragment
+        navView.setupWithNavController(navHostFragment.navController)
+
+        // Close scanner on back press if it is visible
+        onBackPressedDispatcher.addCallback(this,
+            object : androidx.activity.OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val container = findViewById<View>(R.id.scanner_container)
+                    if (container.isVisible) {
+                        hideScanner()
+                        scannerCallback = null
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+        )
+
+        // Receive barcode result from the scanner fragment
+        supportFragmentManager.setFragmentResultListener(
+            BarcodeScannerFragment.REQUEST_KEY, this
+        ) { _, bundle ->
+            val barcode = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE)
+            hideScanner()
+            barcode?.let { scannerCallback?.invoke(it) }
+            scannerCallback = null
+        }
+    }
+
+    override fun openBarcodeScanner(onResult: (String) -> Unit) {
+        scannerCallback = onResult
+        findViewById<View>(R.id.scanner_container).isVisible = true
+        supportFragmentManager.commit {
+            replace(R.id.scanner_container, BarcodeScannerFragment())
+            addToBackStack("scanner")
+        }
+    }
+
+    private fun hideScanner() {
+        findViewById<View>(R.id.scanner_container).isVisible = false
+        supportFragmentManager.popBackStack(
+            "scanner", FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
     }
 }

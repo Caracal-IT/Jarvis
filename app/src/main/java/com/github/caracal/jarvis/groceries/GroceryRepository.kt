@@ -82,4 +82,25 @@ object GroceryRepository {
         inventoryList.removeAt(position)
         inventoryMemory.removeAll { it.nameRes == item.nameRes }
     }
+
+    /** Links a barcode string to an item in inventory memory. */
+    fun linkBarcode(barcode: String, item: GroceryItem) {
+        inventoryMemory.find { it.nameRes == item.nameRes }?.barcode = barcode
+        groceryList.find { it.nameRes == item.nameRes }?.barcode = barcode
+    }
+
+    /** Returns the inventory item linked to the given barcode, or null if not found. */
+    fun findByBarcode(barcode: String): GroceryItem? =
+        inventoryMemory.find { it.barcode == barcode }
+
+    /**
+     * Adds item to grocery list by barcode if linked and not already in the list.
+     * Returns true if added, false if already in list or not linked.
+     */
+    fun addToGroceriesByBarcode(barcode: String): Boolean {
+        val item = findByBarcode(barcode) ?: return false
+        if (groceryList.any { it.nameRes == item.nameRes }) return false
+        groceryList.add(item)
+        return true
+    }
 }
