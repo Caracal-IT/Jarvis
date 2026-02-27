@@ -1,0 +1,45 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Central Glow -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,54m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" />
+
+    <!-- Inner Ring -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2.5"
+        android:pathData="M54,54m-18,0a18,18 0,1 1,36 0a18,18 0,1 1,-36 0" />
+
+    <!-- Middle Ring Segments -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="square"
+        android:pathData="M54,26 A28,28 0 0 1 78,40 M82,54 A28,28 0 0 1 78,68 M54,82 A28,28 0 0 1 30,68 M26,54 A28,28 0 0 1 30,40" />
+
+    <!-- Outer Ring -->
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M54,54m-36,0a36,36 0,1 1,72 0a36,36 0,1 1,-72 0" />
+
+    <!-- Triangle Elements -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,12 L57,18 L51,18 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,96 L57,90 L51,90 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,54 L18,57 L18,51 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M96,54 L90,57 L90,51 Z" />
+
+</vector>
