@@ -16,17 +16,7 @@ import com.github.caracal.jarvis.R
 
 class GroceriesListFragment : Fragment() {
 
-    private val groceryItems: MutableList<GroceryItem> = mutableListOf(
-        GroceryItem(R.string.item_apple,   R.drawable.ic_apple,   R.drawable.bg_icon_red),
-        GroceryItem(R.string.item_bread,   R.drawable.ic_bread,   R.drawable.bg_icon_orange),
-        GroceryItem(R.string.item_milk,    R.drawable.ic_milk,    R.drawable.bg_icon_blue),
-        GroceryItem(R.string.item_eggs,    R.drawable.ic_egg,     R.drawable.bg_icon_yellow),
-        GroceryItem(R.string.item_cheese,  R.drawable.ic_cheese,  R.drawable.bg_icon_navy),
-        GroceryItem(R.string.item_water,   R.drawable.ic_water,   R.drawable.bg_icon_blue),
-        GroceryItem(R.string.item_butter,  R.drawable.ic_milk,    R.drawable.bg_icon_orange),
-        GroceryItem(R.string.item_yogurt,  R.drawable.ic_milk,    R.drawable.bg_icon_white),
-        GroceryItem(R.string.item_peanuts, R.drawable.ic_peanuts, R.drawable.bg_icon_dark_green)
-    )
+    private val adapter by lazy { GroceryAdapter(GroceryRepository.groceryList) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,17 +29,27 @@ class GroceriesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvGroceries)
-        val adapter = GroceryAdapter(groceryItems)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        val swipeBackground = "#7A0019".toColorInt().toDrawable()
+        val deleteBackground = "#7A0019".toColorInt().toDrawable()
+        val addBackground    = "#1B5E20".toColorInt().toDrawable()
         val deleteIcon = ResourcesCompat.getDrawable(resources, R.drawable.ic_delete, requireContext().theme)!!
+        val addIcon    = ResourcesCompat.getDrawable(resources, R.drawable.ic_inventory, requireContext().theme)!!
         val iconMargin = resources.getDimensionPixelSize(R.dimen.swipe_icon_margin)
 
         val swipeHandler = object : ItemTouchHelper.SimpleCallback(
-            0, ItemTouchHelper.LEFT
+            0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
+            override fun getSwipeDirs(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                val item = GroceryRepository.groceryList[viewHolder.bindingAdapterPosition]
+                val alreadyInInventory = GroceryRepository.inventoryList.any { it.nameRes == item.nameRes }
+                return if (alreadyInInventory) ItemTouchHelper.LEFT else super.getSwipeDirs(recyclerView, viewHolder)
+            }
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -57,7 +57,15 @@ class GroceriesListFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adapter.removeItem(viewHolder.bindingAdapterPosition)
+                val position = viewHolder.bindingAdapterPosition
+                val item = GroceryRepository.groceryList[position]
+                if (direction == ItemTouchHelper.LEFT) {
+                    GroceryRepository.removeFromGroceries(item, position)
+                    adapter.notifyItemRemoved(position)
+                } else {
+                    GroceryRepository.moveToInventory(item, position)
+                    adapter.notifyItemRemoved(position)
+                }
             }
 
             override fun onChildDraw(
@@ -69,22 +77,32 @@ class GroceriesListFragment : Fragment() {
                 isCurrentlyActive: Boolean
             ) {
                 val itemView = viewHolder.itemView
-                val iconTop = itemView.top + (itemView.height - deleteIcon.intrinsicHeight) / 2
-                val iconBottom = iconTop + deleteIcon.intrinsicHeight
-                val iconLeft = itemView.right - iconMargin - deleteIcon.intrinsicWidth
-                val iconRight = itemView.right - iconMargin
+                val isSwipingLeft = dX < 0
 
-                // Draw red background
-                swipeBackground.setBounds(
-                    itemView.right + dX.toInt(),
-                    itemView.top, itemView.right, itemView.bottom
-                )
-                swipeBackground.draw(c)
+                val bg     = if (isSwipingLeft) deleteBackground else addBackground
+                val icon   = if (isSwipingLeft) deleteIcon else addIcon
 
-                // Draw delete icon only when enough space is revealed
-                if (dX < -iconMargin * 2) {
-                    deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                    deleteIcon.draw(c)
+                val iconTop    = itemView.top + (itemView.height - icon.intrinsicHeight) / 2
+                val iconBottom = iconTop + icon.intrinsicHeight
+
+                if (isSwipingLeft) {
+                    bg.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    bg.draw(c)
+                    if (dX < -iconMargin * 2) {
+                        val iconLeft  = itemView.right - iconMargin - icon.intrinsicWidth
+                        val iconRight = itemView.right - iconMargin
+                        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        icon.draw(c)
+                    }
+                } else {
+                    bg.setBounds(itemView.left, itemView.top, itemView.left + dX.toInt(), itemView.bottom)
+                    bg.draw(c)
+                    if (dX > iconMargin * 2) {
+                        val iconLeft  = itemView.left + iconMargin
+                        val iconRight = itemView.left + iconMargin + icon.intrinsicWidth
+                        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        icon.draw(c)
+                    }
                 }
 
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -92,5 +110,10 @@ class GroceriesListFragment : Fragment() {
         }
 
         ItemTouchHelper(swipeHandler).attachToRecyclerView(recyclerView)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyItemRangeChanged(0, GroceryRepository.groceryList.size)
     }
 }
