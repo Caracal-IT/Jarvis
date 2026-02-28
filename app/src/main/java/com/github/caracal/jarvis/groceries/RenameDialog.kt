@@ -13,7 +13,7 @@ import com.github.caracal.jarvis.R
  * Shows a rename dialog pre-filled with the item's current name.
  *
  * On save:
- * - If the new name already exists in inventory → merge barcodes from [item] into
+ * - If the new name already exists in base items → merge barcodes from [item] into
  *   the existing item, then remove [item] from all lists (no duplicate created).
  * - Otherwise → rename [item] in-place across all lists.
  *
@@ -49,7 +49,7 @@ fun showRenameDialog(
             val newName = editText.text.toString().trim()
             if (newName.isBlank() || newName.equals(currentName, ignoreCase = true)) return@setPositiveButton
 
-            // Check if the new name already exists in inventory
+            // Check if the new name already exists in base items
             val existing = GroceryRepository.findByName(newName) { resId -> context.getString(resId) }
 
             if (existing != null && existing !== item) {

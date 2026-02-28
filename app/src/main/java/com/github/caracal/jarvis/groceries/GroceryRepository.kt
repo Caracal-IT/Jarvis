@@ -3,12 +3,12 @@ package com.github.caracal.jarvis.groceries
 import com.github.caracal.jarvis.R
 
 /**
- * Singleton repository holding the shared grocery list and inventory list.
+ * Singleton repository holding the shared grocery list and base items list.
  * Ensures both lists stay unique and in sync across fragments.
  */
 object GroceryRepository {
 
-    /** Master list of all known items — never shrinks unless explicitly deleted from inventory. */
+    /** Master list of all known items — never shrinks unless explicitly deleted from base items. */
     private val allItems: List<GroceryItem> = listOf(
         GroceryItem.Static(R.string.item_apple,   R.drawable.ic_apple,   R.drawable.bg_icon_red),
         GroceryItem.Static(R.string.item_bread,   R.drawable.ic_bread,   R.drawable.bg_icon_orange),
@@ -21,32 +21,32 @@ object GroceryRepository {
         GroceryItem.Static(R.string.item_peanuts, R.drawable.ic_peanuts, R.drawable.bg_icon_dark_green)
     )
 
-    /** Active grocery list — starts empty. Items are added from inventory via right swipe. */
+    /** Active grocery list — starts empty. Items are added from base items via right swipe. */
     val groceryList: MutableList<GroceryItem> = mutableListOf()
 
     /**
-     * Persistent inventory memory — pre-populated with all known items.
-     * Never loses an item unless explicitly deleted from inventory.
+     * Persistent base items memory — pre-populated with all known items.
+     * Never loses an item unless explicitly deleted from base items.
      */
-    private val inventoryMemory: MutableList<GroceryItem> = allItems.toMutableList()
+    private val baseItemsMemory: MutableList<GroceryItem> = allItems.toMutableList()
 
     /**
-     * Returns the inventory filtered to exclude items currently in the grocery list.
-     * Called fresh each time the inventory is displayed.
+     * Returns the base items filtered to exclude items currently in the grocery list.
+     * Called fresh each time the base items screen is displayed.
      */
-    fun visibleInventory(): List<GroceryItem> =
-        inventoryMemory.filter { inv -> groceryList.none { g -> isSameItem(g, inv) } }
+    fun visibleBaseItems(): List<GroceryItem> =
+        baseItemsMemory.filter { base -> groceryList.none { g -> isSameItem(g, base) } }
 
     /**
-     * The live list backing the inventory adapter.
-     * Refreshed from visibleInventory() before display.
+     * The live list backing the base items adapter.
+     * Refreshed from visibleBaseItems() before display.
      */
-    val inventoryList: MutableList<GroceryItem> = mutableListOf()
+    val baseItemsList: MutableList<GroceryItem> = mutableListOf()
 
-    /** Syncs inventoryList with what should be visible (not in grocery list). */
-    fun refreshInventoryList() {
-        inventoryList.clear()
-        inventoryList.addAll(visibleInventory())
+    /** Syncs baseItemsList with what should be visible (not in grocery list). */
+    fun refreshBaseItemsList() {
+        baseItemsList.clear()
+        baseItemsList.addAll(visibleBaseItems())
     }
 
     /** Returns true if two items represent the same product. */
@@ -57,47 +57,47 @@ object GroceryRepository {
         return false
     }
 
-    /** Moves item from grocery list to inventory memory (if not already remembered). */
-    fun moveToInventory(item: GroceryItem, position: Int) {
+    /** Moves item from grocery list back to base items memory (if not already remembered). */
+    fun moveToBaseItems(item: GroceryItem, position: Int) {
         groceryList.removeAt(position)
-        if (inventoryMemory.none { isSameItem(it, item) }) {
-            inventoryMemory.add(item)
+        if (baseItemsMemory.none { isSameItem(it, item) }) {
+            baseItemsMemory.add(item)
         }
     }
 
-    /** Moves item from inventory to grocery list. Remembered in inventory but hidden while in list. */
+    /** Moves item from base items to grocery list. Remembered in base items but hidden while in list. */
     fun moveToGroceries(item: GroceryItem, position: Int) {
-        inventoryList.removeAt(position)
+        baseItemsList.removeAt(position)
         if (groceryList.none { isSameItem(it, item) }) {
             groceryList.add(item)
         }
     }
 
-    /** Removes item from grocery list. Item is still remembered in inventory. */
+    /** Removes item from grocery list. Item is still remembered in base items. */
     fun removeFromGroceries(item: GroceryItem, position: Int) {
         groceryList.removeAt(position)
-        if (inventoryMemory.none { isSameItem(it, item) }) {
-            inventoryMemory.add(item)
+        if (baseItemsMemory.none { isSameItem(it, item) }) {
+            baseItemsMemory.add(item)
         }
     }
 
-    /** Permanently forgets item from inventory memory and display. */
-    fun removeFromInventory(position: Int) {
-        val item = inventoryList[position]
-        inventoryList.removeAt(position)
-        inventoryMemory.removeAll { isSameItem(it, item) }
+    /** Permanently forgets item from base items memory and display. */
+    fun removeFromBaseItems(position: Int) {
+        val item = baseItemsList[position]
+        baseItemsList.removeAt(position)
+        baseItemsMemory.removeAll { isSameItem(it, item) }
     }
 
-    /** Checks if inventory already has an item linked to this barcode. */
+    /** Checks if base items already has an item linked to this barcode. */
     fun findByBarcode(barcode: String): GroceryItem? =
-        inventoryMemory.find { it.hasBarcode(barcode) }
+        baseItemsMemory.find { it.hasBarcode(barcode) }
 
-    /** Checks if inventory already has an item with this name (case-insensitive). */
+    /** Checks if base items already has an item with this name (case-insensitive). */
     fun findByName(name: String, resolver: (Int) -> String): GroceryItem? =
-        inventoryMemory.find { it.getName(resolver).equals(name, ignoreCase = true) }
+        baseItemsMemory.find { it.getName(resolver).equals(name, ignoreCase = true) }
 
     /**
-     * Adds a dynamic item to inventory and optionally the grocery list.
+     * Adds a dynamic item to base items and optionally the grocery list.
      * If an item with the same name already exists, the barcode is added to it instead
      * of creating a duplicate.
      */
@@ -105,7 +105,7 @@ object GroceryRepository {
         val barcode = item.barcodes.firstOrNull()
 
         // Find existing item by name (case-insensitive)
-        val existingByName = inventoryMemory.find { existing ->
+        val existingByName = baseItemsMemory.find { existing ->
             existing is GroceryItem.Dynamic && existing.name.equals(item.name, ignoreCase = true)
         }
 
@@ -115,13 +115,13 @@ object GroceryRepository {
                 if (barcode != null) existingByName.barcodes.add(barcode)
                 existingByName
             }
-            barcode != null && inventoryMemory.any { it.hasBarcode(barcode) } -> {
+            barcode != null && baseItemsMemory.any { it.hasBarcode(barcode) } -> {
                 // Barcode already linked to another item — use that item
-                inventoryMemory.first { it.hasBarcode(barcode) }
+                baseItemsMemory.first { it.hasBarcode(barcode) }
             }
             else -> {
-                // Genuinely new item — add to inventory
-                inventoryMemory.add(item)
+                // Genuinely new item — add to base items
+                baseItemsMemory.add(item)
                 item
             }
         }
@@ -132,7 +132,7 @@ object GroceryRepository {
     }
 
     /**
-     * Renames an item everywhere it appears (inventoryMemory, inventoryList, groceryList).
+     * Renames an item everywhere it appears (baseItemsMemory, baseItemsList, groceryList).
      * Dynamic items are renamed in-place. Static items are replaced with a Dynamic copy.
      * Returns the renamed item so the caller can refresh its reference.
      */
@@ -143,10 +143,10 @@ object GroceryRepository {
             val renamed = when (item) {
                 is GroceryItem.Dynamic -> item.copy(name = newName)
                 is GroceryItem.Static  -> GroceryItem.Dynamic(
-                    name     = newName,
-                    iconRes  = item.iconRes,
+                    name      = newName,
+                    iconRes   = item.iconRes,
                     iconBgRes = item.iconBgRes,
-                    barcodes = item.barcodes
+                    barcodes  = item.barcodes
                 )
             }
             this[idx] = renamed
@@ -154,13 +154,13 @@ object GroceryRepository {
         }
 
         // Replace in all three lists — whichever holds the item
-        val renamed = inventoryMemory.replaceItem()
-            ?: inventoryList.replaceItem()
+        val renamed = baseItemsMemory.replaceItem()
+            ?: baseItemsList.replaceItem()
             ?: groceryList.replaceItem()
             ?: item
 
         // Ensure the same renamed instance is propagated to the other two lists
-        listOf(inventoryMemory, inventoryList, groceryList).forEach { list ->
+        listOf(baseItemsMemory, baseItemsList, groceryList).forEach { list ->
             val idx = list.indexOfFirst { it === item }
             if (idx != -1) list[idx] = renamed
         }
@@ -170,24 +170,21 @@ object GroceryRepository {
 
     /**
      * Removes an item from every list by reference.
-     * Used after a merge where a renamed item's barcodes have been transferred
-     * to an existing item, making this one a duplicate that must be discarded.
+     * Used after a merge to eliminate the duplicate.
      */
     fun removeDuplicate(item: GroceryItem) {
-        inventoryMemory.removeAll { it === item }
-        inventoryList.removeAll { it === item }
+        baseItemsMemory.removeAll { it === item }
+        baseItemsList.removeAll { it === item }
         groceryList.removeAll { it === item }
     }
 
     /**
      * Links a barcode to an existing item across all lists.
-     * Adds to the item's barcode set — does not replace existing barcodes.
      */
     fun linkBarcode(barcode: String, item: GroceryItem) {
-        listOf(inventoryMemory, inventoryList, groceryList).forEach { list ->
+        listOf(baseItemsMemory, baseItemsList, groceryList).forEach { list ->
             list.find { it === item }?.barcodes?.add(barcode)
         }
-        // Also add the barcode directly to the passed item reference
         item.barcodes.add(barcode)
     }
 

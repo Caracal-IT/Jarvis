@@ -18,14 +18,14 @@ import com.github.caracal.jarvis.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
-class GroceriesListFragment : Fragment() {
+class ShoppingListFragment : Fragment() {
 
     private lateinit var adapter: GroceryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_groceries_list, container, false)
+    ): View = inflater.inflate(R.layout.fragment_shopping_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,9 +50,9 @@ class GroceriesListFragment : Fragment() {
     }
 
     private fun handleBarcodeScan(barcode: String) {
-        // 1. Barcode already linked to an inventory item — add directly to grocery list
-        val inventoryItem = GroceryRepository.findByBarcode(barcode)
-        if (inventoryItem != null) {
+        // 1. Barcode already linked to a base item — add directly to shopping list
+        val baseItem = GroceryRepository.findByBarcode(barcode)
+        if (baseItem != null) {
             val added = GroceryRepository.addToGroceriesByBarcode(barcode)
             val msg = if (added) getString(R.string.barcode_added)
                       else getString(R.string.barcode_already_in_list)
@@ -66,12 +66,12 @@ class GroceriesListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             val product = ProductLookupService.lookup(barcode)
             if (product != null) {
-                // 2a. Check if this product name already exists in inventory (different barcode)
+                // 2a. Check if this product name already exists in base items (different barcode)
                 val existingByName = GroceryRepository.findByName(product.name) { resId ->
                     getString(resId)
                 }
                 if (existingByName != null) {
-                    // Link this barcode to the existing item, then add to grocery list
+                    // Link this barcode to the existing item, then add to shopping list
                     GroceryRepository.linkBarcode(barcode, existingByName)
                     val added = GroceryRepository.addToGroceriesByBarcode(barcode)
                     val msg = if (added) getString(R.string.product_found, existingByName.getName { getString(it) })
@@ -79,7 +79,7 @@ class GroceriesListFragment : Fragment() {
                     Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     if (added) adapter.notifyItemInserted(GroceryRepository.groceryList.size - 1)
                 } else {
-                    // 2b. Genuinely new product — create, add to inventory + grocery list
+                    // 2b. Genuinely new product — create, add to base items + shopping list
                     val iconSet = IconGenerator.resolve(product.name, product.category)
                     val item = GroceryItem.Dynamic(
                         name = product.name,
@@ -137,12 +137,12 @@ class GroceriesListFragment : Fragment() {
         ) {
             override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
                 val item = GroceryRepository.groceryList[viewHolder.bindingAdapterPosition]
-                val alreadyInInventory = GroceryRepository.inventoryList.any { inv ->
-                    (item.barcodes.isNotEmpty() && item.barcodes.any { inv.barcodes.contains(it) }) ||
-                    (item is GroceryItem.Static && inv is GroceryItem.Static && inv.nameRes == item.nameRes) ||
-                    (item is GroceryItem.Dynamic && inv is GroceryItem.Dynamic && inv.name.equals(item.name, ignoreCase = true))
+                val alreadyInBaseItems = GroceryRepository.baseItemsList.any { base ->
+                    (item.barcodes.isNotEmpty() && item.barcodes.any { base.barcodes.contains(it) }) ||
+                    (item is GroceryItem.Static && base is GroceryItem.Static && base.nameRes == item.nameRes) ||
+                    (item is GroceryItem.Dynamic && base is GroceryItem.Dynamic && base.name.equals(item.name, ignoreCase = true))
                 }
-                return if (alreadyInInventory) ItemTouchHelper.LEFT else super.getSwipeDirs(recyclerView, viewHolder)
+                return if (alreadyInBaseItems) ItemTouchHelper.LEFT else super.getSwipeDirs(recyclerView, viewHolder)
             }
 
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
@@ -154,7 +154,7 @@ class GroceriesListFragment : Fragment() {
                     GroceryRepository.removeFromGroceries(item, position)
                     adapter.notifyItemRemoved(position)
                 } else {
-                    GroceryRepository.moveToInventory(item, position)
+                    GroceryRepository.moveToBaseItems(item, position)
                     adapter.notifyItemRemoved(position)
                 }
             }
@@ -192,3 +192,4 @@ class GroceriesListFragment : Fragment() {
         adapter.notifyItemRangeChanged(0, GroceryRepository.groceryList.size)
     }
 }
+

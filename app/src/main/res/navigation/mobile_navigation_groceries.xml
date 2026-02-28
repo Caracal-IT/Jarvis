@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_list"
-        android:name="com.github.caracal.jarvis.groceries.GroceriesListFragment"
+        android:name="com.github.caracal.jarvis.groceries.ShoppingListFragment"
         android:label="@string/title_list"
-        tools:layout="@layout/fragment_groceries_list" />
+        tools:layout="@layout/fragment_shopping_list" />
 
     <fragment
         android:id="@+id/navigation_inventory"
-        android:name="com.github.caracal.jarvis.groceries.InventoryFragment"
+        android:name="com.github.caracal.jarvis.groceries.BaseItemsFragment"
         android:label="@string/title_inventory"
-        tools:layout="@layout/fragment_inventory" />
+        tools:layout="@layout/fragment_base_items" />
 </navigation>

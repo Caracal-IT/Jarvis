@@ -35,7 +35,7 @@ class AddItemDialog : DialogFragment() {
                     return@setPositiveButton
                 }
 
-                // Check if this name already exists in inventory
+                // Check if this name already exists in base items
                 val existing = GroceryRepository.findByName(name) { resId -> getString(resId) }
                 if (existing != null) {
                     // Merge: link the scanned barcode to the existing item, add to grocery list

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class InventoryFragment : Fragment() {
+class BaseItemsFragment : Fragment() {
 
     private lateinit var adapter: GroceryAdapter
 
@@ -25,7 +25,7 @@ class InventoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_inventory, container, false)
+        return inflater.inflate(R.layout.fragment_base_items, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,16 +33,16 @@ class InventoryFragment : Fragment() {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvInventory)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        GroceryRepository.refreshInventoryList()
+        GroceryRepository.refreshBaseItemsList()
 
-        adapter = GroceryAdapter(GroceryRepository.inventoryList) { item, position ->
+        adapter = GroceryAdapter(GroceryRepository.baseItemsList) { item, position ->
             showRenameDialog(requireContext(), item, position) { pos ->
                 adapter.notifyItemChanged(pos)
             }
         }
         recyclerView.adapter = adapter
 
-        // FAB: scan a barcode then ask which inventory item to link it to
+        // FAB: scan a barcode then ask which base item to link it to
         view.findViewById<FloatingActionButton>(R.id.fabScanLink).setOnClickListener {
             (requireActivity() as? BarcodeScannerHost)?.openBarcodeScanner { barcode ->
                 showLinkDialog(barcode)
@@ -53,7 +53,7 @@ class InventoryFragment : Fragment() {
     }
 
     private fun showLinkDialog(barcode: String) {
-        val allItems = GroceryRepository.inventoryList
+        val allItems = GroceryRepository.baseItemsList
         val names = allItems.map { it.getName { resId -> getString(resId) } }.toTypedArray()
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.select_item_to_link))
@@ -76,7 +76,7 @@ class InventoryFragment : Fragment() {
             0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
             override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                val item = GroceryRepository.inventoryList[viewHolder.bindingAdapterPosition]
+                val item = GroceryRepository.baseItemsList[viewHolder.bindingAdapterPosition]
                 val alreadyInGroceries = GroceryRepository.groceryList.any { g ->
                     (item.barcodes.isNotEmpty() && item.barcodes.any { g.barcodes.contains(it) }) ||
                     (item is GroceryItem.Static && g is GroceryItem.Static && g.nameRes == item.nameRes) ||
@@ -89,9 +89,9 @@ class InventoryFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.bindingAdapterPosition
-                val item = GroceryRepository.inventoryList[position]
+                val item = GroceryRepository.baseItemsList[position]
                 if (direction == ItemTouchHelper.LEFT) {
-                    GroceryRepository.removeFromInventory(position)
+                    GroceryRepository.removeFromBaseItems(position)
                     adapter.notifyItemRemoved(position)
                 } else {
                     GroceryRepository.moveToGroceries(item, position)
@@ -129,7 +129,8 @@ class InventoryFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        GroceryRepository.refreshInventoryList()
-        adapter.notifyItemRangeChanged(0, GroceryRepository.inventoryList.size)
+        GroceryRepository.refreshBaseItemsList()
+        adapter.notifyItemRangeChanged(0, GroceryRepository.baseItemsList.size)
     }
 }
+

@@ -5,10 +5,10 @@
     <string name="title_system">System</string>
     <string name="title_comms">Network</string>
     <string name="title_power">Armor</string>
-    <string name="title_inventory">Inventory</string>
-    <string name="title_list">List</string>
-    <string name="title_activity_groceries">Groceries</string>
-    <string name="title_groceries_list">Groceries List</string>
+    <string name="title_inventory">Base Items</string>
+    <string name="title_list">Shopping List</string>
+    <string name="title_activity_groceries">Shopping List</string>
+    <string name="title_groceries_list">Shopping List</string>
     <string name="item_apple">Apple</string>
     <string name="item_bread">Bread</string>
     <string name="item_milk">Milk</string>
@@ -24,9 +24,9 @@
     <string name="scan_to_link">Scan barcode to link to item</string>
     <string name="barcode_linked">Barcode linked successfully</string>
     <string name="barcode_added">Item added to grocery list</string>
-    <string name="barcode_not_linked">Barcode not linked to any item</string>
+    <string name="barcode_not_linked">Barcode not linked to any base item</string>
     <string name="barcode_already_in_list">Item already in grocery list</string>
-    <string name="select_item_to_link">Select item to link barcode to</string>
+    <string name="select_item_to_link">Select base item to link barcode to</string>
     <string name="searching_product">Searching for product…</string>
     <string name="product_found">Added: %1$s</string>
     <string name="add_item_title">Product Not Found</string>
