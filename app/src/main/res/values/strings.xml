@@ -27,4 +27,22 @@
     <string name="barcode_not_linked">Barcode not linked to any item</string>
     <string name="barcode_already_in_list">Item already in grocery list</string>
     <string name="select_item_to_link">Select item to link barcode to</string>
+    <string name="searching_product">Searching for product…</string>
+    <string name="product_found">Added: %1$s</string>
+    <string name="add_item_title">Product Not Found</string>
+    <string name="add_item_hint">Barcode not found online. Enter the product name manually.</string>
+    <string name="item_name_hint">Product name</string>
+    <string name="add">Add</string>
+    <string name="name_required">Please enter a name</string>
+    <string name="product_not_found_enter_manually">Product not found — please enter the name</string>
+    <string name="product_not_found_try_ocr">Not found online — scan the product label</string>
+    <string name="ocr_title">SCAN PRODUCT LABEL</string>
+    <string name="ocr_hint">Point label inside the box, then tap screen to scan</string>
+    <string name="ocr_capture">TAP SCREEN OR PRESS HERE</string>
+    <string name="ocr_scanning">Scanning label…</string>
+    <string name="ocr_result_prefilled">Label scanned — confirm or edit the name</string>
+    <string name="ocr_name_hint">Product name</string>
+    <string name="ocr_confirm">CONFIRM NAME</string>
+    <string name="rename_item_title">Rename Item</string>
+    <string name="save">Save</string>
 </resources>

@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class InventoryFragment : Fragment() {
 
-    private val adapter by lazy { GroceryAdapter(GroceryRepository.inventoryList) }
+    private lateinit var adapter: GroceryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +34,12 @@ class InventoryFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvInventory)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         GroceryRepository.refreshInventoryList()
+
+        adapter = GroceryAdapter(GroceryRepository.inventoryList) { item, position ->
+            showRenameDialog(requireContext(), item, position) { pos ->
+                adapter.notifyItemChanged(pos)
+            }
+        }
         recyclerView.adapter = adapter
 
         // FAB: scan a barcode then ask which inventory item to link it to
@@ -48,7 +54,7 @@ class InventoryFragment : Fragment() {
 
     private fun showLinkDialog(barcode: String) {
         val allItems = GroceryRepository.inventoryList
-        val names = allItems.map { getString(it.nameRes) }.toTypedArray()
+        val names = allItems.map { it.getName { resId -> getString(resId) } }.toTypedArray()
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.select_item_to_link))
             .setItems(names) { _, which ->
@@ -71,7 +77,11 @@ class InventoryFragment : Fragment() {
         ) {
             override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
                 val item = GroceryRepository.inventoryList[viewHolder.bindingAdapterPosition]
-                val alreadyInGroceries = GroceryRepository.groceryList.any { it.nameRes == item.nameRes }
+                val alreadyInGroceries = GroceryRepository.groceryList.any { g ->
+                    (item.barcodes.isNotEmpty() && item.barcodes.any { g.barcodes.contains(it) }) ||
+                    (item is GroceryItem.Static && g is GroceryItem.Static && g.nameRes == item.nameRes) ||
+                    (item is GroceryItem.Dynamic && g is GroceryItem.Dynamic && g.name.equals(item.name, ignoreCase = true))
+                }
                 return if (alreadyInGroceries) ItemTouchHelper.LEFT else super.getSwipeDirs(recyclerView, viewHolder)
             }
 

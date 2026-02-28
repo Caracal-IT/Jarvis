@@ -8,8 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 
-class GroceryAdapter(private val items: MutableList<GroceryItem>) :
-    RecyclerView.Adapter<GroceryAdapter.GroceryViewHolder>() {
+class GroceryAdapter(
+    private val items: MutableList<GroceryItem>,
+    private val onLongClick: ((GroceryItem, Int) -> Unit)? = null
+) : RecyclerView.Adapter<GroceryAdapter.GroceryViewHolder>() {
 
     class GroceryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconContainer: View = itemView.findViewById(R.id.iconContainer)
@@ -27,13 +29,15 @@ class GroceryAdapter(private val items: MutableList<GroceryItem>) :
         val item = items[position]
         holder.iconContainer.setBackgroundResource(item.iconBgRes)
         holder.icon.setImageResource(item.iconRes)
-        holder.name.setText(item.nameRes)
+        holder.name.text = item.getName { resId -> holder.itemView.context.getString(resId) }
+        holder.itemView.setOnLongClickListener {
+            val pos = holder.bindingAdapterPosition
+            if (pos != RecyclerView.NO_ID.toInt()) {
+                onLongClick?.invoke(items[pos], pos)
+            }
+            true
+        }
     }
 
     override fun getItemCount(): Int = items.size
-
-    fun removeItem(position: Int) {
-        items.removeAt(position)
-        notifyItemRemoved(position)
-    }
 }

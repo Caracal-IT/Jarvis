@@ -10,47 +10,120 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 
 class GroceriesListFragment : Fragment() {
 
-    private val adapter by lazy { GroceryAdapter(GroceryRepository.groceryList) }
+    private lateinit var adapter: GroceryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_groceries_list, container, false)
-    }
+    ): View = inflater.inflate(R.layout.fragment_groceries_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvGroceries)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        adapter = GroceryAdapter(GroceryRepository.groceryList) { item, position ->
+            showRenameDialog(requireContext(), item, position) { pos ->
+                adapter.notifyItemChanged(pos)
+            }
+        }
         recyclerView.adapter = adapter
 
-        // FAB: scan barcode to add item to grocery list
         view.findViewById<FloatingActionButton>(R.id.fabScanGrocery).setOnClickListener {
             (requireActivity() as? BarcodeScannerHost)?.openBarcodeScanner { barcode ->
-                val added = GroceryRepository.addToGroceriesByBarcode(barcode)
-                val msg = when {
-                    added -> getString(R.string.barcode_added)
-                    GroceryRepository.findByBarcode(barcode) != null -> getString(R.string.barcode_already_in_list)
-                    else -> getString(R.string.barcode_not_linked)
-                }
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-                if (added) adapter.notifyItemInserted(GroceryRepository.groceryList.size - 1)
+                handleBarcodeScan(barcode)
             }
         }
 
         setupSwipeHandler(recyclerView)
     }
 
+    private fun handleBarcodeScan(barcode: String) {
+        // 1. Barcode already linked to an inventory item — add directly to grocery list
+        val inventoryItem = GroceryRepository.findByBarcode(barcode)
+        if (inventoryItem != null) {
+            val added = GroceryRepository.addToGroceriesByBarcode(barcode)
+            val msg = if (added) getString(R.string.barcode_added)
+                      else getString(R.string.barcode_already_in_list)
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+            if (added) adapter.notifyItemInserted(GroceryRepository.groceryList.size - 1)
+            return
+        }
+
+        // 2. Barcode not linked — search online
+        Toast.makeText(requireContext(), getString(R.string.searching_product), Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val product = ProductLookupService.lookup(barcode)
+            if (product != null) {
+                // 2a. Check if this product name already exists in inventory (different barcode)
+                val existingByName = GroceryRepository.findByName(product.name) { resId ->
+                    getString(resId)
+                }
+                if (existingByName != null) {
+                    // Link this barcode to the existing item, then add to grocery list
+                    GroceryRepository.linkBarcode(barcode, existingByName)
+                    val added = GroceryRepository.addToGroceriesByBarcode(barcode)
+                    val msg = if (added) getString(R.string.product_found, existingByName.getName { getString(it) })
+                              else getString(R.string.barcode_already_in_list)
+                    Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                    if (added) adapter.notifyItemInserted(GroceryRepository.groceryList.size - 1)
+                } else {
+                    // 2b. Genuinely new product — create, add to inventory + grocery list
+                    val iconSet = IconGenerator.resolve(product.name, product.category)
+                    val item = GroceryItem.Dynamic(
+                        name = product.name,
+                        iconRes = iconSet.iconRes,
+                        iconBgRes = iconSet.bgRes,
+                        barcodes = mutableSetOf(barcode)
+                    )
+                    GroceryRepository.addDynamicItem(item, addToGroceries = true)
+                    adapter.notifyItemInserted(GroceryRepository.groceryList.size - 1)
+                    Toast.makeText(requireContext(),
+                        getString(R.string.product_found, product.name),
+                        Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                // 3. Not found anywhere — open OCR scanner to read the label
+                Toast.makeText(requireContext(),
+                    getString(R.string.product_not_found_try_ocr),
+                    Toast.LENGTH_SHORT).show()
+                openOcrThenDialog(barcode)
+            }
+        }
+    }
+
+    private fun openOcrThenDialog(barcode: String) {
+        (requireActivity() as? BarcodeScannerHost)?.openOcrScanner { ocrText ->
+            if (ocrText.isNotBlank()) {
+                Toast.makeText(requireContext(),
+                    getString(R.string.ocr_result_prefilled),
+                    Toast.LENGTH_SHORT).show()
+            }
+            showAddItemDialog(barcode, prefilledName = ocrText.ifBlank { null })
+        }
+    }
+
+    private fun showAddItemDialog(barcode: String, prefilledName: String? = null) {
+        val dialog = AddItemDialog().apply {
+            this.barcode = barcode
+            this.prefilledName = prefilledName
+            this.onItemAdded = {
+                adapter.notifyItemInserted(GroceryRepository.groceryList.size - 1)
+            }
+        }
+        dialog.show(parentFragmentManager, "add_item")
+    }
 
     private fun setupSwipeHandler(recyclerView: RecyclerView) {
         val deleteBackground = "#7A0019".toColorInt().toDrawable()
@@ -64,7 +137,11 @@ class GroceriesListFragment : Fragment() {
         ) {
             override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
                 val item = GroceryRepository.groceryList[viewHolder.bindingAdapterPosition]
-                val alreadyInInventory = GroceryRepository.inventoryList.any { it.nameRes == item.nameRes }
+                val alreadyInInventory = GroceryRepository.inventoryList.any { inv ->
+                    (item.barcodes.isNotEmpty() && item.barcodes.any { inv.barcodes.contains(it) }) ||
+                    (item is GroceryItem.Static && inv is GroceryItem.Static && inv.nameRes == item.nameRes) ||
+                    (item is GroceryItem.Dynamic && inv is GroceryItem.Dynamic && inv.name.equals(item.name, ignoreCase = true))
+                }
                 return if (alreadyInInventory) ItemTouchHelper.LEFT else super.getSwipeDirs(recyclerView, viewHolder)
             }
 
