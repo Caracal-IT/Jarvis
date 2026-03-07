@@ -34,34 +34,43 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      - name: Run lint
-        run: ./gradlew lint --stacktrace
+      - name: Run lint (release)
+        run: ./gradlew lintRelease --stacktrace
         continue-on-error: true
 
-      - name: Run unit tests
-        run: ./gradlew test --stacktrace
+      - name: Run unit tests (release)
+        run: ./gradlew testReleaseUnitTest --stacktrace
         continue-on-error: true
-
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace
 
       - name: Build release APK
         run: ./gradlew assembleRelease --stacktrace
 
-      - name: Upload debug APK
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
+      - name: Collect release artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/release
 
-      - name: Upload release APK
+          # AGP output names can vary (for example app-release-unsigned.apk).
+          mapfile -t apk_files < <(find app/build/outputs/apk/release -type f -name "*.apk" | sort)
+          if [ ${#apk_files[@]} -eq 0 ]; then
+            echo "No APK files were generated under app/build/outputs/apk/release"
+            exit 1
+          fi
+
+          for apk in "${apk_files[@]}"; do
+            cp "$apk" artifacts/release/
+          done
+
+          if [ -f .github/how-to-install-apk.md ]; then
+            cp .github/how-to-install-apk.md artifacts/release/
+          fi
+
+      - name: Upload release build artifacts
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
-          path: app/build/outputs/apk/release/app-release.apk
+          name: release-build-artifacts
+          path: artifacts/release
           retention-days: 30
 
       - name: Report build status
@@ -71,11 +80,9 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Build Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Artifacts" >> $GITHUB_STEP_SUMMARY
-          if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
-            echo "✅ Debug APK: \`app-debug.apk\`" >> $GITHUB_STEP_SUMMARY
+          echo "### Uploaded Files" >> $GITHUB_STEP_SUMMARY
+          if [ -d artifacts/release ]; then
+            ls -1 artifacts/release | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- No artifacts directory found" >> $GITHUB_STEP_SUMMARY
           fi
-          if [ -f app/build/outputs/apk/release/app-release.apk ]; then
-            echo "✅ Release APK: \`app-release.apk\`" >> $GITHUB_STEP_SUMMARY
-          fi
-
