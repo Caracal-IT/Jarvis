@@ -54,7 +54,13 @@ def get_spec_status(file_path: Path) -> Tuple[str, str]:
     """
     Determine the status of a spec file by inspecting its checkboxes.
 
-    Rules (matching the project's checkbox legend):
+    Only implementation sections are counted (Functional Requirements,
+    User Goals, Non-Functional Requirements, etc.).  The following
+    sections are excluded from the count:
+      - "Checkbox Status Legend"  — contains example checkboxes only
+      - "Acceptance Criteria"     — testing checklist, not implementation
+
+    Rules:
       All [ ]              → Backlog  🔴
       Mix of [ ] and other → In Progress 🟡
       All [X]/[-] (none empty) → Completed ✅
@@ -67,12 +73,12 @@ def get_spec_status(file_path: Path) -> Tuple[str, str]:
         print(f"⚠️  Could not read {file_path}: {exc}", file=sys.stderr)
         return ("Backlog", "🔴")
 
-    # Strip the "Checkbox Status Legend" section so its example checkboxes
-    # don't influence the status calculation.
-    legend_pattern = re.compile(
-        r"## Checkbox Status Legend.*?(?=\n## |\Z)", re.DOTALL
+    # Strip sections that must not influence the status calculation.
+    excluded_sections = re.compile(
+        r"## (?:Checkbox Status Legend|Acceptance Criteria).*?(?=\n## |\Z)",
+        re.DOTALL,
     )
-    content = legend_pattern.sub("", content)
+    content = excluded_sections.sub("", content)
 
     empty = len(re.findall(r"\[ \]", content))
     filled = len(re.findall(r"\[[Xx\-]\]", content))
