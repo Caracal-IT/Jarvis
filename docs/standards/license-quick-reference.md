@@ -45,28 +45,28 @@
 
 ## Approved Licenses (Use These)
 
-| License | Risk | Use Case |
-|---------|------|----------|
-| 🟢 MIT | None | General purpose, most flexible |
-| 🟢 Apache 2.0 | None | Enterprise, has patent clause |
-| 🟢 BSD-3-Clause | None | Academic, corporate software |
-| 🟢 BSD-2-Clause | None | Minimal restrictions |
-| 🟢 ISC | None | Simple, lightweight |
-| 🟡 Unlicense | Low | Public domain, uncommon |
+| License         | Risk | Use Case                       |
+|-----------------|------|--------------------------------|
+| 🟢 MIT          | None | General purpose, most flexible |
+| 🟢 Apache 2.0   | None | Enterprise, has patent clause  |
+| 🟢 BSD-3-Clause | None | Academic, corporate software   |
+| 🟢 BSD-2-Clause | None | Minimal restrictions           |
+| 🟢 ISC          | None | Simple, lightweight            |
+| 🟡 Unlicense    | Low  | Public domain, uncommon        |
 
 ---
 
 ## Forbidden Licenses (NEVER Use)
 
-| License | Risk | Reason |
-|---------|------|--------|
-| 🔴 GPLv2 | CRITICAL | Copyleft — must open-source |
-| 🔴 GPLv3 | CRITICAL | Copyleft — must open-source |
-| 🔴 AGPL | CRITICAL | Network copyleft — must open-source |
-| 🔴 LGPL | HIGH | Weak copyleft — dependencies restricted |
-| 🔴 SSPL | HIGH | Restrictive — unclear enforcement |
+| License        | Risk     | Reason                                   |
+|----------------|----------|------------------------------------------|
+| 🔴 GPLv2       | CRITICAL | Copyleft — must open-source              |
+| 🔴 GPLv3       | CRITICAL | Copyleft — must open-source              |
+| 🔴 AGPL        | CRITICAL | Network copyleft — must open-source      |
+| 🔴 LGPL        | HIGH     | Weak copyleft — dependencies restricted  |
+| 🔴 SSPL        | HIGH     | Restrictive — unclear enforcement        |
 | 🔴 Proprietary | CRITICAL | Licensing fees or authorization required |
-| 🔴 Unknown | CRITICAL | Cannot verify compliance |
+| 🔴 Unknown     | CRITICAL | Cannot verify compliance                 |
 
 ---
 
@@ -138,11 +138,11 @@
 
 ## Red Flags 🚩
 
-❌ "It probably won't matter"
-❌ "Let's use it anyway"
-❌ "We can figure it out later"
-❌ "Just this one GPL package"
-❌ "Unknown license but it looks safe"
+❌ "It probably won't matter"  
+❌ "Let's use it anyway"  
+❌ "We can figure it out later"  
+❌ "Just this one GPL package"  
+❌ "Unknown license but it looks safe"  
 
 **ANY of these = WRONG. Stop and escalate.**
 
@@ -168,13 +168,13 @@
 
 ## Remember
 
-✅ **This is NON-NEGOTIABLE**
-✅ **Every single dependency matters**
-✅ **Verify BEFORE adding**
-✅ **Use recommended packages when available**
-✅ **Check transitive dependencies**
-✅ **Escalate when unsure**
-✅ **Never use GPL or proprietary licenses**
+✅ **This is NON-NEGOTIABLE**   
+✅ **Every single dependency matters**   
+✅ **Verify BEFORE adding**   
+✅ **Use recommended packages when available**   
+✅ **Check transitive dependencies**   
+✅ **Escalate when unsure**   
+✅ **Never use GPL or proprietary licenses**   
 
 ---
 
