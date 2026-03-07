@@ -27,7 +27,7 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 ### Home Screen Content
 
-[ ] The Home Page must display a clear primary heading.  
+[X] The Home Page must display a clear primary heading.  
 [ ] The Home Page must display exactly four primary actions:
    - Shopping
    - System
