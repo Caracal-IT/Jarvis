@@ -164,7 +164,7 @@ Last updated: {timestamp}
 
 {toc_block}
 
-## Specifications
+See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
 
 {specs_block}
 
