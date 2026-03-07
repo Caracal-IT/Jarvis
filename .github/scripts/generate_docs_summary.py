@@ -106,20 +106,19 @@ def get_spec_title(file_path: Path) -> str:
 
 
 def category_display_name(category: str) -> str:
+    """Return the human-readable category heading for a given folder name."""
+    return CATEGORY_NAMES.get(category, category.replace("-", " ").title())
+
+
+def generate_summary(spec_files: List[Tuple[str, Path]]) -> str:
+    """Build the full markdown content for docs/readme.md."""
     if spec_files:
         # Use the latest spec file modification time as the "Last updated" date
         latest_mtime = max(file_path.stat().st_mtime for _, file_path in spec_files)
         last_updated = datetime.fromtimestamp(latest_mtime, tz=timezone.utc)
     else:
-        # Fallback to current time if no spec files are found
         last_updated = datetime.now(timezone.utc)
     timestamp = f"{last_updated.strftime('%B')} {last_updated.day}, {last_updated.year}"
-
-
-def generate_summary(spec_files: List[Tuple[str, Path]]) -> str:
-    """Build the full markdown content for docs/readme.md."""
-    now = datetime.now(timezone.utc)
-    timestamp = f"{now.strftime('%B')} {now.day}, {now.year}"
 
     # Group specs by category, preserving insertion order
     categories: Dict[str, List[Path]] = {}
@@ -164,13 +163,13 @@ Last updated: {timestamp}
 
 {toc_block}
 
-See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
+## Specifications
 
 {specs_block}
 
 ## Installation
 
-See: [How to Install Jarvis APK](./.github/how-to-install-apk.md)
+See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
 
 ## Standards
 

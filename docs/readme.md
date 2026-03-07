@@ -14,7 +14,7 @@ Last updated: March 7, 2026
 ### Core Features
 
 - [Home Page Requirements](./specs/002 home-requirements.md) — Status: In Progress 🟡
-- [Documentation Summary Feature](./specs/003 documentation-summary-requirements.md) — Status: Backlog 🔴
+- [Documentation Summary Feature](./specs/003 documentation-summary-requirements.md) — Status: Completed ✅
 
 ### Shopping Feature
 
@@ -24,7 +24,7 @@ Last updated: March 7, 2026
 
 ## Installation
 
-See: [How to Install Jarvis APK](./.github/how-to-install-apk.md)
+See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
 
 ## Standards
 
