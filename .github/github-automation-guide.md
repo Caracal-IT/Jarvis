@@ -712,6 +712,54 @@ This system provides:
 
 ---
 
+## Build APK Workflow
+
+In addition to the specs-to-issues automation, there is also an automated build workflow.
+
+### What It Does
+
+The **Build APK** workflow automatically:
+- Compiles the Android app
+- Generates debug APK for testing
+- Generates release APK for distribution
+- Runs lint checks
+- Runs unit tests
+- Uploads APKs as downloadable artifacts
+
+### When It Runs
+
+- **Push to main** — Automatically builds on every merge
+- **Pull requests** — Validates PR builds successfully
+- **Manual trigger** — Run anytime from Actions tab
+
+### Download APK
+
+1. Go to **Actions** tab
+2. Find latest **Build APK** run
+3. Click the run
+4. Scroll to **Artifacts**
+5. Download **debug-apk** or **release-apk**
+
+### Install APK
+
+See complete installation guide: **[How to Install Jarvis APK](./how-to-install-apk.md)**
+
+**Quick methods:**
+- Android Studio (easiest)
+- ADB command line
+- File manager direct install
+
+### Typical Build Time
+
+- First build: 5-8 minutes (downloading dependencies)
+- Subsequent builds: 2-3 minutes (cached dependencies)
+
+For more details, see:
+- `.github/build-apk-guide.md` — Complete workflow guide
+- `.github/how-to-install-apk.md` — Installation instructions
+
+---
+
 **Version:** 2.0 (Consolidated)  
 **Status:** ✅ Production Ready  
 **Last Updated:** March 7, 2026
