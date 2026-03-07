@@ -12,7 +12,8 @@
 1. Read `docs/standards/readme.md` FIRST.
 2. Read this file (`docs/standards/ai-assistant-instructions.md`) SECOND.
 3. Read `docs/standards/kotlin-android-best-practices.md` THIRD.
-4. Only then proceed with any work.
+4. Always review `docs/specs/` for additional feature and product context before implementation.
+5. Only then proceed with any work.
 
 **Failure to follow this protocol is unacceptable.**
 
@@ -98,12 +99,13 @@ Before writing **any** code, adding **any** feature, or making **any** change, v
 - [ ] I have read `docs/standards/kotlin-android-best-practices.md`.
 - [ ] I have read `docs/standards/licenses.md`.
 - [ ] I have read `docs/standards/license-quick-reference.md`.
+- [ ] I have reviewed `docs/specs/` for additional context relevant to the task.
 
 ### Relevant Feature Documentation
-- [ ] If working on **UI / Fragments** — read all docs above plus any feature-specific docs.
-- [ ] If working on **data / repository** — read all docs above plus any feature-specific docs.
-- [ ] If working on **scanning / camera** — read all docs above plus any feature-specific docs.
-- [ ] If working on **navigation** — read all docs above plus any feature-specific docs.
+- [ ] If working on **UI / Fragments** — read all docs above plus any feature-specific docs in `docs/specs/`.
+- [ ] If working on **data / repository** — read all docs above plus any feature-specific docs in `docs/specs/`.
+- [ ] If working on **scanning / camera** — read all docs above plus any feature-specific docs in `docs/specs/`.
+- [ ] If working on **navigation** — read all docs above plus any feature-specific docs in `docs/specs/`.
 
 ### Compliance Verification
 - [ ] I understand all mandatory compliance requirements.
@@ -285,17 +287,18 @@ fun loadGroceries(forceRefresh: Boolean = false)
 ### Always
 1. Write all text in Standard American English — chat, comments, KDoc, docs, strings, and commit messages.
 2. Name all markdown files in lowercase with hyphens (e.g., `my-file.md`).
-3. Read standards first.
-4. Validate against guidelines before every code change.
-5. Follow Kotlin and Android best practices.
-6. Use resource files — no hardcoded values.
-7. Follow MVVM + Repository architecture.
-8. Document all public behavior with KDoc.
-9. Handle errors with sealed classes or `Result<T>`.
-10. Test all changed behavior.
-11. Verify approved licenses before adding any dependency.
-12. Adhere to the Jarvis / Iron Man visual theme.
-13. Review all long-lived operations for memory leaks.
+3. Always review `docs/specs/` for additional context before implementation.
+4. Read standards first.
+5. Validate against guidelines before every code change.
+6. Follow Kotlin and Android best practices.
+7. Use resource files — no hardcoded values.
+8. Follow MVVM + Repository architecture.
+9. Document all public behavior with KDoc.
+10. Handle errors with sealed classes or `Result<T>`.
+11. Test all changed behavior.
+12. Verify approved licenses before adding any dependency.
+13. Adhere to the Jarvis / Iron Man visual theme.
+14. Review all long-lived operations for memory leaks.
 
 ### Never
 1. Use non-American English spelling (colour, behaviour, initialise, organise, etc.).
@@ -313,7 +316,7 @@ fun loadGroceries(forceRefresh: Boolean = false)
 
 ---
 
-**Version:** 3.2
+**Version:** 3.3
 **Last Updated:** March 7, 2026
 **Status:** ACTIVE — Mandatory for all AI assistants
 **Compliance:** Required — no exceptions without explicit approval
