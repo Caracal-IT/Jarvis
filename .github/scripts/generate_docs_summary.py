@@ -63,7 +63,7 @@ def get_spec_status(file_path: Path) -> Tuple[str, str]:
     Rules:
       All [ ]              → Backlog  🔴
       Mix of [ ] and other → In Progress 🟡
-      All [X]/[-] (none empty) → Completed ✅
+    except (OSError, UnicodeDecodeError) as exc:
 
     Returns (status_label, status_emoji).
     """
