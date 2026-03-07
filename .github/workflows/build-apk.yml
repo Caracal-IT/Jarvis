@@ -35,15 +35,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run lint (release)
-        run: ./gradlew lintRelease --stacktrace
+        run: ./gradlew :app:lintRelease --stacktrace
         continue-on-error: true
 
-      - name: Run unit tests (release)
-        run: ./gradlew testReleaseUnitTest --stacktrace
+      - name: Run unit tests
+        run: ./gradlew :app:testDebugUnitTest --stacktrace
         continue-on-error: true
 
       - name: Build release APK
-        run: ./gradlew assembleRelease --stacktrace
+        run: ./gradlew :app:assembleRelease --stacktrace
 
       - name: Collect release artifacts
         run: |
