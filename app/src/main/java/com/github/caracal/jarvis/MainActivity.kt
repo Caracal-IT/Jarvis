@@ -2,11 +2,11 @@ package com.github.caracal.jarvis
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.github.caracal.jarvis.databinding.ActivityMainBinding
 
 /**
  * Main entry-point activity for the Jarvis application.
@@ -16,21 +16,19 @@ import com.github.caracal.jarvis.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.main_activity)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        val rootView = findViewById<android.view.View>(R.id.main)
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        binding.btnShopping.setOnClickListener {
+        findViewById<Button>(R.id.btnShopping).setOnClickListener {
             startActivity(Intent(this, ShoppingActivity::class.java))
         }
     }

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
-import com.github.caracal.jarvis.databinding.ActivityShoppingBinding
+import com.github.caracal.jarvis.databinding.ShoppingActivityBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 
 /**
@@ -17,12 +17,12 @@ import com.github.caracal.jarvis.shopping.ShoppingFragment
  */
 class ShoppingActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityShoppingBinding
+    private lateinit var binding: ShoppingActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityShoppingBinding.inflate(layoutInflater)
+        binding = ShoppingActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.shoppingContainer) { v, insets ->
