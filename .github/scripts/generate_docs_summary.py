@@ -106,8 +106,14 @@ def get_spec_title(file_path: Path) -> str:
 
 
 def category_display_name(category: str) -> str:
-    """Return a human-readable display name for a spec category."""
-    return CATEGORY_NAMES.get(category, category.replace("-", " ").title())
+    if spec_files:
+        # Use the latest spec file modification time as the "Last updated" date
+        latest_mtime = max(file_path.stat().st_mtime for _, file_path in spec_files)
+        last_updated = datetime.fromtimestamp(latest_mtime, tz=timezone.utc)
+    else:
+        # Fallback to current time if no spec files are found
+        last_updated = datetime.now(timezone.utc)
+    timestamp = f"{last_updated.strftime('%B')} {last_updated.day}, {last_updated.year}"
 
 
 def generate_summary(spec_files: List[Tuple[str, Path]]) -> str:
