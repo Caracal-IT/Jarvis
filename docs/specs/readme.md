@@ -30,7 +30,7 @@ Deprecated root files are temporary and should be removed as part of cleanup.
 - `shopping/`
   - `shopping-requirements.md` — Shopping feature requirements
   - `shopping-list-requirements.md` — Shopping List requirements
-  - `item-selection-requirements.md` — Item selection requirements for Shopping
+  - `restock-requirements.md` — Restock requirements for Shopping
 
 ## Writing Standards
 
@@ -48,6 +48,6 @@ When behavior changes, update relevant requirements in `docs/specs/` in the same
 2. Update Shopping requirements in `docs/specs/shopping/`, including:
    - `shopping-requirements.md`
    - `shopping-list-requirements.md`
-   - `item-selection-requirements.md`
+   - `restock-requirements.md`
 3. Update acceptance criteria where needed.
 4. Keep scope and completion criteria current.

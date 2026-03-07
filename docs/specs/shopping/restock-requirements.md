@@ -1,4 +1,4 @@
-# Item Selection Requirements
+# Restock Requirements
 
 ## Objective
 
@@ -37,11 +37,10 @@ This document covers how users choose items before adding them to the Shopping L
 
 ## Acceptance Criteria
 
-Item Selection requirements are accepted when all are true:
+Restock requirements are accepted when all are true:
 
 1. User can select and confirm items to add.
 2. Confirmed items are added correctly to the Shopping List.
 3. Canonical naming rules are enforced and brand-specific names are rejected.
 4. Duplicate handling is consistent with Shopping List behavior.
 5. Selection flow remains stable in common user scenarios.
-

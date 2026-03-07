@@ -13,7 +13,7 @@ The active files in this folder must be:
 - `readme.md`
 - `shopping-requirements.md`
 - `shopping-list-requirements.md`
-- `item-selection-requirements.md`
+- `restock-requirements.md`
 
 ## Document Map
 
@@ -21,7 +21,7 @@ The active files in this folder must be:
   - End-state Shopping feature requirements and acceptance criteria
 - `shopping-list-requirements.md`
   - End-state requirements for Shopping List behavior and persistence
-- `item-selection-requirements.md`
+- `restock-requirements.md`
   - End-state requirements for selecting items to add to the Shopping List
 
 ## Boundaries
@@ -36,5 +36,5 @@ When Shopping behavior or scope changes, update:
 
 1. `shopping-requirements.md`
 2. `shopping-list-requirements.md`
-3. `item-selection-requirements.md`
+3. `restock-requirements.md`
 4. Acceptance criteria and scope statements in this folder
