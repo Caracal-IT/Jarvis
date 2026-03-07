@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
 """
 Sync checkbox status from spec files to GitHub issues.
-Updates issue status labels based on spec file checkbox marks:
-  [ ] = Not started (status/backlog)
-  [-] = In progress (status/in-progress)
-  [X] = Done (status/completed)
+Updates issue status LABELS based on spec file checkbox marks.
+
+IMPORTANT: Checkbox marks do NOT affect whether an issue is open/closed.
+They only affect the status LABEL on the issue.
+
+Status Label Mapping:
+  All [ ] → status/backlog (not started yet)
+  Mix of [ ] and others → status/in-progress (partially done)
+  All [X] or filled → status/completed (implementation done)
+
+GitHub Issue Open/Closed:
+  Checkboxes are ignored when determining if issue is open.
+  Issues stay open until manually closed.
+  Status labels are just tracking implementation progress.
 """
 
 import os

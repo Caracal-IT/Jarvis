@@ -391,12 +391,17 @@ Description of what this feature does.
 
 ### Checkpoint Status Mapping
 
-| Spec Checkboxes | GitHub Issue Status | Meaning |
+| Spec Checkboxes | GitHub Issue Status Label | Meaning |
 |---|---|---|
 | All `[ ]` | `status/backlog` | Not started |
 | At least one `[-]` | `status/in-progress` | Being developed |
 | At least one `[X]`, some `[ ]` | `status/in-progress` | Partially done |
 | All `[X]` | `status/completed` | Finished |
+
+**IMPORTANT:** Checkbox marks only affect the **status label**. They do NOT determine if the issue is open or closed.
+- Issues remain **open** until manually closed, regardless of checkbox marks
+- Checkboxes are for tracking implementation progress only
+- Use manual issue closure when work is truly complete and done
 
 ### Feature Labels
 

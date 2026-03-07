@@ -1,5 +1,14 @@
 name: Specs to Issues Automation (Bidirectional Sync)
 
+# NOTE: Checkbox marks in spec files DO NOT determine if issues are open/closed.
+# They only affect the status LABEL on the issue.
+# Issues remain open until manually closed.
+#
+# Status Label Mapping:
+#   All [ ] → status/backlog
+#   Mix of [ ] and others → status/in-progress
+#   All [X] or filled → status/completed
+
 on:
   push:
     branches:
