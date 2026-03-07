@@ -60,16 +60,16 @@ def get_spec_status(file_path: Path) -> Tuple[str, str]:
       - "Checkbox Status Legend"  — contains example checkboxes only
       - "Acceptance Criteria"     — testing checklist, not implementation
 
-    Rules:
-      All [ ]              → Backlog  🔴
-      Mix of [ ] and other → In Progress 🟡
-    except (OSError, UnicodeDecodeError) as exc:
+    Rules (matching sync_spec_status.py):
+      All [ ]          → Backlog  🔴
+      All [X]          → Completed ✅
+      Any [-] or mix   → In Progress 🟡
 
     Returns (status_label, status_emoji).
     """
     try:
         content = file_path.read_text(encoding="utf-8")
-    except OSError as exc:
+    except (OSError, UnicodeDecodeError) as exc:
         print(f"⚠️  Could not read {file_path}: {exc}", file=sys.stderr)
         return ("Backlog", "🔴")
 
@@ -80,12 +80,18 @@ def get_spec_status(file_path: Path) -> Tuple[str, str]:
     )
     content = excluded_sections.sub("", content)
 
-    empty = len(re.findall(r"\[ \]", content))
-    filled = len(re.findall(r"\[[Xx\-]\]", content))
-
-    if filled == 0:
+    matches = re.findall(r"\[(.)\]", content)
+    if not matches:
         return ("Backlog", "🔴")
-    if empty == 0:
+
+    not_started = sum(1 for m in matches if m == " ")
+    in_progress = sum(1 for m in matches if m == "-")
+    completed = sum(1 for m in matches if m != " " and m != "-")
+    total = len(matches)
+
+    if not_started == total:
+        return ("Backlog", "🔴")
+    if completed == total:
         return ("Completed", "✅")
     return ("In Progress", "🟡")
 
@@ -94,7 +100,7 @@ def get_spec_title(file_path: Path) -> str:
     """Extract the H1 title from a spec file, falling back to the file stem."""
     try:
         content = file_path.read_text(encoding="utf-8")
-    except OSError:
+    except (OSError, UnicodeDecodeError):
         return file_path.stem
 
     match = re.search(r"^# (.+)$", content, re.MULTILINE)

@@ -24,7 +24,7 @@ Last updated: March 7, 2026
 
 ## Installation
 
-See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
+See: [How to Install Jarvis APK](./.github/how-to-install-apk.md)
 
 ## Standards
 
