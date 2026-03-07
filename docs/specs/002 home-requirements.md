@@ -1,5 +1,13 @@
 # Home Page Requirements
 
+## Checkbox Status Legend
+
+- `[ ]` — Not started
+- `[-]` — In progress
+- `[X]` — Done (or any non-empty character except dash)
+
+Use these checkboxes to track implementation status of each requirement.
+
 ## Purpose
 
 This document defines the end-state requirements for the Jarvis Home Page.
@@ -68,4 +76,3 @@ The Home Page is complete when all are true:
 [ ] Each action navigates to the correct destination.  
 [ ] Back navigation returns to Home without failure.  
 [ ] The screen remains readable, stable, and responsive in normal use.
-

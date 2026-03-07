@@ -1,0 +1,75 @@
+name: Specs to Issues Automation (Bidirectional Sync)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/specs/**/*.md'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docs/specs/**/*.md'
+  issues:
+    types: [opened, edited, labeled, unlabeled]
+  workflow_dispatch:
+
+jobs:
+  sync-specs-to-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Parse specs and create issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          python .github/scripts/specs_to_issues.py
+
+      - name: Update issue labels and status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          python .github/scripts/update_issue_status.py
+
+      - name: Sync checkbox status from specs to issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          python .github/scripts/sync_spec_status.py
+
+      - name: Generate copilot-readable issue context
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          python .github/scripts/generate_issue_context.py
+
+      - name: Prepare issue summary for copilot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          python .github/scripts/prepare_copilot_context.py
+

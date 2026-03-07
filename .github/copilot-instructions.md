@@ -14,9 +14,36 @@
 3. [`docs/standards/kotlin-android-best-practices.md`](../docs/standards/kotlin-android-best-practices.md)
 4. [`docs/standards/licenses.md`](../docs/standards/licenses.md)
 5. [`docs/standards/license-quick-reference.md`](../docs/standards/license-quick-reference.md)
+6. [`.github/bidirectional-sync-guide.md`](.github/bidirectional-sync-guide.md) ← **Issue tracking system**
 
 The file at `docs/standards/ai-assistant-instructions.md` is the **single source of truth**
 for all AI assistant behavior on this project.
+
+The file at `.github/bidirectional-sync-guide.md` explains how to track and update issues in specs.
+
+---
+
+## Issue Tracking & Progress Updates
+
+**You can update implementation progress directly in spec files:**
+
+1. Read: `.github/copilot-issue-summary.md` — Current issues and what needs to be done
+2. Read: `.github/issue-context.json` — Machine-readable mapping of issues to specs
+3. Open the spec file referenced in the issue
+4. Update checkboxes:
+   - `[ ]` = Not started
+   - `[-]` = In progress
+   - `[X]` = Done
+5. Push to main — Workflow auto-updates GitHub issues
+
+**Example:**
+```markdown
+# docs/specs/shopping/002 shopping-requirements.md
+
+[ ] User can add items
+[-] User can remove items  ← Currently working on this
+[X] List persists after restart
+```
 
 ---
 

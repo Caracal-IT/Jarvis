@@ -1,0 +1,91 @@
+# Specs-to-Issues Configuration
+# Customize behavior of the automation system
+
+# Feature categories and their labels
+feature_labels:
+  shopping: "feature/shopping"
+  home: "feature/home"
+  scanner: "feature/scanner"
+  baseitems: "feature/base-items"
+  default: "feature/core"
+
+# Default labels applied to all created issues
+default_labels:
+  - "from/specs"
+  - "status/backlog"
+
+# Issue status labels
+status_labels:
+  backlog: "status/backlog"
+  in_progress: "status/in-progress"
+  completed: "status/completed"
+
+# Workflow triggers
+triggers:
+  on_push: true           # Trigger on push to main
+  on_pull_request: true   # Trigger on PR to main
+  on_manual: true         # Allow manual trigger
+
+# Spec file patterns to watch
+spec_patterns:
+  - "docs/specs/**/*.md"
+
+# Files to ignore
+ignore_patterns:
+  - "**/001 readme.md"    # Skip readme files
+  - "*.bak"               # Skip backup files
+
+# Issue body template
+issue_template: |
+  ## Overview
+  {objective}
+
+  ## Specification File
+  📄 [`{file_path}`]({file_path})
+
+  ## Functional Requirements
+  {functional_requirements}
+
+  ## Acceptance Criteria
+  {acceptance_criteria}
+
+  ---
+  *This issue was automatically created from specification requirements.*
+
+# PR to issue linking
+pr_linking:
+  enabled: true
+  patterns:
+    - "Closes #"
+    - "Fixes #"
+    - "Resolves #"
+
+# Auto-status updates
+auto_update_status: true
+update_on_pr_open: true
+update_on_pr_merge: true
+
+# Notifications (future feature)
+notifications:
+  slack: false
+  email: false
+  github: true
+
+# Logging
+logging:
+  level: "INFO"           # DEBUG, INFO, WARNING, ERROR
+  output: "console"       # console, file
+  verbose: true
+
+# Rate limiting (GitHub API)
+rate_limit:
+  max_issues_per_run: 50
+  delay_between_requests: 0.1  # seconds
+
+---
+# Usage:
+# 1. Modify settings above to customize automation
+# 2. Commit and push to main
+# 3. Workflow uses updated configuration
+# 4. Each run logs configuration used
+

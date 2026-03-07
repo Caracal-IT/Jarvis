@@ -1,5 +1,13 @@
 # Shopping List Requirements
 
+## Checkbox Status Legend
+
+- `[ ]` — Not started
+- `[-]` — In progress
+- `[X]` — Done (or any non-empty character except dash)
+
+Use these checkboxes to track implementation status of each requirement.
+
 ## Objective
 
 Define requirements for presenting and maintaining the Shopping List as a clear, reliable, and user-focused list experience.

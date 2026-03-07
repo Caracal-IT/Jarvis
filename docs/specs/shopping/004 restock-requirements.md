@@ -1,5 +1,13 @@
 # Restock Requirements
 
+## Checkbox Status Legend
+
+- `[ ]` — Not started
+- `[-]` — In progress
+- `[X]` — Done (or any non-empty character except dash)
+
+Use these checkboxes to track implementation status of each requirement.
+
 ## Objective
 
 Define requirements for selecting items to add to the Shopping List using a simple and user-friendly selection flow.
