@@ -28,11 +28,11 @@ This workflow automatically builds debug and release APKs whenever code is pushe
 
 ## Triggers
 
-The workflow runs when:
+The workflow runs automatically when:
 
-- **Push to main** — Automatically builds on every merge
-- **Pull Request to main** — Validates PR can build successfully
-- **Manual trigger** — Via "Run workflow" button in Actions tab
+- **Push to main** — Every commit/merge to main branch triggers build
+- **Pull Request to main** — Every PR to main branch triggers build validation
+- **Manual trigger** — Anytime via "Run workflow" button in Actions tab
 
 ---
 

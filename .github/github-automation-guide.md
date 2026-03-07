@@ -728,9 +728,10 @@ The **Build APK** workflow automatically:
 
 ### When It Runs
 
-- **Push to main** — Automatically builds on every merge
-- **Pull requests** — Validates PR builds successfully
-- **Manual trigger** — Run anytime from Actions tab
+The workflow runs when:
+- **Push to main** — Every commit or merge triggers build
+- **Pull Request to main** — Every PR to main validates build works
+- **Manual trigger** — Anytime via Actions "Run workflow" button
 
 ### Download APK
 
