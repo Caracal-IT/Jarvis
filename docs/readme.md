@@ -13,7 +13,7 @@ Last updated: March 7, 2026
 
 ### Core Features
 
-- [Home Page Requirements](./specs/002 home-requirements.md) — Status: Completed ✅
+- [Home Page Requirements](./specs/002 home-requirements.md) — Status: In Progress 🟡
 - [Documentation Summary Feature](./specs/003 documentation-summary-requirements.md) — Status: Backlog 🔴
 
 ### Shopping Feature
