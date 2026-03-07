@@ -35,7 +35,7 @@
         android:alignmentMode="alignBounds">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGroceries"
+            android:id="@+id/btnShopping"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="140dp"
             android:layout_height="120dp"
@@ -45,7 +45,7 @@
             app:iconGravity="textTop"
             app:iconSize="32dp"
             app:iconTint="@color/iron_man_cyan"
-            android:text="@string/title_groceries"
+            android:text="@string/title_shopping"
             android:textColor="@color/iron_man_cyan"
             android:textSize="14sp"
             android:fontFamily="monospace"
