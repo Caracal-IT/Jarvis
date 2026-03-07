@@ -27,6 +27,8 @@ Deprecated root files are temporary and should be removed as part of cleanup.
 
 - `002 home-requirements.md`
   - Requirements for the Home Page
+- `003 documentation-summary-requirements.md`
+  - Requirements for automated documentation summary generation
 - `shopping/`
   - `002 shopping-requirements.md` — Shopping feature requirements
   - `003 shopping-list-requirements.md` — Shopping List requirements
