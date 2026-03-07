@@ -131,6 +131,29 @@ def create_github_issue(title: str, body: str, labels: List[str]) -> Dict:
         return {}
 
 
+def update_github_issue(issue_number: int, body: str, labels: List[str]) -> bool:
+    """
+    Update an existing GitHub issue body and labels.
+    Returns True if successful, False otherwise.
+    """
+    url = f"{ISSUES_URL}/{issue_number}"
+    payload = {
+        "body": body,
+        "labels": labels,
+    }
+
+    response = requests.patch(url, headers=HEADERS, json=payload)
+
+    if response.status_code == 200:
+        print(f"✅ Updated issue: #{issue_number}")
+        return True
+    else:
+        print(f"❌ Failed to update issue: #{issue_number}")
+        print(f"   Status: {response.status_code}")
+        print(f"   Response: {response.text}")
+        return False
+
+
 def find_existing_issue(title: str) -> Dict | None:
     """Find an existing issue by title."""
     response = requests.get(
@@ -206,6 +229,7 @@ def main():
     print(f"📋 Found {len(spec_files)} spec files\n")
 
     created_count = 0
+    updated_count = 0
     skipped_count = 0
 
     for folder, file_path in spec_files:
@@ -220,13 +244,6 @@ def main():
         spec = parse_spec_file(file_path)
         print(f"   Title: {spec['title']}")
 
-        # Check if issue already exists
-        existing = find_existing_issue(spec["title"])
-        if existing:
-            print(f"   ℹ️  Issue already exists: #{existing['number']}\n")
-            skipped_count += 1
-            continue
-
         # Generate issue body and determine labels
         body = generate_issue_body(spec)
         labels = [
@@ -235,7 +252,18 @@ def main():
             "status/backlog",
         ]
 
-        # Create issue
+        # Check if issue already exists
+        existing = find_existing_issue(spec["title"])
+        if existing:
+            # Update existing issue
+            issue_number = existing["number"]
+            print(f"   ℹ️  Issue exists: #{issue_number}")
+            if update_github_issue(issue_number, body, labels):
+                updated_count += 1
+            print()
+            continue
+
+        # Create new issue
         result = create_github_issue(spec["title"], body, labels)
         if result:
             created_count += 1
@@ -246,7 +274,7 @@ def main():
     print("📊 Summary")
     print("=" * 60)
     print(f"✅ Created: {created_count}")
-    print(f"⏭️  Skipped (already exist): {skipped_count}")
+    print(f"🔄 Updated: {updated_count}")
     print(f"📝 Total processed: {len(spec_files) - 1}")  # -1 for readme
 
 
