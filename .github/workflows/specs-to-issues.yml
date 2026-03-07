@@ -17,6 +17,11 @@ on:
       - main
     paths:
       - 'docs/specs/**/*.md'
+  workflow_run:
+    workflows:
+      - Build APK
+    types:
+      - completed
   workflow_dispatch:
     inputs:
       sync_mode:
@@ -32,6 +37,9 @@ on:
 
 jobs:
   sync-specs-to-issues:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: read
