@@ -16,8 +16,8 @@ The focus is user outcomes and expected behavior, not implementation detail.
 
 The active root of `docs/specs/` must contain only:
 
-- `readme.md`
-- `home-requirements.md`
+- `001 readme.md`
+- `002 home-requirements.md`
 
 Feature requirements must be placed in separate feature folders (for example, `shopping/`).
 
@@ -25,12 +25,12 @@ Deprecated root files are temporary and should be removed as part of cleanup.
 
 ## Document Map
 
-- `home-requirements.md`
+- `002 home-requirements.md`
   - Requirements for the Home Page
 - `shopping/`
-  - `shopping-requirements.md` — Shopping feature requirements
-  - `shopping-list-requirements.md` — Shopping List requirements
-  - `restock-requirements.md` — Restock requirements for Shopping
+  - `002 shopping-requirements.md` — Shopping feature requirements
+  - `003 shopping-list-requirements.md` — Shopping List requirements
+  - `004 restock-requirements.md` — Restock requirements for Shopping
 
 ## Writing Standards
 
@@ -46,8 +46,8 @@ When behavior changes, update relevant requirements in `docs/specs/` in the same
 
 1. Update Home Page requirements if app-level behavior changes.
 2. Update Shopping requirements in `docs/specs/shopping/`, including:
-   - `shopping-requirements.md`
-   - `shopping-list-requirements.md`
-   - `restock-requirements.md`
+   - `002 shopping-requirements.md`
+   - `003 shopping-list-requirements.md`
+   - `004 restock-requirements.md`
 3. Update acceptance criteria where needed.
 4. Keep scope and completion criteria current.
