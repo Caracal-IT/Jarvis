@@ -105,6 +105,28 @@ def get_spec_title(file_path: Path) -> str:
     return match.group(1).strip() if match else file_path.stem
 
 
+def get_spec_description(file_path: Path) -> str:
+    """
+    Extract a one-sentence description from the Purpose or Objective section
+    of a spec file. Returns an empty string if neither section is found.
+    """
+    try:
+        content = file_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return ""
+
+    # Look for ## Purpose or ## Objective section and grab the first paragraph
+    match = re.search(
+        r"^## (?:Purpose|Objective)\s*\n\s*\n(.+?)(?:\n\n|\Z)",
+        content,
+        re.MULTILINE | re.DOTALL,
+    )
+    if not match:
+        return ""
+    # Collapse newlines and strip trailing whitespace
+    return " ".join(match.group(1).split())
+
+
 def category_display_name(category: str) -> str:
     """Return the human-readable category heading for a given folder name."""
     return CATEGORY_NAMES.get(category, category.replace("-", " ").title())
@@ -144,12 +166,15 @@ def generate_summary(spec_files: List[Tuple[str, Path]]) -> str:
         lines: List[str] = [f"### {display}", ""]
         for file_path in files:
             title = get_spec_title(file_path)
+            description = get_spec_description(file_path)
             status_label, status_emoji = get_spec_status(file_path)
             # Build a relative link from the docs/ directory
             rel_link = "./" + str(file_path.relative_to("docs"))
             lines.append(
                 f"- [{title}]({rel_link}) — Status: {status_label} {status_emoji}"
             )
+            if description:
+                lines.append(f"  {description}")
         spec_sections.append("\n".join(lines))
 
     toc_block = "\n".join(toc_lines)
