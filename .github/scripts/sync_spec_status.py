@@ -64,10 +64,35 @@ def parse_checkbox_status(content: str) -> Dict[str, str]:
     """
     Parse spec file and determine overall checkbox status.
     Returns: "backlog", "in-progress", or "completed"
+
+    Ignores checkboxes in the "Checkbox Status Legend" section.
+    Only counts checkboxes in actual requirements.
     """
-    # Extract all checkbox lines
+    # Remove the Checkbox Status Legend section to avoid counting its examples
+    # Find the legend section and remove it
+    legend_start = content.find("## Checkbox Status Legend")
+    if legend_start != -1:
+        # Find the next ## section or end of file
+        next_section = content.find("\n## ", legend_start + 1)
+        if next_section == -1:
+            # Legend is the last section, but check if there's content after it
+            # Find the next line that's not part of the legend (doesn't start with -)
+            legend_end = legend_start
+            for line in content[legend_start:].split('\n')[1:]:
+                if line.strip() and not line.startswith('-') and not line.startswith('`'):
+                    break
+                legend_end += len(line) + 1
+        else:
+            legend_end = next_section
+
+        # Remove legend section from content for checkbox parsing
+        content_without_legend = content[:legend_start] + content[legend_end:]
+    else:
+        content_without_legend = content
+
+    # Extract all checkbox lines (only from actual requirements, not legend)
     checkbox_pattern = r"\[(.)\]"
-    matches = re.findall(checkbox_pattern, content)
+    matches = re.findall(checkbox_pattern, content_without_legend)
 
     if not matches:
         return "backlog"
