@@ -19,16 +19,16 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 ## User Goals
 
-[X] Understand system status immediately after launch.  
-[X] Access key features in one tap.  
-[X] Trust that navigation is stable and predictable.
+[ ] Understand system status immediately after launch.  
+[ ] Access key features in one tap.  
+[ ] Trust that navigation is stable and predictable.
 
 ## Functional Requirements
 
 ### Home Screen Content
 
-[X] The Home Page must display a clear primary heading.  
-[X] The Home Page must display exactly four primary actions:
+[ ] The Home Page must display a clear primary heading.  
+[ ] The Home Page must display exactly four primary actions:
    - Shopping
    - System
    - Network
