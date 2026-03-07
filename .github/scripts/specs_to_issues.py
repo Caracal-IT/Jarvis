@@ -34,19 +34,29 @@ def get_spec_files() -> List[Tuple[str, Path]]:
     """
     Get all spec files from docs/specs folder, sorted by index.
     Returns list of (folder_path, file_path) tuples.
+    Picks up all files matching: NNN *-requirements.md
+    Skips: 001 readme.md files
     """
     spec_files = []
 
-    # Get root spec files
+    # Get root spec files (002+, skip 001 readme)
     for file_path in sorted(SPECS_DIR.glob("*.md")):
-        if file_path.name.startswith(("001", "002")):
+        # Skip readme files (001 prefix)
+        if file_path.name.startswith("001"):
+            continue
+        # Include all other numbered files (002, 003, 004, etc.)
+        if re.match(r"^\d{3}\s", file_path.name):
             spec_files.append(("root", file_path))
 
     # Get feature spec files
     for feature_dir in sorted(SPECS_DIR.iterdir()):
         if feature_dir.is_dir():
             for file_path in sorted(feature_dir.glob("*.md")):
-                if not file_path.name.startswith("001"):  # Skip readme files
+                # Skip readme files (001 prefix)
+                if file_path.name.startswith("001"):
+                    continue
+                # Include all other numbered files
+                if re.match(r"^\d{3}\s", file_path.name):
                     spec_files.append((feature_dir.name, file_path))
 
     return spec_files
