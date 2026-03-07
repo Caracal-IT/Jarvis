@@ -251,6 +251,12 @@ The workflow will start within seconds.
 - Organized by feature and status
 - Includes action guide
 
+**Step 6: Close completed issues**
+- Checks all specs for completion status
+- Ignores legend section checkboxes
+- Auto-closes issues when all real requirements are `[X]`
+- Reports closure in workflow summary
+
 ### Issue Structure
 
 Each GitHub issue created from specs includes:
