@@ -36,7 +36,7 @@ this document expands on them.
 ### Rule 2 — Use Resource Files for All Assets and Strings
 - **No hardcoded values** anywhere in Kotlin source or layout XML files.
 - All strings → `res/values/strings.xml`
-- All colours → `res/values/colors.xml`
+- All colors → `res/values/colors.xml`
 - All dimensions → `res/values/dimens.xml`
 - All drawables and mipmaps → appropriate `res/drawable/` or `res/mipmap/` directories.
 - All styles and themes → `res/values/themes.xml` / `res/values/styles.xml`.
@@ -54,12 +54,12 @@ this document expands on them.
 - Add **KDoc** comments to all public classes, functions, and complex logic.
 - Break large functions and classes into smaller, focused, reusable components.
 - Write code that is easy to unit test — favor dependency injection over hard-coded dependencies.
-- Organize code by **feature** (e.g., `groceries/`, `scanner/`, `baseitems/`), not by type.
+- Organize code by **feature** (e.g., `shopping/`, `scanner/`, `baseitems/`), not by type.
 
 ### Rule 5 — All Generated Assets Must Be Coherent
 - All generated assets (icons, backgrounds, UI elements) **must** adhere to the
   **Jarvis / Iron Man** theme.
-- Strictly use the defined colour palette:
+- Strictly use the defined color palette:
 
   | Token                  | Hex       | Usage                                 |
   |------------------------|-----------|---------------------------------------|
@@ -76,13 +76,13 @@ All markdown files in this project **MUST** follow these naming rules:
 - **Words separated by hyphens** — no spaces, underscores, or camelCase.
 - **Extension:** always `.md` (lowercase).
 
-| ✅ Correct | ❌ Incorrect |
-|---|---|
-| `readme.md` | `README.md` |
-| `ai-assistant-instructions.md` | `AI_ASSISTANT_INSTRUCTIONS.md` |
-| `kotlin-android-best-practices.md` | `kotlin_android_best_practices.md` |
-| `license-quick-reference.md` | `LICENSE_QUICK_REFERENCE.md` |
-| `copilot-compliance-checklist.md` | `COPILOT_COMPLIANCE_CHECKLIST.md` |
+| ✅ Correct                          | ❌ Incorrect                         |
+|------------------------------------|-------------------------------------|
+| `readme.md`                        | `README.md`                         |
+| `ai-assistant-instructions.md`     | `AI_ASSISTANT_INSTRUCTIONS.md`      |
+| `kotlin-android-best-practices.md` | `kotlin_android_best_practices.md`  |
+| `license-quick-reference.md`       | `LICENSE_QUICK_REFERENCE.md`        |
+| `copilot-compliance-checklist.md`  | `COPILOT_COMPLIANCE_CHECKLIST.md`   |
 
 This rule applies to every `.md` file in the project, including files in `.github/`, `.idea/`,
 `prompts/`, `docs/`, and the project root.
@@ -236,11 +236,11 @@ Every public class and function must have a KDoc comment:
 
 ```kotlin
 /**
- * Loads the grocery items and updates the UI state.
+ * Loads the shopping items and updates the UI state.
  *
  * @param forceRefresh If true, bypasses the cache and fetches fresh data.
  */
-fun loadGroceries(forceRefresh: Boolean = false)
+fun loadShoppingItems(forceRefresh: Boolean = false)
 ```
 
 ---

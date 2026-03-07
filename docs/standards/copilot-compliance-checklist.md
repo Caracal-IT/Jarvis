@@ -22,7 +22,7 @@
 - [ ] License verification process understood
 
 ### Step 3: Verify Project Structure
-- [ ] Understand: feature-based package organization (e.g., `groceries/`, `scanner/`, `baseitems/`)
+- [ ] Understand: feature-based package organization (e.g., `shopping/`, `scanner/`, `baseitems/`)
 - [ ] Understand: `res/values/` contains all strings, colors, and dimensions
 - [ ] Understand: `docs/standards/` contains all policies
 - [ ] Understand: MVVM + Repository architecture is mandatory

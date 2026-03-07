@@ -15,11 +15,11 @@
 
 **Classes and Interfaces:**
 - Use `PascalCase` for class, object, and interface names.
-- Example: `GroceriesListFragment`, `ItemRepository`, `BarcodeScanner`
+- Example: `ShoppingListFragment`, `ItemRepository`, `BarcodeScanner`
 
 **Functions and Variables:**
 - Use `camelCase` for functions, properties, and local variables.
-- Example: `fetchGroceries()`, `itemName`, `isScanning`
+- Example: `fetchShoppingItems()`, `itemName`, `isScanning`
 
 **Constants:**
 - Use `SCREAMING_SNAKE_CASE` for compile-time constants (`const val`).
@@ -28,13 +28,13 @@
 **Resources:**
 - Prefix layout files with their component type: `fragment_`, `activity_`, `item_`, `dialog_`
 - Prefix drawable files with their usage type: `ic_` (icon), `bg_` (background), `img_` (image)
-- Prefix string resource keys with the screen/feature name: `groceries_title`, `inventory_empty_message`
-- Example: `fragment_groceries_list.xml`, `ic_grocery_cart.xml`, `strings.xml`
+- Prefix string resource keys with the screen/feature name: `shopping_title`, `base_items_empty_message`
+- Example: `fragment_shopping_list.xml`, `ic_shopping_cart.xml`, `strings.xml`
 
 **Packages:**
 - Use lowercase, dot-separated package names.
-- Organise by feature, not by type.
-- Example: `com.github.caracal.jarvis.groceries`, `com.github.caracal.jarvis.scanner`
+- Organize by feature, not by type.
+- Example: `com.github.caracal.jarvis.shopping`, `com.github.caracal.jarvis.scanner`
 
 ---
 
@@ -49,9 +49,9 @@ All screens must follow the MVVM pattern:
 
 ```kotlin
 // ViewModel example
-class GroceriesViewModel(private val repository: GroceriesRepository) : ViewModel() {
-    private val _items = MutableStateFlow<List<GroceryItem>>(emptyList())
-    val items: StateFlow<List<GroceryItem>> = _items.asStateFlow()
+class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel() {
+    private val _items = MutableStateFlow<List<ShoppingItem>>(emptyList())
+    val items: StateFlow<List<ShoppingItem>> = _items.asStateFlow()
 
     fun loadItems() {
         viewModelScope.launch {
@@ -87,11 +87,11 @@ class GroceriesViewModel(private val repository: GroceriesRepository) : ViewMode
 
 ```xml
 <!-- Wrong -->
-<TextView android:text="Groceries" android:textColor="#FF0000" android:textSize="16sp" />
+<TextView android:text="Shopping" android:textColor="#FF0000" android:textSize="16sp" />
 
 <!-- Correct -->
 <TextView
-    android:text="@string/groceries_title"
+    android:text="@string/shopping_title"
     android:textColor="@color/iron_man_red"
     android:textSize="@dimen/text_size_medium" />
 ```
@@ -157,12 +157,12 @@ sealed class UiState<out T> {
 
 ```kotlin
 /**
- * Fetches the list of grocery items from the repository.
+ * Fetches the list of shopping items from the repository.
  *
  * @param forceRefresh If true, bypasses the cache and fetches fresh data.
- * @return A list of [GroceryItem] objects.
+ * @return A list of [ShoppingItem] objects.
  */
-suspend fun fetchGroceries(forceRefresh: Boolean = false): List<GroceryItem>
+suspend fun fetchShoppingItems(forceRefresh: Boolean = false): List<ShoppingItem>
 ```
 
 ---
@@ -175,11 +175,11 @@ app/
 │   └── main/
 │       ├── java/com/github/caracal/jarvis/
 │       │   ├── MainActivity.kt
-│       │   ├── groceries/
-│       │   │   ├── GroceriesListFragment.kt
-│       │   │   ├── GroceriesViewModel.kt
-│       │   │   ├── GroceriesRepository.kt
-│       │   │   └── GroceryItem.kt
+│       │   ├── shopping/
+│       │   │   ├── ShoppingListFragment.kt
+│       │   │   ├── ShoppingViewModel.kt
+│       │   │   ├── ShoppingRepository.kt
+│       │   │   └── ShoppingItem.kt
 │       │   ├── baseitems/
 │       │   │   ├── BaseItemsFragment.kt
 │       │   │   └── BaseItemsViewModel.kt
@@ -199,7 +199,7 @@ app/
 │               └── themes.xml
 ```
 
-- Organise by **feature** (e.g., `groceries/`, `scanner/`), not by type.
+- Organize by **feature** (e.g., `shopping/`, `scanner/`), not by type.
 - Keep related classes (Fragment, ViewModel, Repository, Model) together in the same feature package.
 
 ---
@@ -216,7 +216,7 @@ app/
 ```kotlin
 @Test
 fun `loadItems emits success state when repository returns data`() = runTest {
-    val fakeItems = listOf(GroceryItem(id = 1, name = "Milk"))
+    val fakeItems = listOf(ShoppingItem(id = 1, name = "Milk"))
     whenever(repository.getItems()).thenReturn(fakeItems)
 
     viewModel.loadItems()
@@ -276,4 +276,3 @@ fun `loadItems emits success state when repository returns data`() = runTest {
 - [Effective Kotlin](https://kt.academy/book/effectivekotlin)
 - [Android Developers — Best Practices](https://developer.android.com/guide/practices)
 - [Material Design 3](https://m3.material.io/)
-

@@ -110,7 +110,7 @@ The following must be adhered to at all times:
    - ViewModels communicate with repositories, never with data sources directly.
 
 8. **Code Organization**
-   - Organize code by **feature** (e.g., `groceries/`, `scanner/`, `baseitems/`).
+   - Organize code by **feature** (e.g., `shopping/`, `scanner/`, `baseitems/`).
    - Keep Fragment, ViewModel, Repository, and Model classes together in their feature package.
 
 9. **Testing**
