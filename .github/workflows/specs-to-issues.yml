@@ -6,14 +6,18 @@ on:
       - main
     paths:
       - 'docs/specs/**/*.md'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'docs/specs/**/*.md'
-  issues:
-    types: [opened, edited, labeled, unlabeled]
   workflow_dispatch:
+    inputs:
+      sync_mode:
+        description: 'Sync mode'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - create-issues-only
+          - sync-status-only
+          - regenerate-context
 
 jobs:
   sync-specs-to-issues:
