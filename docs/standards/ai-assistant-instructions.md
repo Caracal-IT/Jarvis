@@ -258,6 +258,7 @@ fun loadShoppingItems(forceRefresh: Boolean = false)
 ### When Making Changes
 - Confirm no hardcoded values are introduced.
 - Run `./gradlew lint`.
+- **Update spec checkboxes** — when implementing a feature, mark the corresponding requirement checkbox as complete (`[X]`) in the relevant `docs/specs/` file.
 - Run `./gradlew test`.
 - Ensure all public symbols have KDoc.
 - Run benchmarks or coverage reports **only if explicitly requested**.
