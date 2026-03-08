@@ -24,13 +24,16 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 ### List Visibility
 
 [ ] User must be able to view current Shopping items in a list.  
+[ ] Shopping items must be displayed ordered by category, then by item name.  
 [ ] Empty states must be clear and readable.
 
 ### Item Management
 
 [ ] User must be able to add a Shopping item.  
 [ ] User must be able to rename a Shopping item.  
-[ ] User must be able to remove a Shopping item.
+[ ] User must be able to remove a Shopping item.  
+[ ] User must be able to associate multiple barcodes with a single Shopping item.  
+[ ] User must be able to add, view, and remove barcodes from a Shopping item.
 
 ### Canonical Item Naming
 
@@ -41,14 +44,32 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 #### Baseline Item Configuration Table
 
-| Category | Baseline Item |
-|----------|---------------|
-| Dairy    | Milk          |
-| Dairy    | Cheese        |
-| Bakery   | Bread         |
-| Protein  | Eggs          |
-| Grains   | Rice          |
-| Produce  | Tomatoes      |
+| Category         | Baseline Item           |
+|------------------|-------------------------|
+| Bakery           | Bread                   |
+| Beverages        | Coffee                  |
+| Beverages        | Tea                     |
+| Dairy            | Cheese                  |
+| Dairy            | Milk                    |
+| Dairy            | Yogurt                  |
+| Household        | Body Wash               |
+| Household        | Dishwashing Liquid      |
+| Household        | Fabric Softener         |
+| Household        | Fire Lighters           |
+| Household        | Washing Machine Soap    |
+| Household        | Wood                    |
+| Pantry           | Nuts                    |
+| Pantry           | Sweeteners              |
+| Pantry           | Treats                  |
+| Produce          | Blueberries             |
+| Produce          | Fruit                   |
+| Produce          | Mixed Vegetables        |
+| Produce          | Mushrooms               |
+| Produce          | Strawberries            |
+| Produce          | Tomatoes                |
+| Protein          | Chicken                 |
+| Protein          | Eggs                    |
+| Protein          | Fish                    |
 
 ### Baseline Item Images
 
@@ -73,7 +94,10 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 Shopping feature is accepted when all are true:
 
 [ ] User can open Shopping from Home.  
+[ ] Shopping items are displayed ordered by category, then by item name.  
 [ ] User can add, rename, and remove items successfully.  
+[ ] User can associate multiple barcodes with each Shopping item.  
+[ ] User can add, view, and remove barcodes from Shopping items.  
 [ ] Shopping List persists after restart.  
 [ ] Canonical naming rules are enforced and brand-specific names are rejected.  
 [ ] Duplicate handling follows documented rules.  
