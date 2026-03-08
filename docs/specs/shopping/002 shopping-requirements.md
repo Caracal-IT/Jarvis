@@ -46,9 +46,11 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 | Category         | Baseline Item        |
 |------------------|----------------------|
-| Bakery           | Bread                |
 | Beverages        | Coffee               |
 | Beverages        | Tea                  |
+| Condiments       | Mustard              |
+| Condiments       | Olive Oil            |
+| Dairy            | Butter               |
 | Dairy            | Cheese               |
 | Dairy            | Milk                 |
 | Dairy            | Yogurt               |
@@ -67,12 +69,12 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 | Pantry           | Spices               |
 | Pantry           | Sweeteners           |
 | Pantry           | Treats               |
+| Produce          | Avocados             |
 | Produce          | Blueberries          |
-| Produce          | Fruit                |
-| Produce          | Vegetables           |
 | Produce          | Mushrooms            |
 | Produce          | Strawberries         |
 | Produce          | Tomatoes             |
+| Produce          | Vegetables           |
 | Protein          | Chicken              |
 | Protein          | Eggs                 |
 | Protein          | Fish                 |
