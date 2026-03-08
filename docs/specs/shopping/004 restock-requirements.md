@@ -20,51 +20,51 @@ This document covers how users choose items from the Replenish List before addin
 
 ### Selection Experience
 
-[ ] User must be able to select one or more items from the Replenish List to add to the Shopping List.  
-[ ] Selection behavior must be clear, predictable, and reversible before confirmation.  
-[ ] Confirming selection must add chosen items to the Shopping List.
+[X] User must be able to select one or more items from the Replenish List to add to the Shopping List.  
+[X] Selection behavior must be clear, predictable, and reversible before confirmation.  
+[X] Confirming selection must add chosen items to the Shopping List.
 
 ### Selection Presentation
 
-[ ] Baseline items must be displayed ordered by category, then by item name.  
-[ ] Baseline items must be grouped by category with category names displayed as header items.  
-[ ] Each baseline item must display its generated image with clear contrast.  
-[ ] Item images must semantically match their baseline item.
+[X] Baseline items must be displayed ordered by category, then by item name.  
+[X] Baseline items must be grouped by category with category names displayed as header items.  
+[X] Each baseline item must display its generated image with clear contrast.  
+[X] Item images must semantically match their baseline item.
 
 ### Selection Outcomes
 
-[ ] Selected items must appear in the Shopping List after successful confirmation.  
-[ ] Duplicate-handling rules must apply when selected items are added.  
-[ ] Added items must follow the same naming and validation standards as manually entered items.
+[X] Selected items must appear in the Shopping List after successful confirmation.  
+[X] Duplicate-handling rules must apply when selected items are added.  
+[X] Added items must follow the same naming and validation standards as manually entered items.
 
 ### Canonical Item Naming
 
-[ ] Selectable item names must use canonical generic names from the Baseline Item Configuration Table.  
-[ ] Baseline items are defined in `002 shopping-requirements.md` Baseline Item Configuration Table.  
-[ ] Brand-specific names must be rejected.  
-[ ] Naming guidance must clearly communicate accepted canonical names.
+[X] Selectable item names must use canonical generic names from the Baseline Item Configuration Table.  
+[X] Baseline items are defined in `002 shopping-requirements.md` Baseline Item Configuration Table.  
+[X] Brand-specific names must be rejected.  
+[X] Naming guidance must clearly communicate accepted canonical names.
 
 ### Baseline Item Images
 
-[ ] Each baseline item must have a generated image.  
-[ ] Generated images must semantically match their baseline items.  
-[ ] Generated images must have clear contrast between the item and the background.
+[X] Each baseline item must have a generated image.  
+[X] Generated images must semantically match their baseline items.  
+[X] Generated images must have clear contrast between the item and the background.
 
 ## Non-Functional Requirements
 
-[ ] Selection interactions must be stable and responsive in normal usage.  
-[ ] User-facing language must remain concise and in Standard American English.  
-[ ] Visual treatment must align with the Jarvis / Iron Man theme.
+[X] Selection interactions must be stable and responsive in normal usage.  
+[X] User-facing language must remain concise and in Standard American English.  
+[X] Visual treatment must align with the Jarvis / Iron Man theme.
 
 ## Acceptance Criteria
 
 Restock requirements are accepted when all are true:
 
-[ ] User can select and confirm items to add from the Replenish List.  
-[ ] Items are grouped by category with category headers displayed.  
-[ ] Items within each category are displayed in alphabetical order by item name.  
-[ ] Each baseline item displays its generated image with good contrast.  
-[ ] Confirmed items are added correctly to the Shopping List.  
-[ ] Canonical naming rules are enforced and brand-specific names are rejected.  
-[ ] Duplicate handling is consistent with Shopping List behavior.  
-[ ] Selection flow remains stable in common user scenarios.
+[X] User can select and confirm items to add from the Replenish List.  
+[X] Items are grouped by category with category headers displayed.  
+[X] Items within each category are displayed in alphabetical order by item name.  
+[X] Each baseline item displays its generated image with good contrast.  
+[X] Confirmed items are added correctly to the Shopping List.  
+[X] Canonical naming rules are enforced and brand-specific names are rejected.  
+[X] Duplicate handling is consistent with Shopping List behavior.  
+[X] Selection flow remains stable in common user scenarios.

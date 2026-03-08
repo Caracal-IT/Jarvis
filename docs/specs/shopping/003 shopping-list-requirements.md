@@ -20,72 +20,72 @@ This document covers list visibility, list updates, list persistence behavior, b
 
 ### List Visibility
 
-[ ] Shopping List must initially be empty when first opened.  
-[ ] User must be able to view all current Shopping items in one list.  
-[ ] Shopping items must be displayed ordered by category, then by item name.  
-[ ] Items must be grouped by category with category names displayed as header items.  
-[ ] Empty state messaging must clearly explain that no items are currently saved.  
-[ ] Populated state must remain readable and scannable.
+[X] Shopping List must initially be empty when first opened.  
+[X] User must be able to view all current Shopping items in one list.  
+[X] Shopping items must be displayed ordered by category, then by item name.  
+[X] Items must be grouped by category with category names displayed as header items.  
+[X] Empty state messaging must clearly explain that no items are currently saved.  
+[X] Populated state must remain readable and scannable.
 
 ### List Maintenance
 
-[ ] New items must appear in the list immediately after successful add.  
-[ ] Renamed items must update in the list immediately after successful edit.  
-[ ] Removed items (including baseline items) must no longer appear after successful delete.  
-[ ] Baseline items can be removed from the Shopping List but must persist in the Replenish List.  
-[ ] Duplicate-handling rules must be applied consistently.
+[X] New items must appear in the list immediately after successful add.  
+[X] Renamed items must update in the list immediately after successful edit.  
+[X] Removed items (including baseline items) must no longer appear after successful delete.  
+[X] Baseline items can be removed from the Shopping List but must persist in the Replenish List.  
+[X] Duplicate-handling rules must be applied consistently.
 
 ### Barcode Management
 
-[ ] User must be able to associate multiple barcodes with a single Shopping item.  
-[ ] User must be able to add, view, and remove barcodes from a Shopping item.  
-[ ] Barcodes must persist with their associated items.
+[X] User must be able to associate multiple barcodes with a single Shopping item.  
+[X] User must be able to add, view, and remove barcodes from a Shopping item.  
+[X] Barcodes must persist with their associated items.
 
 ### Canonical Item Naming
 
-[ ] List items must use canonical generic names.  
-[ ] Baseline items are defined in `002 shopping-requirements.md` Baseline Item Configuration Table.  
-[ ] Brand-specific names must be rejected.  
-[ ] Name validation outcomes must be clear to the user.
+[X] List items must use canonical generic names.  
+[X] Baseline items are defined in `002 shopping-requirements.md` Baseline Item Configuration Table.  
+[X] Brand-specific names must be rejected.  
+[X] Name validation outcomes must be clear to the user.
 
 ### Replenish List
 
-[ ] Replenish List must display all baseline items from the Baseline Item Configuration Table.  
-[ ] Replenish List must be displayed ordered by category, then by item name.  
-[ ] Replenish List items must be grouped by category with category names displayed as header items.  
-[ ] Replenish List must persist across app restarts and phone restarts.
+[X] Replenish List must display all baseline items from the Baseline Item Configuration Table.  
+[X] Replenish List must be displayed ordered by category, then by item name.  
+[X] Replenish List items must be grouped by category with category names displayed as header items.  
+[X] Replenish List must persist across app restarts and phone restarts.
 
 ### Persistence
 
-[ ] Shopping List content must be restored after app restart in its current state and sorted order.  
-[ ] Shopping List content must be restored after phone restart in its current state and sorted order.  
-[ ] Replenish List content must be restored after app restart in its current state and sorted order.  
-[ ] Replenish List content must be restored after phone restart in its current state and sorted order.  
-[ ] List integrity must be maintained during normal update cycles.
+[X] Shopping List content must be restored after app restart in its current state and sorted order.  
+[X] Shopping List content must be restored after phone restart in its current state and sorted order.  
+[X] Replenish List content must be restored after app restart in its current state and sorted order.  
+[X] Replenish List content must be restored after phone restart in its current state and sorted order.  
+[X] List integrity must be maintained during normal update cycles.
 
 ## Non-Functional Requirements
 
-[ ] List interactions must be responsive and stable.  
-[ ] Text and labels must be clear and concise.  
-[ ] User-facing text must be in Standard American English.  
-[ ] Presentation must align with the Jarvis / Iron Man visual standards.
+[X] List interactions must be responsive and stable.  
+[X] Text and labels must be clear and concise.  
+[X] User-facing text must be in Standard American English.  
+[X] Presentation must align with the Jarvis / Iron Man visual standards.
 
 ## Acceptance Criteria
 
 Shopping List requirements are accepted when all are true:
 
-[ ] Shopping List starts empty when first opened.  
-[ ] Items are grouped by category with category headers displayed.  
-[ ] Items within each category are displayed in alphabetical order by item name.  
-[ ] Empty and populated states are both clear.  
-[ ] Add, rename, and remove operations are reflected correctly in the list.  
-[ ] User can associate multiple barcodes with each item.  
-[ ] Replenish List displays all baseline items grouped by category with category headers.  
-[ ] Replenish List items are displayed in alphabetical order by item name within each category.  
-[ ] Baseline items can be removed from Shopping List but remain in Replenish List.  
-[ ] Shopping List persists after app restart in sorted order.  
-[ ] Shopping List persists after phone restart in sorted order.  
-[ ] Replenish List persists after app restart in sorted order.  
-[ ] Replenish List persists after phone restart in sorted order.  
-[ ] Canonical naming rules are enforced and brand-specific names are rejected.  
-[ ] Duplicate handling remains consistent across list updates.
+[X] Shopping List starts empty when first opened.  
+[X] Items are grouped by category with category headers displayed.  
+[X] Items within each category are displayed in alphabetical order by item name.  
+[X] Empty and populated states are both clear.  
+[X] Add, rename, and remove operations are reflected correctly in the list.  
+[X] User can associate multiple barcodes with each item.  
+[X] Replenish List displays all baseline items grouped by category with category headers.  
+[X] Replenish List items are displayed in alphabetical order by item name within each category.  
+[X] Baseline items can be removed from Shopping List but remain in Replenish List.  
+[X] Shopping List persists after app restart in sorted order.  
+[X] Shopping List persists after phone restart in sorted order.  
+[X] Replenish List persists after app restart in sorted order.  
+[X] Replenish List persists after phone restart in sorted order.  
+[X] Canonical naming rules are enforced and brand-specific names are rejected.  
+[X] Duplicate handling remains consistent across list updates.
