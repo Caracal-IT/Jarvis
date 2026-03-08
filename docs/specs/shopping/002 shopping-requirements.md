@@ -35,9 +35,26 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 ### Canonical Item Naming
 
 [ ] Shopping items must use canonical generic names.  
-[ ] The canonical baseline set is: `Milk`, `Cheese`, `Bread`, `Eggs`, `Rice`, and `Tomatoes`.  
+[ ] Baseline items must be managed through the configuration table below.  
 [ ] Brand-specific names must be rejected.  
 [ ] Duplicate handling must be explicit and consistent.
+
+#### Baseline Item Configuration Table
+
+| Category | Baseline Item |
+|----------|---------------|
+| Dairy    | Milk          |
+| Dairy    | Cheese        |
+| Bakery   | Bread         |
+| Protein  | Eggs          |
+| Grains   | Rice          |
+| Produce  | Tomatoes      |
+
+### Baseline Item Images
+
+[ ] A generated image must exist for each baseline item in the configuration table.  
+[ ] Each generated image must semantically match its baseline item (for example, `Cheese` must use a cheese image).  
+[ ] Each generated image must have clear contrast between the item and the image background.
 
 ### Data Continuity
 
@@ -60,4 +77,7 @@ Shopping feature is accepted when all are true:
 [ ] Shopping List persists after restart.  
 [ ] Canonical naming rules are enforced and brand-specific names are rejected.  
 [ ] Duplicate handling follows documented rules.  
+[ ] Baseline items are set through the Baseline Item Configuration Table.  
+[ ] Each enabled baseline item has a generated image that matches the item.  
+[ ] Generated baseline item images maintain clear item-to-background contrast.  
 [ ] Feature remains stable during common user flows.
