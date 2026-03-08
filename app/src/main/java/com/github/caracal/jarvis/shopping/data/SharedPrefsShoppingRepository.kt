@@ -1,6 +1,7 @@
 package com.github.caracal.jarvis.shopping.data
 
 import android.content.Context
+import androidx.core.content.edit
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -140,7 +141,7 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
             obj.put(FIELD_BARCODES, barcodes)
             array.put(obj)
         }
-        prefs.edit().putString(KEY_SHOPPING_LIST, array.toString()).apply()
+        prefs.edit { putString(KEY_SHOPPING_LIST, array.toString()) }
     }
 
     companion object {

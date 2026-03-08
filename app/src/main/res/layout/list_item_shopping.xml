@@ -39,6 +39,7 @@
         android:src="@android:drawable/ic_menu_more"
         android:contentDescription="@string/cd_item_menu"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:tint="@color/iron_man_gold" />
+        app:tint="@color/iron_man_gold"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
 
 </LinearLayout>

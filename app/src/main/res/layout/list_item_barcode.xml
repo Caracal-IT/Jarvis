@@ -23,6 +23,7 @@
         android:src="@android:drawable/ic_menu_delete"
         android:contentDescription="@string/cd_remove_barcode"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:tint="@color/iron_man_red" />
+        app:tint="@color/iron_man_red"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
 
 </LinearLayout>
