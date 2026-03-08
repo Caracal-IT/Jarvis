@@ -20,8 +20,8 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 ## User Goals
 
 [X] Understand system status immediately after launch.  
-[ ] Access key features in one tap.  
-[ ] Trust that navigation is stable and predictable.
+[X] Access key features in one tap.  
+[X] Trust that navigation is stable and predictable.
 
 ## Functional Requirements
 
@@ -37,9 +37,10 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 ### Navigation
 
-[ ] Each primary action must open its corresponding feature page.  
-[ ] Navigation must complete in one user tap from the Home Page.  
-[ ] Returning from a feature page must bring the user back to the Home Page.
+[ ] Ignore navigation gestures outside the Home Page and Shopping Page.  
+[X] Each primary action must open its corresponding feature page.  
+[X] Navigation must complete in one user tap from the Home Page.  
+[X] Returning from a feature page must bring the user back to the Home Page.
 
 ### Feedback And State
 
@@ -73,6 +74,6 @@ The Home Page is complete when all are true:
 
 [X] The app opens to the Home Page by default.  
 [X] All four primary actions are visible with valid labels and icons.  
-[ ] Each action navigates to the correct destination.  
-[ ] Back navigation returns to Home without failure.  
+[X] Each action navigates to the correct destination.  
+[X] Back navigation returns to Home without failure.  
 [ ] The screen remains readable, stable, and responsive in normal use.

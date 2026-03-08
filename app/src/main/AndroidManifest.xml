@@ -22,6 +22,9 @@
         <activity
             android:name=".ShoppingActivity"
             android:exported="false" />
+        <activity
+            android:name=".FeaturePlaceholderActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
