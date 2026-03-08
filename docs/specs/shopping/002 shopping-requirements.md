@@ -44,32 +44,38 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 #### Baseline Item Configuration Table
 
-| Category         | Baseline Item           |
-|------------------|-------------------------|
-| Bakery           | Bread                   |
-| Beverages        | Coffee                  |
-| Beverages        | Tea                     |
-| Dairy            | Cheese                  |
-| Dairy            | Milk                    |
-| Dairy            | Yogurt                  |
-| Household        | Body Wash               |
-| Household        | Dishwashing Liquid      |
-| Household        | Fabric Softener         |
-| Household        | Fire Lighters           |
-| Household        | Washing Machine Soap    |
-| Household        | Wood                    |
-| Pantry           | Nuts                    |
-| Pantry           | Sweeteners              |
-| Pantry           | Treats                  |
-| Produce          | Blueberries             |
-| Produce          | Fruit                   |
-| Produce          | Mixed Vegetables        |
-| Produce          | Mushrooms               |
-| Produce          | Strawberries            |
-| Produce          | Tomatoes                |
-| Protein          | Chicken                 |
-| Protein          | Eggs                    |
-| Protein          | Fish                    |
+| Category         | Baseline Item        |
+|------------------|----------------------|
+| Bakery           | Bread                |
+| Beverages        | Coffee               |
+| Beverages        | Tea                  |
+| Dairy            | Cheese               |
+| Dairy            | Milk                 |
+| Dairy            | Yogurt               |
+| Household        | Body Wash            |
+| Household        | Cloths               |
+| Household        | Dishwashing Liquid   |
+| Household        | Fabric Softener      |
+| Household        | Fire Lighters        |
+| Household        | Mouthwash            |
+| Household        | Soap Bar             |
+| Household        | Sponges              |
+| Household        | Toothpaste           |
+| Household        | Washing Machine Soap |
+| Household        | Wood                 |
+| Pantry           | Nuts                 |
+| Pantry           | Spices               |
+| Pantry           | Sweeteners           |
+| Pantry           | Treats               |
+| Produce          | Blueberries          |
+| Produce          | Fruit                |
+| Produce          | Vegetables           |
+| Produce          | Mushrooms            |
+| Produce          | Strawberries         |
+| Produce          | Tomatoes             |
+| Protein          | Chicken              |
+| Protein          | Eggs                 |
+| Protein          | Fish                 |
 
 ### Baseline Item Images
 
