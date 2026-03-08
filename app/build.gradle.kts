@@ -27,8 +27,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Use debug signing for testing/CI builds
+            // TODO: Configure a proper release signing config before production distribution.
+        }
+
+        create("ci") {
+            initWith(getByName("release"))
+            // Use debug signing for testing/CI builds only
             signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
         }
     }
     buildFeatures {
