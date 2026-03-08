@@ -23,6 +23,7 @@ This document covers list visibility, list updates, list persistence behavior, b
 [ ] Shopping List must initially be empty when first opened.  
 [ ] User must be able to view all current Shopping items in one list.  
 [ ] Shopping items must be displayed ordered by category, then by item name.  
+[ ] Items must be grouped by category with category names displayed as header items.  
 [ ] Empty state messaging must clearly explain that no items are currently saved.  
 [ ] Populated state must remain readable and scannable.
 
@@ -51,6 +52,7 @@ This document covers list visibility, list updates, list persistence behavior, b
 
 [ ] Replenish List must display all baseline items from the Baseline Item Configuration Table.  
 [ ] Replenish List must be displayed ordered by category, then by item name.  
+[ ] Replenish List items must be grouped by category with category names displayed as header items.  
 [ ] Replenish List must persist across app restarts and phone restarts.
 
 ### Persistence
@@ -73,11 +75,13 @@ This document covers list visibility, list updates, list persistence behavior, b
 Shopping List requirements are accepted when all are true:
 
 [ ] Shopping List starts empty when first opened.  
-[ ] Items are displayed ordered by category, then by item name.  
+[ ] Items are grouped by category with category headers displayed.  
+[ ] Items within each category are displayed in alphabetical order by item name.  
 [ ] Empty and populated states are both clear.  
 [ ] Add, rename, and remove operations are reflected correctly in the list.  
 [ ] User can associate multiple barcodes with each item.  
-[ ] Replenish List displays all baseline items ordered by category, then by item name.  
+[ ] Replenish List displays all baseline items grouped by category with category headers.  
+[ ] Replenish List items are displayed in alphabetical order by item name within each category.  
 [ ] Baseline items can be removed from Shopping List but remain in Replenish List.  
 [ ] Shopping List persists after app restart in sorted order.  
 [ ] Shopping List persists after phone restart in sorted order.  

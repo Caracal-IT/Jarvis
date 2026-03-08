@@ -27,6 +27,7 @@ This document covers how users choose items from the Replenish List before addin
 ### Selection Presentation
 
 [ ] Baseline items must be displayed ordered by category, then by item name.  
+[ ] Baseline items must be grouped by category with category names displayed as header items.  
 [ ] Each baseline item must display its generated image with clear contrast.  
 [ ] Item images must semantically match their baseline item.
 
@@ -60,7 +61,8 @@ This document covers how users choose items from the Replenish List before addin
 Restock requirements are accepted when all are true:
 
 [ ] User can select and confirm items to add from the Replenish List.  
-[ ] Items are displayed ordered by category, then by item name.  
+[ ] Items are grouped by category with category headers displayed.  
+[ ] Items within each category are displayed in alphabetical order by item name.  
 [ ] Each baseline item displays its generated image with good contrast.  
 [ ] Confirmed items are added correctly to the Shopping List.  
 [ ] Canonical naming rules are enforced and brand-specific names are rejected.  
