@@ -20,8 +20,8 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 ## User Goals
 
 [X] Understand system status immediately after launch.  
-[X] Access key features in one tap.  
-[X] Trust that navigation is stable and predictable.
+[ ] Access key features in one tap.  
+[ ] Trust that navigation is stable and predictable.
 
 ## Functional Requirements
 
@@ -37,29 +37,29 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 ### Navigation
 
-[X] Each primary action must open its corresponding feature page.  
-[X] Navigation must complete in one user tap from the Home Page.  
-[X] Returning from a feature page must bring the user back to the Home Page.
+[ ] Each primary action must open its corresponding feature page.  
+[ ] Navigation must complete in one user tap from the Home Page.  
+[ ] Returning from a feature page must bring the user back to the Home Page.
 
 ### Feedback And State
 
 [X] The Home Page must visually indicate it is ready for interaction.  
-[X] If a feature is temporarily unavailable, the Home Page must communicate this clearly.  
-[X] Home Page content must remain usable after orientation changes and app resume.
+[ ] If a feature is temporarily unavailable, the Home Page must communicate this clearly.  
+[ ] Home Page content must remain usable after orientation changes and app resume.
 
 ## Non-Functional Requirements
 
 ### Usability
 
-[X] Text and icon contrast must remain readable on all supported themes.  
+[ ] Text and icon contrast must remain readable on all supported themes.  
 [X] Action labels must be concise, clear, and unambiguous.  
 [X] Tap targets must be large enough for comfortable touch interaction.
 
 ### Reliability
 
-[X] App launch to Home Page must be stable.  
-[X] Home Page interactions must not crash or freeze the app.  
-[X] Navigation from Home Page must be consistently reliable.
+[ ] App launch to Home Page must be stable.  
+[ ] Home Page interactions must not crash or freeze the app.  
+[ ] Navigation from Home Page must be consistently reliable.
 
 ### Consistency
 
@@ -71,8 +71,8 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 The Home Page is complete when all are true:
 
-[ ] The app opens to the Home Page by default.  
-[ ] All four primary actions are visible with valid labels and icons.  
+[X] The app opens to the Home Page by default.  
+[X] All four primary actions are visible with valid labels and icons.  
 [ ] Each action navigates to the correct destination.  
 [ ] Back navigation returns to Home without failure.  
 [ ] The screen remains readable, stable, and responsive in normal use.
