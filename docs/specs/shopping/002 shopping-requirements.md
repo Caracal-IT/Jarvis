@@ -31,6 +31,7 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 [ ] Shopping List must initially be empty.  
 [ ] User must be able to add a Shopping item.  
+[ ] When adding a Shopping item, user must select a category from the available categories (both with baseline items and empty categories).  
 [ ] User must be able to rename a Shopping item.  
 [ ] User must be able to remove any item (including baseline items) from the shopping list.  
 [ ] Baseline items can be removed from the shopping list but must persist in the Replenish List.  
@@ -41,46 +42,58 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 ### Canonical Item Naming
 
 [ ] Shopping items must use canonical generic names.  
-[ ] Baseline items must be managed through the configuration table below.  
+[ ] Baseline items must be managed through the Baseline Item Configuration Table below.  
+[ ] Empty categories (for custom items only) must be managed through the Empty Category Configuration Table below.  
 [ ] Brand-specific names must be rejected.  
-[ ] Duplicate handling must be explicit and consistent.
+[ ] Duplicate handling must be explicit and consistent.  
+[ ] Each category group must have a unique GUID identifier generated in source code.  
+[ ] Each baseline item must have a unique GUID identifier generated in source code.
 
 #### Baseline Item Configuration Table
 
 | Category         | Baseline Item        |
 |------------------|----------------------|
+| Bakery           | Low-Carb Bread       |
+| Barbecue         | Charcoal             |
+| Barbecue         | Fire Lighters        |
+| Barbecue         | Wood                 |
 | Beverages        | Coffee               |
 | Beverages        | Tea                  |
+| Cleaning         | Cloths               |
+| Cleaning         | Dishwashing Liquid   |
+| Cleaning         | Fabric Softener      |
+| Cleaning         | Sponges              |
+| Cleaning         | Washing Machine Soap |
 | Condiments       | Mustard              |
-| Condiments       | Olive Oil            |
 | Dairy            | Butter               |
 | Dairy            | Cheese               |
 | Dairy            | Milk                 |
 | Dairy            | Yogurt               |
-| Household        | Body Wash            |
-| Household        | Cloths               |
-| Household        | Dishwashing Liquid   |
-| Household        | Fabric Softener      |
-| Household        | Fire Lighters        |
-| Household        | Mouthwash            |
-| Household        | Soap Bar             |
-| Household        | Sponges              |
-| Household        | Toothpaste           |
-| Household        | Washing Machine Soap |
-| Household        | Wood                 |
+| Frozen Foods     | Frozen Berries       |
+| Frozen Foods     | Frozen Vegetables    |
+| Meat             | Beef                 |
+| Meat             | Chicken              |
+| Meat             | Pork                 |
+| Oils             | Coconut Oil          |
+| Oils             | Olive Oil            |
 | Pantry           | Nuts                 |
-| Pantry           | Spices               |
 | Pantry           | Sweeteners           |
 | Pantry           | Treats               |
+| Personal Care    | Body Wash            |
+| Personal Care    | Mouthwash            |
+| Personal Care    | Soap Bar             |
+| Personal Care    | Toothpaste           |
 | Produce          | Avocados             |
 | Produce          | Blueberries          |
 | Produce          | Mushrooms            |
 | Produce          | Strawberries         |
 | Produce          | Tomatoes             |
 | Produce          | Vegetables           |
-| Protein          | Chicken              |
-| Protein          | Eggs                 |
-| Protein          | Fish                 |
+| Seafood          | Fish                 |
+| Seafood          | Shrimp               |
+| Seasonings       | Spices               |
+| Supplements      | Berocca Boost        |
+
 
 ### Baseline Item Images
 
@@ -108,6 +121,7 @@ Shopping feature is accepted when all are true:
 
 [ ] User can open Shopping from Home.  
 [ ] Shopping List starts empty when first opened.  
+[ ] User can add items by selecting a category and entering an item name.  
 [ ] Shopping items are displayed ordered by category, then by item name.  
 [ ] Replenish List is displayed ordered by category, then by item name.  
 [ ] User can add custom items to the shopping list.  
@@ -123,6 +137,8 @@ Shopping feature is accepted when all are true:
 [ ] Canonical naming rules are enforced and brand-specific names are rejected.  
 [ ] Duplicate handling follows documented rules.  
 [ ] Baseline items are set through the Baseline Item Configuration Table.  
+[ ] Each category group has a unique GUID identifier.  
+[ ] Each baseline item has a unique GUID identifier.  
 [ ] Each baseline item has a generated image that matches the item.  
 [ ] Generated baseline item images maintain clear item-to-background contrast.  
 [ ] Feature remains stable during common user flows.
