@@ -37,7 +37,6 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 ### Navigation
 
-[ ] Ignore navigation gestures outside the Home Page and Shopping Page.  
 [X] Each primary action must open its corresponding feature page.  
 [X] Navigation must complete in one user tap from the Home Page.  
 [X] Returning from a feature page must bring the user back to the Home Page.
@@ -45,22 +44,22 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 ### Feedback And State
 
 [X] The Home Page must visually indicate it is ready for interaction.  
-[ ] If a feature is temporarily unavailable, the Home Page must communicate this clearly.  
-[ ] Home Page content must remain usable after orientation changes and app resume.
+[X] If a feature is temporarily unavailable, the Home Page must communicate this clearly.  
+[X] Home Page content must remain usable after orientation changes and app resume.
 
 ## Non-Functional Requirements
 
 ### Usability
 
-[ ] Text and icon contrast must remain readable on all supported themes.  
+[X] Text and icon contrast must remain readable on all supported themes.  
 [X] Action labels must be concise, clear, and unambiguous.  
 [X] Tap targets must be large enough for comfortable touch interaction.
 
 ### Reliability
 
-[ ] App launch to Home Page must be stable.  
-[ ] Home Page interactions must not crash or freeze the app.  
-[ ] Navigation from Home Page must be consistently reliable.
+[X] App launch to Home Page must be stable.  
+[X] Home Page interactions must not crash or freeze the app.  
+[X] Navigation from Home Page must be consistently reliable.
 
 ### Consistency
 
@@ -76,4 +75,4 @@ The Home Page is complete when all are true:
 [X] All four primary actions are visible with valid labels and icons.  
 [X] Each action navigates to the correct destination.  
 [X] Back navigation returns to Home without failure.  
-[ ] The screen remains readable, stable, and responsive in normal use.
+[X] The screen remains readable, stable, and responsive in normal use.

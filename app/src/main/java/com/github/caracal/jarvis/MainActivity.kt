@@ -33,19 +33,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnSystem).setOnClickListener {
-            openFeaturePlaceholder(getString(R.string.title_system))
+            openPlaceholderFeature(getString(R.string.title_system))
         }
 
         findViewById<Button>(R.id.btnNetwork).setOnClickListener {
-            openFeaturePlaceholder(getString(R.string.title_comms))
+            openPlaceholderFeature(getString(R.string.title_comms))
         }
 
         findViewById<Button>(R.id.btnPower).setOnClickListener {
-            openFeaturePlaceholder(getString(R.string.title_power))
+            openPlaceholderFeature(getString(R.string.title_power))
         }
     }
 
-    private fun openFeaturePlaceholder(title: String) {
+    private fun openPlaceholderFeature(title: String) {
         val intent = Intent(this, FeaturePlaceholderActivity::class.java)
         intent.putExtra(FeaturePlaceholderActivity.EXTRA_TITLE, title)
         startActivity(intent)

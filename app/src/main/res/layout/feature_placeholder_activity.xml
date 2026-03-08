@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_medium"
         android:fontFamily="monospace"
-        android:text="@string/placeholder_coming_soon"
+        android:text="@string/feature_temporarily_unavailable_message"
         android:textColor="@color/iron_man_cyan"
         android:textSize="@dimen/text_size_body"
         app:layout_constraintBottom_toBottomOf="parent"
