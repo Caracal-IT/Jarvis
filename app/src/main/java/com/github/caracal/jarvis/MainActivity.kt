@@ -31,5 +31,23 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnShopping).setOnClickListener {
             startActivity(Intent(this, ShoppingActivity::class.java))
         }
+
+        findViewById<Button>(R.id.btnSystem).setOnClickListener {
+            openPlaceholderFeature(getString(R.string.title_system))
+        }
+
+        findViewById<Button>(R.id.btnNetwork).setOnClickListener {
+            openPlaceholderFeature(getString(R.string.title_comms))
+        }
+
+        findViewById<Button>(R.id.btnPower).setOnClickListener {
+            openPlaceholderFeature(getString(R.string.title_power))
+        }
+    }
+
+    private fun openPlaceholderFeature(title: String) {
+        val intent = Intent(this, FeaturePlaceholderActivity::class.java)
+        intent.putExtra(FeaturePlaceholderActivity.EXTRA_TITLE, title)
+        startActivity(intent)
     }
 }

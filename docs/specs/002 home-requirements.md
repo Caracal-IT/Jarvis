@@ -71,8 +71,8 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 The Home Page is complete when all are true:
 
-[ ] The app opens to the Home Page by default.  
-[ ] All four primary actions are visible with valid labels and icons.  
-[ ] Each action navigates to the correct destination.  
-[ ] Back navigation returns to Home without failure.  
-[ ] The screen remains readable, stable, and responsive in normal use.
+[X] The app opens to the Home Page by default.  
+[X] All four primary actions are visible with valid labels and icons.  
+[X] Each action navigates to the correct destination.  
+[X] Back navigation returns to Home without failure.  
+[X] The screen remains readable, stable, and responsive in normal use.
