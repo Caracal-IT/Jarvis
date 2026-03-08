@@ -7,6 +7,7 @@ the documentation index up to date automatically.
 
 import re
 import sys
+import urllib.parse
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -191,8 +192,9 @@ def generate_summary(spec_files: List[Tuple[str, Path]]) -> str:
             description = get_spec_description(file_path)
             status_label, status_emoji = get_spec_status(file_path)
             percent = get_spec_percent_done(file_path)
-            # Build a relative link from the docs/ directory
-            rel_link = "./" + str(file_path.relative_to("docs"))
+            # Build a relative link from the docs/ directory, encoding spaces
+            # so the link renders correctly inside markdown table cells.
+            rel_link = "./" + urllib.parse.quote(str(file_path.relative_to("docs")), safe="/")
             feature_cell = f"[{title}]({rel_link})"
             if description:
                 feature_cell += f"<br><small>{description}</small>"
