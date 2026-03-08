@@ -29,9 +29,12 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 ### Item Management
 
+[ ] Shopping List must initially be empty.  
 [ ] User must be able to add a Shopping item.  
 [ ] User must be able to rename a Shopping item.  
-[ ] User must be able to remove a Shopping item.  
+[ ] User must be able to remove any item (including baseline items) from the shopping list.  
+[ ] Baseline items can be removed from the shopping list but must persist in the Replenish List.  
+[ ] Non-baseline items can be added and removed by the user.  
 [ ] User must be able to associate multiple barcodes with a single Shopping item.  
 [ ] User must be able to add, view, and remove barcodes from a Shopping item.
 
@@ -102,14 +105,18 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 Shopping feature is accepted when all are true:
 
 [ ] User can open Shopping from Home.  
+[ ] Shopping List starts empty when first opened.  
 [ ] Shopping items are displayed ordered by category, then by item name.  
-[ ] User can add, rename, and remove items successfully.  
+[ ] User can add custom items to the shopping list.  
+[ ] User can remove any item (including baseline items) from the shopping list.  
+[ ] Baseline items can be removed from the Shopping List but remain available in the Replenish List.  
+[ ] User can rename items successfully.  
 [ ] User can associate multiple barcodes with each Shopping item.  
 [ ] User can add, view, and remove barcodes from Shopping items.  
 [ ] Shopping List persists after restart.  
 [ ] Canonical naming rules are enforced and brand-specific names are rejected.  
 [ ] Duplicate handling follows documented rules.  
 [ ] Baseline items are set through the Baseline Item Configuration Table.  
-[ ] Each enabled baseline item has a generated image that matches the item.  
+[ ] Each baseline item has a generated image that matches the item.  
 [ ] Generated baseline item images maintain clear item-to-background contrast.  
 [ ] Feature remains stable during common user flows.
