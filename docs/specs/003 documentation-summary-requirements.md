@@ -18,71 +18,72 @@ The documentation summary must provide users, contributors, and AI assistants wi
 
 ## User Goals
 
-[ ] Understand what specifications exist in the project at a glance.  
-[ ] Navigate quickly to the specific spec they need.  
-[ ] See the current implementation status of each feature.  
-[ ] Access this information without leaving the repository.
+[X] Understand what specifications exist in the project at a glance.  
+[X] Navigate quickly to the specific spec they need.  
+[X] See the current implementation status of each feature.  
+[X] Access this information without leaving the repository.
 
 ## Functional Requirements
 
 ### Documentation Summary Generation
 
-[ ] The system must automatically generate a `docs/readme.md` file.  
-[ ] The summary must list all specification files from `docs/specs/`.  
-[ ] The summary must include the title of each spec file.  
-[ ] The summary must include the file path as a clickable link.  
-[ ] The summary must show the current status (backlog, in-progress, completed) for each spec.  
-[ ] The summary must be organized by feature category.  
-[ ] The summary must include a table of contents at the top.  
-[ ] The summary must display the last updated timestamp.
+[X] The system must automatically generate a `docs/readme.md` file.  
+[X] The summary must list all specification files from `docs/specs/`.  
+[X] The summary must include the title of each spec file.  
+[X] The summary must include the file path as a clickable link.  
+[X] The summary must show the current status (backlog, in-progress, completed) for each spec.  
+[X] The summary must be organized by feature category.  
+[X] The summary must include a table of contents at the top.  
+[X] The summary must display the last updated timestamp.  
+[X] The summary must present features in a table with Feature, % Done, and Status columns.
 
 ### Automation
 
-[ ] The `docs/readme.md` must regenerate automatically when spec files change.  
-[ ] The generation must occur during the specs-to-issues workflow.  
-[ ] The generation must complete within 30 seconds.  
-[ ] The generation must not fail if a spec file is malformed.
+[X] The `docs/readme.md` must regenerate automatically when spec files change.  
+[X] The generation must occur during the specs-to-issues workflow.  
+[X] The generation must complete within 30 seconds.  
+[X] The generation must not fail if a spec file is malformed.
 
 ### Content Quality
 
-[ ] The summary must use proper Standard American English.  
-[ ] The summary must follow the project's markdown naming conventions.  
-[ ] The summary must be formatted for readability.  
-[ ] The summary must include helpful navigation links.
+[X] The summary must use proper Standard American English.  
+[X] The summary must follow the project's markdown naming conventions.  
+[X] The summary must be formatted for readability.  
+[X] The summary must include helpful navigation links.
 
 ## Non-Functional Requirements
 
 ### Maintainability
 
-[ ] The summary generation logic must be in a dedicated Python script.  
-[ ] The script must be located in `.github/scripts/`.  
-[ ] The script must follow the existing project coding standards.  
-[ ] The script must include clear documentation and comments.
+[X] The summary generation logic must be in a dedicated Python script.  
+[X] The script must be located in `.github/scripts/`.  
+[X] The script must follow the existing project coding standards.  
+[X] The script must include clear documentation and comments.
 
 ### Reliability
 
-[ ] The script must handle missing or empty spec directories gracefully.  
-[ ] The script must validate file paths before accessing files.  
-[ ] The script must report errors clearly in workflow logs.  
-[ ] The script must not break the workflow if it fails.
+[X] The script must handle missing or empty spec directories gracefully.  
+[X] The script must validate file paths before accessing files.  
+[X] The script must report errors clearly in workflow logs.  
+[X] The script must not break the workflow if it fails.
 
 ### Performance
 
-[ ] The summary generation must not significantly increase workflow time.  
-[ ] The script must process all specs in under 10 seconds.
+[X] The summary generation must not significantly increase workflow time.  
+[X] The script must process all specs in under 10 seconds.
 
 ## Acceptance Criteria
 
 The Documentation Summary feature is complete when all are true:
 
-[ ] A `docs/readme.md` file exists in the repository.  
-[ ] The file lists all specification documents from `docs/specs/`.  
-[ ] The file shows the current status of each spec.  
-[ ] The file is automatically regenerated when specs change.  
-[ ] The file includes the installation guide reference.  
-[ ] The file follows project markdown standards (lowercase, kebab-case links).  
-[ ] The workflow includes the summary generation step.  
-[ ] The summary generation completes successfully in CI.
+[X] A `docs/readme.md` file exists in the repository.  
+[X] The file lists all specification documents from `docs/specs/`.  
+[X] The file shows the current status of each spec.  
+[X] The file is automatically regenerated when specs change.  
+[X] The file includes the installation guide reference.  
+[X] The file follows project markdown standards (lowercase, kebab-case links).  
+[X] The workflow includes the summary generation step.  
+[X] The summary generation completes successfully in CI.
 
 ## Example Output
 
@@ -97,18 +98,22 @@ Last updated: March 7, 2026
 
 ### Core Features
 
-- [Home Page Requirements](./specs/002 home-requirements.md) — Status: Completed ✅
-- [Documentation Summary](./specs/003 documentation-summary-requirements.md) — Status: In Progress 🟡
+| Feature | % Done | Status |
+|---------|--------|--------|
+| [Home Page Requirements](./specs/002 home-requirements.md)<br><small>This document defines the end-state requirements for the Jarvis Home Page.</small> | 81% | In Progress 🟡 |
+| [Documentation Summary Feature](./specs/003 documentation-summary-requirements.md)<br><small>This document defines the requirements for an automated documentation summary feature.</small> | 100% | Completed ✅ |
 
 ### Shopping Feature
 
-- [Shopping Requirements](./specs/shopping/002 shopping-requirements.md) — Status: In Progress 🟡
-- [Shopping List Requirements](./specs/shopping/003 shopping-list-requirements.md) — Status: Backlog 🔴
-- [Restock Requirements](./specs/shopping/004 restock-requirements.md) — Status: Backlog 🔴
+| Feature | % Done | Status |
+|---------|--------|--------|
+| [Shopping Requirements](./specs/shopping/002 shopping-requirements.md)<br><small>Deliver Shopping as a user-ready feature.</small> | 0% | Backlog 🔴 |
+| [Shopping List Requirements](./specs/shopping/003 shopping-list-requirements.md)<br><small>Define requirements for presenting the Shopping List.</small> | 0% | Backlog 🔴 |
+| [Restock Requirements](./specs/shopping/004 restock-requirements.md)<br><small>Define requirements for selecting items to add to the Shopping List.</small> | 0% | Backlog 🔴 |
 
 ## Installation
 
-See: [How to Install Jarvis APK](./.github/how-to-install-apk.md)
+See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
 
 ## Standards
 
