@@ -90,8 +90,10 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 ### Data Continuity
 
-[ ] Shopping List state must persist across app restarts.  
-[ ] Existing items must remain intact after normal update cycles.
+[ ] Shopping List must persist across app restarts and phone restarts in its current state (sorted by category, then item name).  
+[ ] Replenish List must persist across app restarts and phone restarts in its current state (sorted by category, then item name).  
+[ ] Existing items must remain intact after normal update cycles.  
+[ ] Item order (category and name sorting) must be maintained after any restart.
 
 ## Non-Functional Requirements
 
@@ -107,13 +109,17 @@ Shopping feature is accepted when all are true:
 [ ] User can open Shopping from Home.  
 [ ] Shopping List starts empty when first opened.  
 [ ] Shopping items are displayed ordered by category, then by item name.  
+[ ] Replenish List is displayed ordered by category, then by item name.  
 [ ] User can add custom items to the shopping list.  
 [ ] User can remove any item (including baseline items) from the shopping list.  
 [ ] Baseline items can be removed from the Shopping List but remain available in the Replenish List.  
 [ ] User can rename items successfully.  
 [ ] User can associate multiple barcodes with each Shopping item.  
 [ ] User can add, view, and remove barcodes from Shopping items.  
-[ ] Shopping List persists after restart.  
+[ ] Shopping List persists after app restart in its current state and sorted order.  
+[ ] Shopping List persists after phone restart in its current state and sorted order.  
+[ ] Replenish List persists after app restart in its current state and sorted order.  
+[ ] Replenish List persists after phone restart in its current state and sorted order.  
 [ ] Canonical naming rules are enforced and brand-specific names are rejected.  
 [ ] Duplicate handling follows documented rules.  
 [ ] Baseline items are set through the Baseline Item Configuration Table.  
