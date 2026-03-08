@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_medium">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBarcodes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/barcode_list_height" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etBarcode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_barcode"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/btnAddBarcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:text="@string/action_add"
+            android:textColor="@color/iron_man_dark_tech"
+            android:backgroundTint="@color/iron_man_gold" />
+
+    </LinearLayout>
+
+</LinearLayout>

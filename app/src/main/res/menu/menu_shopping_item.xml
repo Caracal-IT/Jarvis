@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_rename"
+        android:title="@string/action_rename" />
+    <item
+        android:id="@+id/action_barcodes"
+        android:title="@string/action_manage_barcodes" />
+    <item
+        android:id="@+id/action_remove"
+        android:title="@string/action_remove" />
+</menu>
