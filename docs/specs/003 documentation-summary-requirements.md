@@ -34,7 +34,8 @@ The documentation summary must provide users, contributors, and AI assistants wi
 [X] The summary must show the current status (backlog, in-progress, completed) for each spec.  
 [X] The summary must be organized by feature category.  
 [X] The summary must include a table of contents at the top.  
-[X] The summary must display the last updated timestamp.
+[X] The summary must display the last updated timestamp.  
+[X] The summary must present features in a table with Feature, % Done, and Status columns.
 
 ### Automation
 
@@ -97,18 +98,22 @@ Last updated: March 7, 2026
 
 ### Core Features
 
-- [Home Page Requirements](./specs/002 home-requirements.md) — Status: Completed ✅
-- [Documentation Summary](./specs/003 documentation-summary-requirements.md) — Status: In Progress 🟡
+| Feature | % Done | Status |
+|---------|--------|--------|
+| [Home Page Requirements](./specs/002 home-requirements.md)<br><small>This document defines the end-state requirements for the Jarvis Home Page.</small> | 81% | In Progress 🟡 |
+| [Documentation Summary Feature](./specs/003 documentation-summary-requirements.md)<br><small>This document defines the requirements for an automated documentation summary feature.</small> | 100% | Completed ✅ |
 
 ### Shopping Feature
 
-- [Shopping Requirements](./specs/shopping/002 shopping-requirements.md) — Status: In Progress 🟡
-- [Shopping List Requirements](./specs/shopping/003 shopping-list-requirements.md) — Status: Backlog 🔴
-- [Restock Requirements](./specs/shopping/004 restock-requirements.md) — Status: Backlog 🔴
+| Feature | % Done | Status |
+|---------|--------|--------|
+| [Shopping Requirements](./specs/shopping/002 shopping-requirements.md)<br><small>Deliver Shopping as a user-ready feature.</small> | 0% | Backlog 🔴 |
+| [Shopping List Requirements](./specs/shopping/003 shopping-list-requirements.md)<br><small>Define requirements for presenting the Shopping List.</small> | 0% | Backlog 🔴 |
+| [Restock Requirements](./specs/shopping/004 restock-requirements.md)<br><small>Define requirements for selecting items to add to the Shopping List.</small> | 0% | Backlog 🔴 |
 
 ## Installation
 
-See: [How to Install Jarvis APK](./.github/how-to-install-apk.md)
+See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
 
 ## Standards
 

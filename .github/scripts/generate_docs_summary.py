@@ -50,6 +50,26 @@ def get_spec_files() -> List[Tuple[str, Path]]:
     return spec_files
 
 
+def _read_spec_checkboxes(file_path: Path) -> List[str]:
+    """
+    Read a spec file and return all checkbox values, excluding the
+    "Checkbox Status Legend" section (which contains example-only checkboxes).
+    Returns an empty list on read error.
+    """
+    try:
+        content = file_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        print(f"⚠️  Could not read {file_path}: {exc}", file=sys.stderr)
+        return []
+
+    excluded_sections = re.compile(
+        r"## Checkbox Status Legend.*?(?=\n## |\Z)",
+        re.DOTALL,
+    )
+    content = excluded_sections.sub("", content)
+    return re.findall(r"\[(.)\]", content)
+
+
 def get_spec_status(file_path: Path) -> Tuple[str, str]:
     """
     Determine the status of a spec file by inspecting its checkboxes.
@@ -64,27 +84,12 @@ def get_spec_status(file_path: Path) -> Tuple[str, str]:
 
     Returns (status_label, status_emoji).
     """
-    try:
-        content = file_path.read_text(encoding="utf-8")
-    except (OSError, UnicodeDecodeError) as exc:
-        print(f"⚠️  Could not read {file_path}: {exc}", file=sys.stderr)
-        return ("Backlog", "🔴")
-
-    # Strip only the "Checkbox Status Legend" section — it contains example
-    # checkboxes that must not influence the status calculation.
-    excluded_sections = re.compile(
-        r"## Checkbox Status Legend.*?(?=\n## |\Z)",
-        re.DOTALL,
-    )
-    content = excluded_sections.sub("", content)
-
-    matches = re.findall(r"\[(.)\]", content)
+    matches = _read_spec_checkboxes(file_path)
     if not matches:
         return ("Backlog", "🔴")
 
     not_started = sum(1 for m in matches if m == " ")
-    in_progress = sum(1 for m in matches if m == "-")
-    completed = sum(1 for m in matches if m != " " and m != "-")
+    completed = sum(1 for m in matches if m.upper() == "X")
     total = len(matches)
 
     if not_started == total:
@@ -92,6 +97,18 @@ def get_spec_status(file_path: Path) -> Tuple[str, str]:
     if completed == total:
         return ("Completed", "✅")
     return ("In Progress", "🟡")
+
+
+def get_spec_percent_done(file_path: Path) -> int:
+    """
+    Return the percentage of checkboxes marked [X] in a spec file (0–100).
+    Excludes the "Checkbox Status Legend" section.
+    """
+    matches = _read_spec_checkboxes(file_path)
+    if not matches:
+        return 0
+    completed = sum(1 for m in matches if m.upper() == "X")
+    return round(completed / len(matches) * 100)
 
 
 def get_spec_title(file_path: Path) -> str:
@@ -163,18 +180,25 @@ def generate_summary(spec_files: List[Tuple[str, Path]]) -> str:
     spec_sections: List[str] = []
     for category, files in categories.items():
         display = category_display_name(category)
-        lines: List[str] = [f"### {display}", ""]
+        lines: List[str] = [
+            f"### {display}",
+            "",
+            "| Feature | % Done | Status |",
+            "|---------|--------|--------|",
+        ]
         for file_path in files:
             title = get_spec_title(file_path)
             description = get_spec_description(file_path)
             status_label, status_emoji = get_spec_status(file_path)
+            percent = get_spec_percent_done(file_path)
             # Build a relative link from the docs/ directory
             rel_link = "./" + str(file_path.relative_to("docs"))
-            lines.append(
-                f"- [{title}]({rel_link}) — Status: {status_label} {status_emoji}"
-            )
+            feature_cell = f"[{title}]({rel_link})"
             if description:
-                lines.append(f"  {description}")
+                feature_cell += f"<br><small>{description}</small>"
+            lines.append(
+                f"| {feature_cell} | {percent}% | {status_label} {status_emoji} |"
+            )
         spec_sections.append("\n".join(lines))
 
     toc_block = "\n".join(toc_lines)
