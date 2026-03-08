@@ -25,6 +25,7 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 [ ] User must be able to view current Shopping items in a list.  
 [ ] Shopping items must be displayed ordered by category, then by item name.  
+[ ] Items must be grouped by category with category names displayed as header items.  
 [ ] Empty states must be clear and readable.
 
 ### Item Management
@@ -122,8 +123,10 @@ Shopping feature is accepted when all are true:
 [ ] User can open Shopping from Home.  
 [ ] Shopping List starts empty when first opened.  
 [ ] User can add items by selecting a category and entering an item name.  
-[ ] Shopping items are displayed ordered by category, then by item name.  
-[ ] Replenish List is displayed ordered by category, then by item name.  
+[ ] Shopping items are grouped by category with category headers displayed.  
+[ ] Items within each category are displayed in alphabetical order by item name.  
+[ ] Replenish List is grouped by category with category headers displayed.  
+[ ] Replenish List items are displayed in alphabetical order by item name within each category.  
 [ ] User can add custom items to the shopping list.  
 [ ] User can remove any item (including baseline items) from the shopping list.  
 [ ] Baseline items can be removed from the Shopping List but remain available in the Replenish List.  
