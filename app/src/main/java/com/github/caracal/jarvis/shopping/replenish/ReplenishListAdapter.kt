@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.databinding.ListItemCategoryHeaderBinding
-import com.github.caracal.jarvis.databinding.ListItemReplenishBinding
+import com.github.caracal.jarvis.databinding.ShoppingReplenishItemBinding
 import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
 
 /**
@@ -34,7 +34,7 @@ class ReplenishListAdapter(
                 ListItemCategoryHeaderBinding.inflate(inflater, parent, false)
             )
             else -> ItemViewHolder(
-                ListItemReplenishBinding.inflate(inflater, parent, false)
+                ShoppingReplenishItemBinding.inflate(inflater, parent, false)
             )
         }
     }
@@ -59,7 +59,7 @@ class ReplenishListAdapter(
 
     /** ViewHolder for replenish item rows. */
     class ItemViewHolder(
-        private val binding: ListItemReplenishBinding
+        private val binding: ShoppingReplenishItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         /**

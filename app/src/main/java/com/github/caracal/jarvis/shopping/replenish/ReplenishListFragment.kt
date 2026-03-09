@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.caracal.jarvis.R
-import com.github.caracal.jarvis.databinding.ReplenishListFragmentBinding
+import com.github.caracal.jarvis.databinding.ShoppingReplenishFragmentBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 import com.github.caracal.jarvis.shopping.data.BaselineData
 import com.github.caracal.jarvis.shopping.data.ShoppingItem
@@ -23,7 +23,7 @@ import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
  */
 class ReplenishListFragment : Fragment() {
 
-    private var _binding: ReplenishListFragmentBinding? = null
+    private var _binding: ShoppingReplenishFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val shoppingViewModel by lazy {
@@ -47,7 +47,7 @@ class ReplenishListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ReplenishListFragmentBinding.inflate(inflater, container, false)
+        _binding = ShoppingReplenishFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
