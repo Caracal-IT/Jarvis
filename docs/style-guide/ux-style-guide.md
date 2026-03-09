@@ -24,7 +24,8 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 2. **Arc Reactor Energy** — Red and gold accents suggesting power and sophistication
 3. **Holographic Precision** — Cyan highlights for secondary information and inactive states
 4. **Dark Command Center** — Deep dark backgrounds for reduced eye strain and focus
-5. **Responsive Clarity** — Every interaction provides immediate, clear feedback
+5. **Frosted Glass Layers** — Semi-transparent surfaces with blur effects for depth and sophistication
+6. **Responsive Clarity** — Every interaction provides immediate, clear feedback
 
 ---
 
@@ -46,12 +47,13 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 #### Backgrounds
 - **Primary background:** `iron_man_dark_tech` (`#020810`)
 - **Window background:** `black` (`#000000`)
-- **Card surfaces:** `iron_man_dark_tech` with subtle elevation
-- **Dialog backgrounds:** `iron_man_dark_tech`
+- **Card surfaces:** `iron_man_dark_tech` with frosted glass effect (blur + transparency)
+- **Dialog backgrounds:** `iron_man_dark_tech` with frosted glass effect
+- **Frosted glass effect:** Semi-transparent background (80-90% opacity) with blur radius 16-24dp, subtle border (1dp `iron_man_cyan` at 20% opacity)
 
 #### Text
-- **Primary text:** `iron_man_gold` (`#F1D56D`) — Headlines, primary labels, active item names
-- **Secondary text:** `iron_man_cyan` (`#00E5FF`) — Descriptions, hints, inactive labels
+- **Primary text:** `iron_man_cyan` (`#00E5FF`) — Headlines, primary labels, active item names
+- **Secondary text:** `iron_man_gold` (`#F1D56D`) — Descriptions, hints, inactive labels
 - **Category headers:** `iron_man_gold` (`#F1D56D`) — Bold, prominent
 - **Empty state text:** `iron_man_cyan` (`#00E5FF`) — Informative but not distracting
 
@@ -75,6 +77,62 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 - **Minimum contrast ratio:** 4.5:1 for normal text, 3:1 for large text (WCAG AA compliance)
 - **Image backgrounds:** All baseline item images must have clear contrast between the item subject and the background
 - **Text on backgrounds:** Always test text legibility on `iron_man_dark_tech` and `black`
+
+---
+
+## Frosted Glass Effect
+
+The Jarvis interface uses a **frosted glass** aesthetic for elevated surfaces (cards, dialogs, modals) to create a modern, high-tech look reminiscent of holographic displays.
+
+### Frosted Glass Specifications
+
+| Property          | Value                                      | Usage                                    |
+|-------------------|--------------------------------------------|------------------------------------------|
+| Background color  | `iron_man_dark_tech` at 80-90% opacity    | Semi-transparent dark surface            |
+| Blur radius       | 16-24dp                                    | Higher values for more prominent surfaces|
+| Border            | 1dp, `iron_man_cyan` at 20-30% opacity    | Subtle edge definition                   |
+| Elevation         | 4-8dp                                      | Shadow depth on dark backgrounds         |
+
+### Implementation Guidance
+
+#### Android Implementation
+
+Android does not natively support real-time blur effects efficiently. Use these alternatives:
+
+**Option 1: Semi-transparent Background (Recommended)**
+```xml
+<!-- Dialog or Card Background -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#E6020810" />  <!-- 90% opacity iron_man_dark_tech -->
+    <corners android:radius="12dp" />
+    <stroke 
+        android:width="1dp" 
+        android:color="#4D00E5FF" />  <!-- 30% opacity iron_man_cyan -->
+</shape>
+```
+
+**Option 2: Pre-blurred Background Image**
+- Capture or generate a blurred version of the background
+- Apply as drawable behind semi-transparent foreground
+
+**Option 3: RenderScript Blur (API < 31) or RenderEffect (API 31+)**
+- Use `android.graphics.RenderEffect.createBlurEffect()` for API 31+
+- Use RenderScript intrinsic blur for older devices (with deprecation awareness)
+
+### Frosted Glass Usage
+
+| Component              | Background Opacity | Blur Radius | Border Opacity | Elevation |
+|------------------------|--------------------|-------------|----------------|-----------|
+| Dialog                 | 90%                | 24dp        | 30%            | 8dp       |
+| Card                   | 85%                | 20dp        | 20%            | 4dp       |
+| Bottom Sheet           | 90%                | 24dp        | 30%            | 8dp       |
+| Popup Menu             | 85%                | 20dp        | 20%            | 8dp       |
+| Overlay                | 70%                | 16dp        | 20%            | 0dp       |
+
+### Visual Hierarchy
+
+- **Higher elevation = More prominent frosted glass effect** (higher opacity, stronger blur)
+- **Lower elevation = Subtler frosted glass effect** (lower opacity, gentler blur)
 
 ---
 
@@ -136,9 +194,16 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 ### Layout Patterns
 
 #### List Items
-- **Padding:** `spacing_medium` (16dp) horizontal, `spacing_small` (8dp) vertical
+- **Layout style:** Card-based with spacing between items (not edge-to-edge)
+- **Item margin:** `spacing_small` (8dp) on all sides for spacing between items
+- **Corner radius:** 8dp (rounded corners)
+- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
+- **Blur radius:** 20dp for frosted glass effect
+- **Border:** 1dp, `iron_man_cyan` at 30% opacity (visible cyan border)
+- **Padding:** `spacing_medium` (16dp) horizontal, `spacing_small` (8dp) vertical (internal content padding)
 - **Minimum height:** 48dp for touch targets
-- **Dividers:** 1dp solid `iron_man_cyan` at 20% opacity
+- **Elevation:** 2dp
+- **Dividers:** None (spacing and borders provide visual separation)
 
 #### Category Headers
 - **Padding:** `spacing_medium` (16dp) horizontal and vertical
@@ -147,13 +212,18 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 
 #### Cards
 - **Corner radius:** 8dp (subtle, modern)
+- **Background:** `iron_man_dark_tech` at 85% opacity with blur effect (frosted glass)
+- **Border:** 1dp, `iron_man_cyan` at 20% opacity
 - **Elevation:** 4dp (subtle shadow on dark backgrounds)
 - **Padding:** `spacing_medium` (16dp) on all sides
+- **Blur radius:** 20dp for frosted glass effect
 
 #### Dialogs
 - **Corner radius:** 12dp
 - **Padding:** `spacing_large` (24dp) on all sides
-- **Background:** `iron_man_dark_tech`
+- **Background:** `iron_man_dark_tech` at 90% opacity with frosted glass effect
+- **Border:** 1dp, `iron_man_cyan` at 30% opacity for enhanced visibility
+- **Blur radius:** 24dp for frosted glass effect
 - **Button spacing:** `spacing_small` (8dp) between buttons
 
 #### Floating Action Button (FAB)
@@ -171,23 +241,38 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 
 #### Shopping List Item
 - **Layout:** Horizontal, text on left, menu icon on right
+- **Container style:** Card with frosted glass effect
+- **Item margin:** `spacing_small` (8dp) on all sides (space around each item)
+- **Corner radius:** 8dp (rounded corners)
+- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
+- **Blur radius:** 20dp
+- **Border:** 1dp, `iron_man_cyan` at 30% opacity (visible cyan border)
 - **Text color:** `iron_man_gold` (active item)
-- **Background:** `iron_man_dark_tech`
 - **Height:** Minimum 48dp, wrap content
-- **Padding:** 16dp horizontal, 8dp vertical
+- **Padding:** 16dp horizontal, 8dp vertical (internal content padding)
+- **Elevation:** 2dp
 - **Interaction:** Tap menu icon to reveal rename/remove/barcode options
-- **Divider:** 1dp, `iron_man_cyan` at 20% opacity
+- **No dividers** (spacing and borders provide separation)
 
 #### Replenish List Item
-- **Layout:** Horizontal, image on left (48dp), text in center, add button/indicator on right
+- **Layout:** Horizontal, image/icon on left (48dp), text in center, add button/indicator on right
+- **Container style:** Card with frosted glass effect
+- **Item margin:** `spacing_small` (8dp) on all sides (space around each item)
+- **Corner radius:** 8dp (rounded corners)
+- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
+- **Blur radius:** 20dp
+- **Border:** 1dp, `iron_man_cyan` at 30% opacity (visible cyan border)
 - **Height:** 72dp fixed
-- **Image:** 48dp square, `spacing_small` (8dp) margin
+- **Padding:** 16dp horizontal, 8dp vertical (internal content padding)
+- **Elevation:** 2dp
 - **Text color:** `iron_man_gold`
-- **Background:** `iron_man_dark_tech`
-- **Padding:** 16dp horizontal, 8dp vertical
+- **Image/Icon container:** 48dp square, `spacing_small` (8dp) margin from left edge
+- **Image/Icon background:** Transparent
+- **Image/Icon border:** 1dp, `iron_man_cyan` at 30% opacity, circular (24dp radius)
+- **Image/Icon style:** Solid cyan tint or solid cyan-colored image content
 - **Image requirements:** Clear contrast between item and background, semantically correct
 - **Interaction:** Tap entire row to add to Shopping List
-- **Divider:** 1dp, `iron_man_cyan` at 20% opacity
+- **No dividers** (spacing and borders provide separation)
 
 #### Category Header
 - **Layout:** Full-width header row
@@ -270,7 +355,9 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 ### Dialogs and Popups
 
 #### Dialog
-- **Background:** `iron_man_dark_tech`
+- **Background:** `iron_man_dark_tech` at 90% opacity with frosted glass effect
+- **Blur radius:** 24dp
+- **Border:** 1dp, `iron_man_cyan` at 30% opacity
 - **Corner radius:** 12dp
 - **Padding:** 24dp on all sides
 - **Title:** Bold, `iron_man_gold`, 18sp
@@ -280,7 +367,9 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 - **Elevation:** 8dp
 
 #### Popup Menu
-- **Background:** `iron_man_dark_tech`
+- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
+- **Blur radius:** 20dp
+- **Border:** 1dp, `iron_man_cyan` at 20% opacity
 - **Corner radius:** 4dp
 - **Item padding:** 16dp horizontal, 12dp vertical
 - **Item text:** `iron_man_gold`, 16sp
@@ -313,10 +402,12 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 ### Baseline Item Images
 - **Size:** 48dp square (in Replenish List)
 - **Format:** PNG or vector drawable
-- **Contrast requirement:** Clear visual separation between item subject and background
-- **Semantic accuracy:** Image content must match the item (e.g., cheese image for "Cheese")
-- **Style:** Photographic or high-quality illustration, consistent across all items
-- **Background:** Transparent, subtle gradient, or solid color with good contrast
+- **Container:** Circular (24dp radius), 1dp `iron_man_cyan` border at 30% opacity
+- **Image background:** Transparent (no background color)
+- **Image style:** Solid cyan (`iron_man_cyan`) silhouette or icon
+- **Contrast requirement:** Clear visual separation between item subject and container background
+- **Semantic accuracy:** Image content must match the item (e.g., cheese icon for "Cheese")
+- **Consistency:** All baseline item images use the same solid cyan style
 
 ### Image Guidelines
 - **Aspect ratio:** Square (1:1) for item thumbnails
@@ -358,22 +449,29 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 
 #### Standard List
 - **Layout manager:** LinearLayoutManager (vertical)
-- **Dividers:** 1dp, `iron_man_cyan` at 20% opacity between items
-- **Item padding:** 16dp horizontal, 8dp vertical
+- **Item style:** Card-based with frosted glass effect
+- **Item margin:** `spacing_small` (8dp) on all sides for spacing between items
+- **Item background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
+- **Item border:** 1dp, `iron_man_cyan` at 30% opacity
+- **Item corner radius:** 8dp
+- **Item padding:** 16dp horizontal, 8dp vertical (internal content padding)
 - **Minimum item height:** 48dp
-- **Background:** `iron_man_dark_tech`
+- **Background:** `iron_man_dark_tech` (list container background)
 - **Scroll behavior:** Smooth scroll, standard overscroll effect
+- **Dividers:** None (spacing and borders provide separation)
 
 #### Grouped List (with Category Headers)
 - **Category header:** Full-width, bold text, 18sp, `iron_man_gold`, 16dp padding
-- **Items under category:** Indented by 0dp (flush left), sorted alphabetically
-- **Dividers:** Between items only, not between header and first item
-- **Header background:** Optional subtle differentiation from item background
+- **Items under category:** Card-based with frosted glass effect, `spacing_small` (8dp) margin around each item
+- **Item sorting:** Alphabetically by item name within each category
+- **Visual separation:** Provided by card spacing and borders (no dividers needed)
+- **Header background:** `iron_man_dark_tech` (solid, no frosted effect)
 
 ### Forms and Input
 
 #### Add Item Dialog
-- **Background:** `iron_man_dark_tech`
+- **Background:** `iron_man_dark_tech` at 90% opacity with frosted glass effect (24dp blur)
+- **Border:** 1dp, `iron_man_cyan` at 30% opacity
 - **Title:** "Add Item", bold, 18sp, `iron_man_gold`
 - **Category selector:** Dropdown with full category list
 - **Item name input:** Text field with hint "Item name"
@@ -382,13 +480,14 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 - **Validation:** Real-time or on submit, clear error messaging
 
 #### Edit Item Dialog
-- **Same as Add Item Dialog**
+- **Same as Add Item Dialog** with frosted glass effect
 - **Title:** "Rename Item" or "Edit Item"
 - **Pre-filled value:** Current item name
 - **Buttons:** "Cancel" and "Save"
 
 #### Barcode Management Dialog
-- **Background:** `iron_man_dark_tech`
+- **Background:** `iron_man_dark_tech` at 90% opacity with frosted glass effect (24dp blur)
+- **Border:** 1dp, `iron_man_cyan` at 30% opacity
 - **Title:** "Manage Barcodes", bold, 18sp, `iron_man_gold`
 - **Barcode list:** RecyclerView, 200dp fixed height, scrollable
 - **Each barcode item:** Text (barcode value) + delete icon
