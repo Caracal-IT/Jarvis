@@ -114,7 +114,7 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 [X] Feature behavior must be consistent with app-wide standards.  
 [X] User-facing text must be clear, concise, and in Standard American English.  
 [X] Interactions must be stable and responsive in normal usage.  
-[X] Visual presentation must align with the Jarvis / Iron Man theme.
+[X] Visual presentation must align with the Jarvis / Iron Man theme as defined in `docs/style-guide/ux-style-guide.md`.
 
 ## Acceptance Criteria
 

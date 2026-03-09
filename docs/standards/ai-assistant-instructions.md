@@ -13,7 +13,8 @@
 2. Read this file (`docs/standards/ai-assistant-instructions.md`) SECOND.
 3. Read `docs/standards/kotlin-android-best-practices.md` THIRD.
 4. Always review `docs/specs/` for additional feature and product context before implementation.
-5. Only then proceed with any work.
+5. If working on UI/UX, read `docs/style-guide/ux-style-guide.md` for visual implementation details.
+6. Only then proceed with any work.
 
 **Failure to follow this protocol is unacceptable.**
 
@@ -59,16 +60,9 @@ this document expands on them.
 ### Rule 5 — All Generated Assets Must Be Coherent
 - All generated assets (icons, backgrounds, UI elements) **must** adhere to the
   **Jarvis / Iron Man** theme.
-- Strictly use the defined color palette:
-
-  | Token                  | Hex       | Usage                                 |
-  |------------------------|-----------|---------------------------------------|
-  | Iron Man Red           | `#7A0019` | Primary actions, active states        |
-  | Iron Man Gold (Dark)   | `#F1D56D` | Accent, active text / icon highlights |
-  | Cyan                   | `#00E5FF` | Secondary text, inactive states       |
-  | Dark Tech              | `#020810` | Backgrounds                           |
-
-- Maintain a futuristic, high-tech, geometric vector style for all visual elements.
+- Follow the color palette, typography, spacing, and component specifications defined in
+  `docs/style-guide/ux-style-guide.md`.
+- Maintain a futuristic, high-tech, geometric visual style for all elements.
 
 ### Rule 6 — Markdown File Naming (Non-Negotiable)
 All markdown files in this project **MUST** follow these naming rules:
@@ -100,9 +94,10 @@ Before writing **any** code, adding **any** feature, or making **any** change, v
 - [ ] I have read `docs/standards/licenses.md`.
 - [ ] I have read `docs/standards/license-quick-reference.md`.
 - [ ] I have reviewed `docs/specs/` for additional context relevant to the task.
+- [ ] I have reviewed `docs/style-guide/ux-style-guide.md` for UI implementation details.
 
 ### Relevant Feature Documentation
-- [ ] If working on **UI / Fragments** — read all docs above plus any feature-specific docs in `docs/specs/`.
+- [ ] If working on **UI / Fragments** — read all docs above plus `docs/style-guide/ux-style-guide.md` plus any feature-specific docs in `docs/specs/`.
 - [ ] If working on **data / repository** — read all docs above plus any feature-specific docs in `docs/specs/`.
 - [ ] If working on **scanning / camera** — read all docs above plus any feature-specific docs in `docs/specs/`.
 - [ ] If working on **navigation** — read all docs above plus any feature-specific docs in `docs/specs/`.

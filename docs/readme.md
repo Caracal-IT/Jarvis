@@ -33,3 +33,10 @@ See: [How to Install Jarvis APK](../.github/how-to-install-apk.md)
 ## Standards
 
 See: [docs/standards/](./standards/)
+
+## Style Guide
+
+See: [docs/style-guide/](./style-guide/)
+
+The UX Style Guide defines the complete visual design system for Jarvis, including colors, typography, spacing, and component specifications. All UI implementation must follow these guidelines.
+

@@ -18,6 +18,10 @@ Please refer to [`docs/standards/ai-assistant-instructions.md`](docs/standards/a
 **All contributors and AI assistants must follow these instructions.**
 
 ## 🎨 Theme & Assets
+
+For complete visual design specifications, see [`docs/style-guide/ux-style-guide.md`](docs/style-guide/ux-style-guide.md).
+
+**Key Colors:**
 - **Primary Color**: Iron Man Red (`#7A0019`)
 - **Secondary Color**: Gold (`#F1D56D`)
 - **Accent**: Cyan (`#00E5FF`)

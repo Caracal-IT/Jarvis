@@ -63,7 +63,7 @@ The Home Page must provide a fast, clear, and reliable command center for the us
 
 ### Consistency
 
-[X] The Home Page must align with the Jarvis / Iron Man visual style.  
+[X] The Home Page must align with the Jarvis / Iron Man visual style as defined in `docs/style-guide/ux-style-guide.md`.  
 [X] User-facing text must be in Standard American English.  
 [X] User-facing values must come from resource files.
 

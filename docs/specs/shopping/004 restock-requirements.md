@@ -54,7 +54,7 @@ This document covers how users choose items from the Replenish List before addin
 
 [X] Selection interactions must be stable and responsive in normal usage.  
 [X] User-facing language must remain concise and in Standard American English.  
-[X] Visual treatment must align with the Jarvis / Iron Man theme.
+[X] Visual treatment must align with the Jarvis / Iron Man theme as defined in `docs/style-guide/ux-style-guide.md`.
 
 ## Acceptance Criteria
 
