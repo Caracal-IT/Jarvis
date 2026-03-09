@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ListItemCategoryHeaderBinding
 import com.github.caracal.jarvis.databinding.ShoppingListItemSwipeableBinding
+import com.github.caracal.jarvis.shopping.replenish.BaselineImageMapper
 import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
 
 /**
@@ -82,6 +83,8 @@ class ShoppingListAdapter(
         ) {
             val item = row.item
             binding.tvItemName.text = item.name
+            val drawableRes = BaselineImageMapper.getDrawableResId(item.name)
+            binding.ivShoppingItemImage.setImageResource(drawableRes)
             val barcodeCount = item.barcodes.size
             if (barcodeCount > 0) {
                 binding.tvBarcodeCount.visibility = View.VISIBLE
