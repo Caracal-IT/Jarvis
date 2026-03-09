@@ -81,18 +81,18 @@ All markdown files in this project **MUST** follow these naming rules:
 This rule applies to every `.md` file in the project, including files in `.github/`, `.idea/`,
 `prompts/`, `docs/`, and the project root.
 
-### Rule 7 — Asset File Naming Convention (Non-Negotiable)
-All asset/resource filenames in `res/` **must** use lowercase snake_case and begin with a scope prefix.
+### Rule 7 — Resource Naming Convention (Non-Negotiable)
+All resource names and filenames under `res/` **must** use lowercase snake_case and begin with a scope prefix.
 
-**Clarification:** In this project, "assets" for naming purposes means Android resource files under the `res/` folder.
-Files outside `res/` (for example, source files under `app/src/main/java/`) are governed by their own language-specific naming conventions.
+**Scope clarification:** In this project, this rule applies to **all Android resources inside `res/`**.
+Files outside `res/` (for example, Kotlin files under `app/src/main/java/`) follow language-specific naming conventions.
 
 #### Required Prefix Strategy
-- `shared_` -> assets/components shared across the entire app
-- `<feature>_` -> assets/components shared within a feature
-- `<feature>_<subfeature>_` -> assets/components used only by a specific subfeature/screen
+- `shared_` -> resources shared across the entire app
+- `<feature>_` -> resources shared within a feature
+- `<feature>_<subfeature>_` -> resources used only by a specific subfeature/screen
 
-#### Applies To All Asset Types
+#### Applies To The Entire `res/` Tree
 - `res/layout/`
 - `res/drawable*/` and `res/mipmap*/`
 - `res/menu/`
@@ -100,7 +100,8 @@ Files outside `res/` (for example, source files under `app/src/main/java/`) are 
 - `res/anim/` and `res/animator/`
 - `res/font/`
 - `res/raw/`
-- Any additional asset-like resource directories introduced in future
+- `res/values*/` resource identifiers and related resource names
+- Any current or future resource directories under `res/`
 
 #### Examples (Shopping)
 - `shared_empty_state_panel.xml` (app-wide shared)
@@ -120,8 +121,8 @@ Files outside `res/` (for example, source files under `app/src/main/java/`) are 
 - Use lowercase only.
 - Use underscores only (no spaces, no hyphens, no camelCase).
 - Keep names explicit and descriptive.
-- Do not create new assets that violate this scheme.
-- When modifying or replacing existing assets, migrate names to this scheme when practical.
+- Do not create new resources that violate this scheme.
+- When modifying or replacing existing resources, migrate names to this scheme when practical.
 
 ---
 

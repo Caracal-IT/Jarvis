@@ -5,7 +5,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Window
 import androidx.fragment.app.DialogFragment
-import com.github.caracal.jarvis.databinding.FragmentEditItemBinding
+import com.github.caracal.jarvis.databinding.ShoppingListEditItemBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 
 /**
@@ -17,7 +17,7 @@ import com.github.caracal.jarvis.shopping.ShoppingFragment
  */
 class EditItemDialogFragment : DialogFragment() {
 
-    private var _binding: FragmentEditItemBinding? = null
+    private var _binding: ShoppingListEditItemBinding? = null
     private val binding get() = _binding!!
 
     private val shoppingViewModel by lazy {
@@ -25,7 +25,7 @@ class EditItemDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = FragmentEditItemBinding.inflate(layoutInflater)
+        _binding = ShoppingListEditItemBinding.inflate(layoutInflater)
 
         val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

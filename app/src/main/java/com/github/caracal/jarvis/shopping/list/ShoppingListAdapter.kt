@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ListItemCategoryHeaderBinding
-import com.github.caracal.jarvis.databinding.ListItemShoppingSwipeableBinding
+import com.github.caracal.jarvis.databinding.ShoppingListItemSwipeableBinding
 import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
 
 /**
@@ -38,7 +38,7 @@ class ShoppingListAdapter(
                 ListItemCategoryHeaderBinding.inflate(inflater, parent, false)
             )
             else -> ItemViewHolder(
-                ListItemShoppingSwipeableBinding.inflate(inflater, parent, false)
+                ShoppingListItemSwipeableBinding.inflate(inflater, parent, false)
             )
         }
     }
@@ -65,7 +65,7 @@ class ShoppingListAdapter(
 
     /** ViewHolder for shopping item rows with swipe-to-reveal actions. */
     class ItemViewHolder(
-        private val binding: ListItemShoppingSwipeableBinding
+        private val binding: ShoppingListItemSwipeableBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         /**

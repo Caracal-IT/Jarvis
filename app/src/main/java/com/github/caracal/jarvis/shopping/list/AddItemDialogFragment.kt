@@ -7,7 +7,7 @@ import android.view.Window
 import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import com.github.caracal.jarvis.R
-import com.github.caracal.jarvis.databinding.FragmentAddItemBinding
+import com.github.caracal.jarvis.databinding.ShoppingListAddItemBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 import com.github.caracal.jarvis.shopping.data.ShoppingCategory
 
@@ -20,7 +20,7 @@ import com.github.caracal.jarvis.shopping.data.ShoppingCategory
  */
 class AddItemDialogFragment : DialogFragment() {
 
-    private var _binding: FragmentAddItemBinding? = null
+    private var _binding: ShoppingListAddItemBinding? = null
     private val binding get() = _binding!!
 
     private val shoppingViewModel by lazy {
@@ -30,7 +30,7 @@ class AddItemDialogFragment : DialogFragment() {
     private var categories: List<ShoppingCategory> = emptyList()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = FragmentAddItemBinding.inflate(layoutInflater)
+        _binding = ShoppingListAddItemBinding.inflate(layoutInflater)
 
         val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
