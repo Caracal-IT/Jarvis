@@ -1,6 +1,7 @@
 package com.github.caracal.jarvis.shopping.list
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Window
 import androidx.fragment.app.DialogFragment
@@ -36,9 +37,8 @@ class EditItemDialogFragment : DialogFragment() {
         // Pre-fill with current name
         binding.etItemName.setText(itemName)
 
-        // Back button - dismiss dialog and reset swipe state
+        // Back button - dismiss dialog
         binding.btnBack.setOnClickListener {
-            resetSwipeState()
             dismiss()
         }
 
@@ -47,7 +47,6 @@ class EditItemDialogFragment : DialogFragment() {
             val newName = binding.etItemName.text?.toString() ?: ""
             val renamed = shoppingViewModel.renameShoppingItem(itemId, newName)
             if (renamed) {
-                resetSwipeState()
                 dismiss()
             }
         }
@@ -60,9 +59,10 @@ class EditItemDialogFragment : DialogFragment() {
         return dialog
     }
 
-    private fun resetSwipeState() {
-        // Reset all items' swipe state by notifying the adapter
-        (requireParentFragment() as? ShoppingListFragment)?.resetAllItemsSwipeState()
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        // Reset swipe states when returning to the shopping list.
+        (parentFragment as? ShoppingListFragment)?.resetAllItemsSwipeState()
     }
 
     override fun onDestroyView() {
@@ -83,4 +83,3 @@ class EditItemDialogFragment : DialogFragment() {
             }
     }
 }
-
