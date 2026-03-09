@@ -45,11 +45,11 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 ### Color Usage Guidelines
 
 #### Backgrounds
-- **Primary background:** `iron_man_dark_tech` (`#020810`)
+- **Screen/Fragment background:** `@drawable/bg_jarvis` — Layered background with radial gradient and arc reactor ring elements
 - **Window background:** `black` (`#000000`)
-- **Card surfaces:** `iron_man_dark_tech` with frosted glass effect (blur + transparency)
-- **Dialog backgrounds:** `iron_man_dark_tech` with frosted glass effect
-- **Frosted glass effect:** Semi-transparent background (80-90% opacity) with blur radius 16-24dp, subtle border (1dp `iron_man_cyan` at 20% opacity)
+- **List item cards:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`), NO blur effect, NO rounded corners
+- **Dialog backgrounds:** Lighter bluish-white tint (94% opacity: `#F01A2A3A`) with frosted glass effect (blur + rounded corners)
+- **Dialog frosted glass effect:** Semi-transparent whiter background with 12dp rounded corners, strong cyan border (50% opacity)
 
 #### Text
 - **Primary text:** `iron_man_cyan` (`#00E5FF`) — Headlines, primary labels, active item names
@@ -80,18 +80,58 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 
 ---
 
+## Screen Backgrounds
+
+All screen and fragment backgrounds must use the **Jarvis background pattern** (`@drawable/bg_jarvis`), which creates the signature holographic command center aesthetic.
+
+### bg_jarvis Composition
+
+The Jarvis background is a layered drawable consisting of:
+
+1. **Base layer:** Solid `iron_man_dark_tech` (`#020810`)
+2. **Radial gradient glow:** Subtle cyan radial gradient from center (10-25% opacity `iron_man_cyan`)
+3. **Arc Reactor rings:** Concentric circular outlines in cyan at various opacities
+   - Large outer ring (300dp, 20% opacity)
+   - Medium dashed ring (160dp, 60% opacity, dashed)
+   - Small inner ring (200dp, 40% opacity)
+
+### Usage Requirements
+
+- **All Activity layouts:** Must use `android:background="@drawable/bg_jarvis"`
+- **All Fragment layouts:** Must use `android:background="@drawable/bg_jarvis"`
+- **Exception:** Fragments inside ViewPagers or nested containers may use transparent backgrounds to inherit parent background
+
+### Example
+
+```xml
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_jarvis">
+    
+    <!-- Screen content here -->
+    
+</FrameLayout>
+```
+
+---
+
 ## Frosted Glass Effect
 
-The Jarvis interface uses a **frosted glass** aesthetic for elevated surfaces (cards, dialogs, modals) to create a modern, high-tech look reminiscent of holographic displays.
+The Jarvis interface uses a **frosted glass** aesthetic **only for dialogs and modal overlays** to create a modern, high-tech look reminiscent of holographic displays.
 
-### Frosted Glass Specifications
+**List items and cards DO NOT use frosted glass** — they use simple semi-transparent backgrounds with square corners.
+
+### Frosted Glass Specifications (Dialogs Only)
 
 | Property          | Value                                      | Usage                                    |
 |-------------------|--------------------------------------------|------------------------------------------|
-| Background color  | `iron_man_dark_tech` at 80-90% opacity    | Semi-transparent dark surface            |
-| Blur radius       | 16-24dp                                    | Higher values for more prominent surfaces|
-| Border            | 1dp, `iron_man_cyan` at 20-30% opacity    | Subtle edge definition                   |
-| Elevation         | 4-8dp                                      | Shadow depth on dark backgrounds         |
+| Background color  | Lighter bluish-white tint at 94% opacity (`#F01A2A3A`) | Semi-transparent whiter surface |
+| Blur radius       | 24dp                                       | Blur effect for depth                    |
+| Border            | 1dp, `iron_man_cyan` at 50% opacity (`#8000E5FF`) | Strong visible cyan border       |
+| Corner radius     | 12dp (rounded corners for dialogs)         | Softer appearance for modal surfaces     |
+| Elevation         | 8dp                                        | Shadow depth on dark backgrounds         |
 
 ### Implementation Guidance
 
@@ -121,13 +161,14 @@ Android does not natively support real-time blur effects efficiently. Use these 
 
 ### Frosted Glass Usage
 
-| Component              | Background Opacity | Blur Radius | Border Opacity | Elevation |
-|------------------------|--------------------|-------------|----------------|-----------|
-| Dialog                 | 90%                | 24dp        | 30%            | 8dp       |
-| Card                   | 85%                | 20dp        | 20%            | 4dp       |
-| Bottom Sheet           | 90%                | 24dp        | 30%            | 8dp       |
-| Popup Menu             | 85%                | 20dp        | 20%            | 8dp       |
-| Overlay                | 70%                | 16dp        | 20%            | 0dp       |
+| Component              | Uses Frosted Glass | Background Color      | Border Opacity | Corner Radius |
+|------------------------|--------------------|-----------------------|----------------|---------------|
+| Dialog                 | ✅ Yes             | `#F01A2A3A` (whiter)  | 50%            | 12dp          |
+| Bottom Sheet           | ✅ Yes             | `#F01A2A3A` (whiter)  | 50%            | 12dp          |
+| Popup Menu             | ✅ Yes             | `#D9101820` (lighter) | 50%            | 4dp           |
+| List Items             | ❌ No              | `#66101820` (lighter) | 50%            | 0dp           |
+| Cards                  | ❌ No              | `#66101820` (lighter) | 50%            | 0dp           |
+| Overlay                | ✅ Yes             | `#B3101820` (lighter) | 50%            | 0dp           |
 
 ### Visual Hierarchy
 
@@ -196,13 +237,13 @@ Android does not natively support real-time blur effects efficiently. Use these 
 #### List Items
 - **Layout style:** Card-based with spacing between items (not edge-to-edge)
 - **Item margin:** `spacing_small` (8dp) on all sides for spacing between items
-- **Corner radius:** 8dp (rounded corners)
-- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
-- **Blur radius:** 20dp for frosted glass effect
-- **Border:** 1dp, `iron_man_cyan` at 30% opacity (visible cyan border)
+- **Corner radius:** 0dp (square corners, not rounded)
+- **Background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
+- **NO blur effect** — Simple semi-transparent background only
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (stronger visible cyan border: `#8000E5FF`)
 - **Padding:** `spacing_medium` (16dp) horizontal, `spacing_small` (8dp) vertical (internal content padding)
 - **Minimum height:** 48dp for touch targets
-- **Elevation:** 2dp
+- **Elevation:** 0dp (flat appearance)
 - **Dividers:** None (spacing and borders provide visual separation)
 
 #### Category Headers
@@ -211,12 +252,12 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Text:** Bold, uppercase optional, `iron_man_gold`
 
 #### Cards
-- **Corner radius:** 8dp (subtle, modern)
-- **Background:** `iron_man_dark_tech` at 85% opacity with blur effect (frosted glass)
-- **Border:** 1dp, `iron_man_cyan` at 20% opacity
-- **Elevation:** 4dp (subtle shadow on dark backgrounds)
+- **Corner radius:** 0dp (square corners, not rounded)
+- **Background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
+- **NO blur effect** — Simple semi-transparent background only
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (stronger visible cyan border: `#8000E5FF`)
+- **Elevation:** 0dp (flat appearance)
 - **Padding:** `spacing_medium` (16dp) on all sides
-- **Blur radius:** 20dp for frosted glass effect
 
 #### Dialogs
 - **Corner radius:** 12dp
@@ -241,34 +282,35 @@ Android does not natively support real-time blur effects efficiently. Use these 
 
 #### Shopping List Item
 - **Layout:** Horizontal, text on left, menu icon on right
-- **Container style:** Card with frosted glass effect
+- **Container style:** Card with semi-transparent background
 - **Item margin:** `spacing_small` (8dp) on all sides (space around each item)
-- **Corner radius:** 8dp (rounded corners)
-- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
-- **Blur radius:** 20dp
-- **Border:** 1dp, `iron_man_cyan` at 30% opacity (visible cyan border)
+- **Corner radius:** 0dp (square corners, not rounded)
+- **Background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
+- **NO blur effect** — Simple semi-transparent background only
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (stronger visible cyan border: `#8000E5FF`)
 - **Text color:** `iron_man_gold` (active item)
 - **Height:** Minimum 48dp, wrap content
 - **Padding:** 16dp horizontal, 8dp vertical (internal content padding)
-- **Elevation:** 2dp
+- **Elevation:** 0dp (flat appearance)
 - **Interaction:** Tap menu icon to reveal rename/remove/barcode options
 - **No dividers** (spacing and borders provide separation)
 
 #### Replenish List Item
 - **Layout:** Horizontal, image/icon on left (48dp), text in center, add button/indicator on right
-- **Container style:** Card with frosted glass effect
+- **Container style:** Card with semi-transparent background
 - **Item margin:** `spacing_small` (8dp) on all sides (space around each item)
-- **Corner radius:** 8dp (rounded corners)
-- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
-- **Blur radius:** 20dp
-- **Border:** 1dp, `iron_man_cyan` at 30% opacity (visible cyan border)
+- **Corner radius:** 0dp (square corners, not rounded)
+- **Background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
+- **NO blur effect** — Simple semi-transparent background only
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (stronger visible cyan border: `#8000E5FF`)
 - **Height:** 72dp fixed
 - **Padding:** 16dp horizontal, 8dp vertical (internal content padding)
-- **Elevation:** 2dp
+- **Elevation:** 0dp (flat appearance)
 - **Text color:** `iron_man_gold`
-- **Image/Icon container:** 48dp square, `spacing_small` (8dp) margin from left edge
+- **Image/Icon container:** 48dp square with 4dp padding, `spacing_small` (8dp) margin from left edge
 - **Image/Icon background:** Transparent
-- **Image/Icon border:** 1dp, `iron_man_cyan` at 30% opacity, circular (24dp radius)
+- **Image/Icon border:** 1dp, `iron_man_cyan` at 50% opacity, circular (oval shape)
+- **Image/Icon padding:** 4dp inside circle to prevent cutoff
 - **Image/Icon style:** Solid cyan tint or solid cyan-colored image content
 - **Image requirements:** Clear contrast between item and background, semantically correct
 - **Interaction:** Tap entire row to add to Shopping List
@@ -355,9 +397,9 @@ Android does not natively support real-time blur effects efficiently. Use these 
 ### Dialogs and Popups
 
 #### Dialog
-- **Background:** `iron_man_dark_tech` at 90% opacity with frosted glass effect
+- **Background:** Lighter bluish-white tint at 94% opacity with frosted glass effect (`#F01A2A3A`)
 - **Blur radius:** 24dp
-- **Border:** 1dp, `iron_man_cyan` at 30% opacity
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (strong visible border: `#8000E5FF`)
 - **Corner radius:** 12dp
 - **Padding:** 24dp on all sides
 - **Title:** Bold, `iron_man_gold`, 18sp
@@ -367,9 +409,9 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Elevation:** 8dp
 
 #### Popup Menu
-- **Background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
+- **Background:** Lighter bluish tint at 85% opacity with frosted glass effect (`#D9101820`)
 - **Blur radius:** 20dp
-- **Border:** 1dp, `iron_man_cyan` at 20% opacity
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (strong visible border: `#8000E5FF`)
 - **Corner radius:** 4dp
 - **Item padding:** 16dp horizontal, 12dp vertical
 - **Item text:** `iron_man_gold`, 16sp
@@ -449,29 +491,31 @@ Android does not natively support real-time blur effects efficiently. Use these 
 
 #### Standard List
 - **Layout manager:** LinearLayoutManager (vertical)
-- **Item style:** Card-based with frosted glass effect
+- **Item style:** Card-based with spacing between items
 - **Item margin:** `spacing_small` (8dp) on all sides for spacing between items
-- **Item background:** `iron_man_dark_tech` at 85% opacity with frosted glass effect
-- **Item border:** 1dp, `iron_man_cyan` at 30% opacity
-- **Item corner radius:** 8dp
+- **Item background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
+- **NO blur effect** — Simple semi-transparent background only
+- **Item border:** 1dp, `iron_man_cyan` at 50% opacity (stronger visible cyan border: `#8000E5FF`)
+- **Item corner radius:** 0dp (square corners, not rounded)
 - **Item padding:** 16dp horizontal, 8dp vertical (internal content padding)
 - **Minimum item height:** 48dp
-- **Background:** `iron_man_dark_tech` (list container background)
+- **Item elevation:** 0dp (flat appearance)
+- **Background:** `@drawable/bg_jarvis` (list container background with radial gradient and arc reactor rings)
 - **Scroll behavior:** Smooth scroll, standard overscroll effect
 - **Dividers:** None (spacing and borders provide separation)
 
 #### Grouped List (with Category Headers)
 - **Category header:** Full-width, bold text, 18sp, `iron_man_gold`, 16dp padding
-- **Items under category:** Card-based with frosted glass effect, `spacing_small` (8dp) margin around each item
+- **Items under category:** Card-based with semi-transparent background (NO blur, NO rounded corners), `spacing_small` (8dp) margin around each item
 - **Item sorting:** Alphabetically by item name within each category
 - **Visual separation:** Provided by card spacing and borders (no dividers needed)
-- **Header background:** `iron_man_dark_tech` (solid, no frosted effect)
+- **Header background:** Solid `iron_man_dark_tech` (no transparency, no blur)
 
 ### Forms and Input
 
 #### Add Item Dialog
-- **Background:** `iron_man_dark_tech` at 90% opacity with frosted glass effect (24dp blur)
-- **Border:** 1dp, `iron_man_cyan` at 30% opacity
+- **Background:** Lighter bluish-white tint at 94% opacity with frosted glass effect (24dp blur) (`#F01A2A3A`)
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (strong visible border: `#8000E5FF`)
 - **Title:** "Add Item", bold, 18sp, `iron_man_gold`
 - **Category selector:** Dropdown with full category list
 - **Item name input:** Text field with hint "Item name"
@@ -486,8 +530,8 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Buttons:** "Cancel" and "Save"
 
 #### Barcode Management Dialog
-- **Background:** `iron_man_dark_tech` at 90% opacity with frosted glass effect (24dp blur)
-- **Border:** 1dp, `iron_man_cyan` at 30% opacity
+- **Background:** Lighter bluish-white tint at 94% opacity with frosted glass effect (24dp blur) (`#F01A2A3A`)
+- **Border:** 1dp, `iron_man_cyan` at 50% opacity (strong visible border: `#8000E5FF`)
 - **Title:** "Manage Barcodes", bold, 18sp, `iron_man_gold`
 - **Barcode list:** RecyclerView, 200dp fixed height, scrollable
 - **Each barcode item:** Text (barcode value) + delete icon

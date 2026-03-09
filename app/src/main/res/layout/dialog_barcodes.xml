@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/spacing_medium">
+    android:padding="@dimen/spacing_large">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBarcodes"
@@ -33,8 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_small"
             android:text="@string/action_add"
-            android:textColor="@color/iron_man_dark_tech"
-            android:backgroundTint="@color/iron_man_gold" />
+            android:textColor="@color/iron_man_gold"
+            android:backgroundTint="@color/iron_man_red" />
 
     </LinearLayout>
 

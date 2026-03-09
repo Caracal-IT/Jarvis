@@ -35,12 +35,14 @@ class RenameItemDialogFragment : DialogFragment() {
             binding.tilNewName.error = error
         }
 
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext(), R.style.Theme_Jarvis_Dialog)
             .setTitle(R.string.dialog_title_rename_item)
             .setView(binding.root)
             .setPositiveButton(R.string.action_rename, null)
             .setNegativeButton(R.string.action_cancel, null)
             .create()
+
+        dialog.window?.setBackgroundDrawableResource(R.drawable.bg_dialog)
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {

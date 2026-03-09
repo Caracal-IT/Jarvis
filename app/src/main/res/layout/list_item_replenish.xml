@@ -3,16 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/replenish_item_height"
+    android:layout_margin="@dimen/spacing_small"
+    android:background="@drawable/bg_list_item_card"
     android:orientation="horizontal"
     android:padding="@dimen/spacing_medium"
     android:gravity="center_vertical">
 
-    <ImageView
-        android:id="@+id/ivReplenishItemImage"
+    <FrameLayout
         android:layout_width="@dimen/replenish_item_image_size"
         android:layout_height="@dimen/replenish_item_image_size"
-        android:contentDescription="@string/cd_item_image"
-        android:scaleType="centerInside" />
+        android:background="@drawable/bg_icon_circle"
+        android:padding="4dp">
+
+        <ImageView
+            android:id="@+id/ivReplenishItemImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/cd_item_image"
+            android:scaleType="centerInside"
+            android:padding="4dp" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tvReplenishItemName"
@@ -29,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/action_add"
-        android:textColor="@color/iron_man_dark_tech"
-        android:backgroundTint="@color/iron_man_gold"
+        android:textColor="@color/iron_man_gold"
+        android:backgroundTint="@color/iron_man_red"
         android:textSize="@dimen/text_size_small"
         android:fontFamily="monospace" />
 

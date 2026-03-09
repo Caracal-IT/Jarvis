@@ -44,12 +44,14 @@ class AddItemDialogFragment : DialogFragment() {
             binding.tilItemName.error = error
         }
 
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext(), R.style.Theme_Jarvis_Dialog)
             .setTitle(R.string.dialog_title_add_item)
             .setView(binding.root)
             .setPositiveButton(R.string.action_add, null)
             .setNegativeButton(R.string.action_cancel, null)
             .create()
+
+        dialog.window?.setBackgroundDrawableResource(R.drawable.bg_dialog)
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {

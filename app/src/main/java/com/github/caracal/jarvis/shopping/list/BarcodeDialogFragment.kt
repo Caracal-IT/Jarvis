@@ -65,11 +65,12 @@ class BarcodeDialogFragment : DialogFragment() {
             }
         }
 
-        return AlertDialog.Builder(requireContext())
+        return AlertDialog.Builder(requireContext(), R.style.Theme_Jarvis_Dialog)
             .setTitle(itemName)
             .setView(binding.root)
             .setPositiveButton(R.string.action_done, null)
             .create()
+            .also { it.window?.setBackgroundDrawableResource(R.drawable.bg_dialog) }
     }
 
     override fun onDestroyView() {
