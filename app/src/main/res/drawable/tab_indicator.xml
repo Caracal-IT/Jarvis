@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tab indicator - red bar that appears under active tab -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/iron_man_red" />
+    <size android:height="3dp" />
+</shape>
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spinner dropdown item layout with Jarvis styling -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:textColor="@color/iron_man_gold"
+    android:textSize="@dimen/text_size_body"
+    android:fontFamily="monospace"
+    android:background="@color/iron_man_dark_tech" />
+

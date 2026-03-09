@@ -35,9 +35,9 @@ class AddItemDialogFragment : DialogFragment() {
         val categoryNames = categories.map { it.name }
         val spinnerAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_item,
             categoryNames
-        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+        ).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
         binding.spinnerCategory.adapter = spinnerAdapter
 
         shoppingViewModel.addItemError.observe(this) { error ->

@@ -32,6 +32,8 @@ This document covers list visibility, list updates, list persistence behavior, b
 [X] New items must appear in the list immediately after successful add.  
 [X] Renamed items must update in the list immediately after successful edit.  
 [X] Removed items (including baseline items) must no longer appear after successful delete.  
+[ ] User can swipe right-to-left on an item to delete it with red background indicator.  
+[ ] User can swipe left-to-right on an item to reveal action options (rename, manage barcodes) with cyan background indicator.  
 [X] Baseline items can be removed from the Shopping List but must persist in the Replenish List.  
 [X] Duplicate-handling rules must be applied consistently.
 
@@ -79,6 +81,8 @@ Shopping List requirements are accepted when all are true:
 [X] Items within each category are displayed in alphabetical order by item name.  
 [X] Empty and populated states are both clear.  
 [X] Add, rename, and remove operations are reflected correctly in the list.  
+[ ] Swipe right-to-left deletes items with red background indicator.  
+[ ] Swipe left-to-right shows action options with cyan background indicator.  
 [X] User can associate multiple barcodes with each item.  
 [X] Replenish List displays all baseline items grouped by category with category headers.  
 [X] Replenish List items are displayed in alphabetical order by item name within each category.  

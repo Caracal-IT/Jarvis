@@ -61,4 +61,21 @@
         <item name="android:textColor">@color/iron_man_cyan</item>
         <item name="cornerRadius">8dp</item>
     </style>
+
+    <!-- Text Input Layout style -->
+    <style name="Widget.Jarvis.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/text_input_stroke_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="hintTextColor">@color/iron_man_cyan</item>
+        <item name="android:textColorHint">@color/iron_man_cyan</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+    </style>
+
+    <style name="Widget.Jarvis.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/iron_man_gold</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
 </resources>

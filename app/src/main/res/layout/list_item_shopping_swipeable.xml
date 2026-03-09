@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shopping list item with swipe-to-reveal action buttons -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_small"
+    android:clipChildren="true"
+    android:clipToPadding="true">
+
+    <!-- Background actions revealed on swipe - changes color based on swipe direction -->
+    <View
+        android:id="@+id/actionsBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/swipe_action_green_transparent" />
+
+
+    <!-- Left actions container (revealed when swiping right) - EDIT BUTTON -->
+    <LinearLayout
+        android:id="@+id/leftActions"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:visibility="invisible">
+
+        <ImageButton
+            android:id="@+id/btnRename"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_rename"
+            android:contentDescription="@string/action_rename"
+            android:background="?attr/selectableItemBackground"
+            app:tint="@color/iron_man_gold" />
+
+    </LinearLayout>
+
+    <!-- Right action button (DELETE - revealed when swiping left) -->
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:src="@android:drawable/ic_menu_delete"
+        android:contentDescription="@string/action_remove"
+        android:background="?attr/selectableItemBackground"
+        android:alpha="0"
+        android:visibility="invisible"
+        android:layout_gravity="end"
+        app:tint="@color/iron_man_gold" />
+
+
+    <!-- Foreground item (swipes over the background) -->
+    <LinearLayout
+        android:id="@+id/foreground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_list_item_card_opaque"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_medium"
+        android:minHeight="48dp">
+
+        <TextView
+            android:id="@+id/tvItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/iron_man_gold"
+            android:textSize="@dimen/text_size_body"
+            android:fontFamily="monospace" />
+
+        <TextView
+            android:id="@+id/tvBarcodeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/iron_man_cyan"
+            android:textSize="@dimen/text_size_small"
+            android:fontFamily="monospace"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</FrameLayout>
+

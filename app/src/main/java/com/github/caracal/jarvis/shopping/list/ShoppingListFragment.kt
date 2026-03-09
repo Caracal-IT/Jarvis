@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.caracal.jarvis.databinding.ShoppingListFragmentBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
@@ -31,8 +32,7 @@ class ShoppingListFragment : Fragment() {
     private val adapter by lazy {
         ShoppingListAdapter(
             onMenuRename = { row -> showRenameDialog(row) },
-            onMenuRemove = { row -> shoppingViewModel.removeShoppingItem(row.item.id) },
-            onMenuBarcodes = { row -> showBarcodeDialog(row) }
+            onMenuRemove = { row -> shoppingViewModel.removeShoppingItem(row.item.id) }
         )
     }
 
@@ -49,6 +49,13 @@ class ShoppingListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvShoppingList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvShoppingList.adapter = adapter
+
+        val swipeCallback = ShoppingListSwipeCallback(
+            adapter = adapter,
+            onFullSwipeEdit = { row -> showRenameDialog(row) },
+            onFullSwipeDelete = { row -> shoppingViewModel.removeShoppingItem(row.item.id) }
+        )
+        ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.rvShoppingList)
 
         shoppingViewModel.shoppingList.observe(viewLifecycleOwner) { items ->
             val displayItems = buildDisplayItems(items)
@@ -90,11 +97,6 @@ class ShoppingListFragment : Fragment() {
             .show(childFragmentManager, TAG_RENAME_DIALOG)
     }
 
-    private fun showBarcodeDialog(row: ShoppingDisplayItem.Item) {
-        BarcodeDialogFragment.newInstance(row.item.id, row.item.name, row.item.barcodes)
-            .show(childFragmentManager, TAG_BARCODE_DIALOG)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -103,6 +105,5 @@ class ShoppingListFragment : Fragment() {
     companion object {
         private const val TAG_ADD_DIALOG = "add_item"
         private const val TAG_RENAME_DIALOG = "rename_item"
-        private const val TAG_BARCODE_DIALOG = "barcodes"
     }
 }

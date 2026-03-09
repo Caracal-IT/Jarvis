@@ -21,6 +21,7 @@ This document covers how users choose items from the Replenish List before addin
 ### Selection Experience
 
 [X] User must be able to select one or more items from the Replenish List to add to the Shopping List.  
+[ ] User can double-tap a Replenish List item to quickly add it to the Shopping List.  
 [X] Selection behavior must be clear, predictable, and reversible before confirmation.  
 [X] Confirming selection must add chosen items to the Shopping List.
 
@@ -61,6 +62,7 @@ This document covers how users choose items from the Replenish List before addin
 Restock requirements are accepted when all are true:
 
 [X] User can select and confirm items to add from the Replenish List.  
+[ ] User can double-tap a Replenish List item to quickly add it to the Shopping List.  
 [X] Items are grouped by category with category headers displayed.  
 [X] Items within each category are displayed in alphabetical order by item name.  
 [X] Each baseline item displays its generated image with good contrast.  

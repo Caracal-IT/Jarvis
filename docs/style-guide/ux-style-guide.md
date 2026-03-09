@@ -281,18 +281,22 @@ Android does not natively support real-time blur effects efficiently. Use these 
 ### List Components
 
 #### Shopping List Item
-- **Layout:** Horizontal, text on left, menu icon on right
+- **Layout:** Swipeable with foreground content and background action buttons
+- **Foreground content:** Item name + optional barcode count (no action buttons)
+- **Background actions:** Revealed on swipe (rename, barcodes on left; delete on right)
 - **Container style:** Card with semi-transparent background
 - **Item margin:** `spacing_small` (8dp) on all sides (space around each item)
 - **Corner radius:** 0dp (square corners, not rounded)
-- **Background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
+- **Foreground background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
 - **NO blur effect** — Simple semi-transparent background only
 - **Border:** 1dp, `iron_man_cyan` at 50% opacity (stronger visible cyan border: `#8000E5FF`)
-- **Text color:** `iron_man_gold` (active item)
+- **Text color:** `iron_man_gold` (item name)
+- **Secondary text color:** `iron_man_cyan` (barcode count)
 - **Height:** Minimum 48dp, wrap content
 - **Padding:** 16dp horizontal, 8dp vertical (internal content padding)
 - **Elevation:** 0dp (flat appearance)
-- **Interaction:** Tap menu icon to reveal rename/remove/barcode options
+- **Interaction:** Swipe to reveal action buttons (no menu icon on item)
+- **Action buttons:** 80dp width each, gold icons on colored backgrounds
 - **No dividers** (spacing and borders provide separation)
 
 #### Replenish List Item
@@ -467,14 +471,49 @@ Android does not natively support real-time blur effects efficiently. Use these 
 
 ### Gestures
 - **Tap:** Primary interaction for all buttons, list items, and selectable elements
+- **Double-tap:** Add item to another list (e.g., double-tap Replenish List item to add to Shopping List)
+- **Swipe right-to-left:** Reveal delete action and allow full-swipe delete
+- **Swipe left-to-right:** Reveal left-side actions and allow full-swipe primary action
 - **Long press:** Reserved for future context actions (currently unused)
-- **Swipe:** Reserved for future dismiss/complete actions (currently unused)
 
 ### Feedback
 - **Visual feedback:** All tapped elements must show a ripple effect or background color change
 - **Ripple color:** `iron_man_gold` at 20% opacity on dark backgrounds
 - **Toast messages:** Use for confirmations ("Item added to list") and error feedback
 - **Loading states:** Show progress indicator with `iron_man_cyan` or `iron_man_gold` color
+
+### Swipe Gestures
+
+#### Shopping List Items — Swipe-to-Reveal Actions
+- **Swipe right-to-left (←):** Reveals delete button on red background
+  - Background: `iron_man_red`
+  - Button width: 80dp
+  - Icon: Trash can (`ic_menu_delete`), gold color
+  - Half swipe: Revealed state stays open
+  - Full swipe: Deletes item immediately
+
+- **Swipe left-to-right (→):** Reveals left-side action buttons on transparent green background
+  - Background: `swipe_action_green_transparent` (`#6600FF66`)
+  - Two buttons: Rename (80dp) + Barcodes (80dp)
+  - Icons: Edit icon (`ic_rename`) and barcode icon (`ic_barcode`), gold color
+  - Half swipe: Revealed state stays open
+  - Full swipe: Triggers primary right action (if no add action exists, use edit/rename)
+
+- **No in-row action buttons** — Actions are only shown on revealed background
+- **Opposite-direction swipe closes** — Swiping back toward center hides actions
+- **Foreground slides over background** — Content translates while action layer remains fixed
+- **Snap-open threshold:** 72dp; **snap-open distance:** 160dp
+
+#### Replenish List Items
+- **Double-tap:** Add item to Shopping List
+  - Feedback: Toast message confirming addition
+  - Visual: Standard ripple effect on tap
+  
+#### Implementation Notes
+- Use `ItemTouchHelper` with custom `onChildDraw` to translate foreground view
+- Background contains actual button views (not canvas-only drawings)
+- Partial swipe snaps open; opposite swipe snaps closed
+- Category headers cannot be swiped (swipe disabled)
 
 ### Transitions and Animations
 - **Duration:** 200-300ms for standard transitions
@@ -702,4 +741,3 @@ Before considering any UI implementation complete, verify:
 **For high-level feature requirements, see:** `docs/specs/`  
 **For coding standards, see:** `docs/standards/ai-assistant-instructions.md`  
 **For Kotlin/Android practices, see:** `docs/standards/kotlin-android-best-practices.md`
-

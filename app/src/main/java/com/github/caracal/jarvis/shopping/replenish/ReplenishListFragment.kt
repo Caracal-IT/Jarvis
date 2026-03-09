@@ -56,6 +56,21 @@ class ReplenishListFragment : Fragment() {
         binding.rvReplenishList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvReplenishList.adapter = adapter
 
+        // Setup double-tap gesture to add items
+        val doubleTapListener = DoubleTapItemTouchListener(binding.rvReplenishList) { position ->
+            val item = adapter.currentList.getOrNull(position)
+            if (item is ShoppingDisplayItem.Item) {
+                val added = shoppingViewModel.addBaselineItemToShoppingList(item.item.id)
+                val message = if (added) {
+                    getString(R.string.msg_item_added_to_list, item.item.name)
+                } else {
+                    getString(R.string.msg_item_already_in_list, item.item.name)
+                }
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
+        }
+        binding.rvReplenishList.addOnItemTouchListener(doubleTapListener)
+
         shoppingViewModel.replenishList.observe(viewLifecycleOwner) { items ->
             adapter.submitList(buildDisplayItems(items))
         }

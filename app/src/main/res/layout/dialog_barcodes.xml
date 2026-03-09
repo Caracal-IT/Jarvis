@@ -25,7 +25,10 @@
             android:layout_weight="1"
             android:hint="@string/hint_barcode"
             android:inputType="text"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textColor="@color/iron_man_gold"
+            android:textColorHint="@color/iron_man_cyan"
+            android:fontFamily="monospace" />
 
         <Button
             android:id="@+id/btnAddBarcode"

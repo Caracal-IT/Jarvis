@@ -35,10 +35,13 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 [X] When adding a Shopping item, user must select a category from the available categories (both with baseline items and empty categories).  
 [X] User must be able to rename a Shopping item.  
 [X] User must be able to remove any item (including baseline items) from the shopping list.  
+[ ] User must be able to swipe right-to-left on a Shopping List item to delete it.  
+[ ] User must be able to swipe left-to-right on a Shopping List item to show action options (rename, manage barcodes).  
 [X] Baseline items can be removed from the shopping list but must persist in the Replenish List.  
 [X] Non-baseline items can be added and removed by the user.  
 [X] User must be able to associate multiple barcodes with a single Shopping item.  
-[X] User must be able to add, view, and remove barcodes from a Shopping item.
+[X] User must be able to add, view, and remove barcodes from a Shopping item.  
+[ ] User must be able to double-tap a Replenish List item to add it to the Shopping List.
 
 ### Canonical Item Naming
 
@@ -129,6 +132,9 @@ Shopping feature is accepted when all are true:
 [X] Replenish List items are displayed in alphabetical order by item name within each category.  
 [X] User can add custom items to the shopping list.  
 [X] User can remove any item (including baseline items) from the shopping list.  
+[ ] User can swipe right-to-left on a Shopping List item to delete it.  
+[ ] User can swipe left-to-right on a Shopping List item to show action options.  
+[ ] User can double-tap a Replenish List item to add it to the Shopping List.  
 [X] Baseline items can be removed from the Shopping List but remain available in the Replenish List.  
 [X] User can rename items successfully.  
 [X] User can associate multiple barcodes with each Shopping item.  

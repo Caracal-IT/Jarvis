@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
         android:letterSpacing="0.1"
-        android:textColor="@color/iron_man_gold_dark"
+        android:textColor="@color/iron_man_gold"
         android:textSize="@dimen/text_size_title"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tvFeaturePlaceholder"
