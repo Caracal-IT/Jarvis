@@ -93,8 +93,8 @@ class ShoppingListFragment : Fragment() {
     }
 
     private fun showRenameDialog(row: ShoppingDisplayItem.Item) {
-        RenameItemDialogFragment.newInstance(row.item.id, row.item.name)
-            .show(childFragmentManager, TAG_RENAME_DIALOG)
+        EditItemDialogFragment.newInstance(row.item.id, row.item.name)
+            .show(childFragmentManager, "edit_item")
     }
 
     override fun onDestroyView() {
@@ -104,6 +104,5 @@ class ShoppingListFragment : Fragment() {
 
     companion object {
         private const val TAG_ADD_DIALOG = "add_item"
-        private const val TAG_RENAME_DIALOG = "rename_item"
     }
 }

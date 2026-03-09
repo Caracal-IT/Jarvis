@@ -19,6 +19,7 @@
     <string name="action_add">Add</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_rename">Rename</string>
+    <string name="action_back">Back</string>
     <string name="action_done">Done</string>
     <string name="action_remove">Remove</string>
     <string name="action_manage_barcodes">Manage Barcodes</string>
