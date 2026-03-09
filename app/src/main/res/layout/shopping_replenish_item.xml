@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/replenish_item_height"
     android:layout_margin="@dimen/spacing_small"
-    android:background="@drawable/bg_list_item_card"
+    android:background="@drawable/shopping_list_bg_item_card"
     android:orientation="horizontal"
     android:padding="@dimen/spacing_medium"
     android:gravity="center_vertical">
@@ -12,7 +12,7 @@
     <FrameLayout
         android:layout_width="@dimen/replenish_item_image_size"
         android:layout_height="@dimen/replenish_item_image_size"
-        android:background="@drawable/bg_icon_circle"
+        android:background="@drawable/shopping_replenish_bg_icon_circle"
         android:padding="4dp">
 
         <ImageView

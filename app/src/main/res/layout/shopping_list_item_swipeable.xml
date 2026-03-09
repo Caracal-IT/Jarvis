@@ -28,7 +28,7 @@
             android:id="@+id/btnRename"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_rename"
+            android:src="@drawable/shopping_list_ic_rename"
             android:contentDescription="@string/action_rename"
             android:background="?attr/selectableItemBackground"
             app:tint="@color/iron_man_gold" />
@@ -54,7 +54,7 @@
         android:id="@+id/foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_list_item_card_opaque"
+        android:background="@drawable/shopping_list_bg_item_card_opaque"
         android:orientation="vertical"
         android:padding="@dimen/spacing_medium"
         android:minHeight="48dp">

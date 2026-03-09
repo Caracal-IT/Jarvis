@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_jarvis">
+    android:background="@drawable/shared_bg_jarvis">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvReplenishList"

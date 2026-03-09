@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_jarvis">
+    android:background="@drawable/shared_bg_jarvis">
 
     <TextView
         android:id="@+id/tvEmptyState"

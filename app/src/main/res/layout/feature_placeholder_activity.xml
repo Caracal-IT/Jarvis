@@ -4,7 +4,7 @@
     android:id="@+id/feature_placeholder_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_jarvis">
+    android:background="@drawable/shared_bg_jarvis">
 
     <TextView
         android:id="@+id/tvFeatureTitle"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_jarvis">
+    android:background="@drawable/shared_bg_jarvis">
 
     <LinearLayout
         android:id="@+id/tabBar"
@@ -22,7 +22,7 @@
             android:textColor="@color/tab_text_color"
             android:textSize="@dimen/text_size_tab"
             android:fontFamily="monospace"
-            android:background="@drawable/bg_tab"
+            android:background="@drawable/shopping_bg_tab"
             style="@style/Widget.AppCompat.Button.Borderless" />
 
         <Button
@@ -34,7 +34,7 @@
             android:textColor="@color/tab_text_color"
             android:textSize="@dimen/text_size_tab"
             android:fontFamily="monospace"
-            android:background="@drawable/bg_tab"
+            android:background="@drawable/shopping_bg_tab"
             style="@style/Widget.AppCompat.Button.Borderless" />
 
     </LinearLayout>

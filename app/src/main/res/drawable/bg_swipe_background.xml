@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Background for swipe action area - transparent green color -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/swipe_action_green_transparent" />
-</shape>
