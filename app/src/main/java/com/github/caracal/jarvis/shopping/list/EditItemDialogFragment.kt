@@ -36,8 +36,9 @@ class EditItemDialogFragment : DialogFragment() {
         // Pre-fill with current name
         binding.etItemName.setText(itemName)
 
-        // Back button - dismiss dialog
+        // Back button - dismiss dialog and reset swipe state
         binding.btnBack.setOnClickListener {
+            resetSwipeState()
             dismiss()
         }
 
@@ -46,6 +47,7 @@ class EditItemDialogFragment : DialogFragment() {
             val newName = binding.etItemName.text?.toString() ?: ""
             val renamed = shoppingViewModel.renameShoppingItem(itemId, newName)
             if (renamed) {
+                resetSwipeState()
                 dismiss()
             }
         }
@@ -56,6 +58,11 @@ class EditItemDialogFragment : DialogFragment() {
         }
 
         return dialog
+    }
+
+    private fun resetSwipeState() {
+        // Reset all items' swipe state by notifying the adapter
+        (requireParentFragment() as? ShoppingListFragment)?.resetAllItemsSwipeState()
     }
 
     override fun onDestroyView() {

@@ -146,7 +146,14 @@ class ShoppingListSwipeCallback(
         val foreground = viewHolder.getForeground()
         val current = foreground.translationX
 
+        // Detect opposite direction swipe: if swiping opposite direction from current open state,
+        // and the other side's actions aren't visible yet, just reset to closed
         val target = when {
+            // Currently open to the right (edit actions visible), swiping left but not far enough for delete
+            current > 0f && swipeStartTranslationX + (-current * 0.5f) >= 0f -> 0f
+            // Currently open to the left (delete actions visible), swiping right but not far enough for edit
+            current < 0f && swipeStartTranslationX + (-current * 0.5f) <= 0f -> 0f
+            // Normal snap behavior
             current >= minOpenTriggerPx -> editRevealWidthPx
             current <= -minOpenTriggerPx -> -deleteRevealWidthPx
             else -> 0f

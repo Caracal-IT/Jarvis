@@ -97,6 +97,13 @@ class ShoppingListFragment : Fragment() {
             .show(childFragmentManager, "edit_item")
     }
 
+    fun resetAllItemsSwipeState() {
+        // Notify all items to reset their swipe state
+        for (i in 0 until adapter.itemCount) {
+            adapter.notifyItemChanged(i)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
