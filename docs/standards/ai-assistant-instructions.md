@@ -81,32 +81,47 @@ All markdown files in this project **MUST** follow these naming rules:
 This rule applies to every `.md` file in the project, including files in `.github/`, `.idea/`,
 `prompts/`, `docs/`, and the project root.
 
-### Rule 7 — Layout File Naming Convention (Non-Negotiable)
-All layout filenames in `res/layout/` **must** use lowercase snake_case and begin with a scope prefix.
-This convention is generic and applies to all current and future features.
+### Rule 7 — Asset File Naming Convention (Non-Negotiable)
+All asset/resource filenames in `res/` **must** use lowercase snake_case and begin with a scope prefix.
+
+**Clarification:** In this project, "assets" for naming purposes means Android resource files under the `res/` folder.
+Files outside `res/` (for example, source files under `app/src/main/java/`) are governed by their own language-specific naming conventions.
 
 #### Required Prefix Strategy
-- `shared_` → components shared across the entire app
-- `<feature>_` → components shared within a feature
-- `<feature>_<subfeature>_` → components used only by a subfeature/screen
+- `shared_` -> assets/components shared across the entire app
+- `<feature>_` -> assets/components shared within a feature
+- `<feature>_<subfeature>_` -> assets/components used only by a specific subfeature/screen
+
+#### Applies To All Asset Types
+- `res/layout/`
+- `res/drawable*/` and `res/mipmap*/`
+- `res/menu/`
+- `res/navigation/`
+- `res/anim/` and `res/animator/`
+- `res/font/`
+- `res/raw/`
+- Any additional asset-like resource directories introduced in future
 
 #### Examples (Shopping)
-- `shared_loading_state.xml` (app-wide shared)
+- `shared_empty_state_panel.xml` (app-wide shared)
 - `shopping_tab_bar.xml` (shared by Shopping List and Replenish)
 - `shopping_list_item_row.xml` (Shopping List only)
 - `shopping_replenish_item_row.xml` (Shopping Replenish only)
+- `shopping_list_swipe_bg.xml` (Shopping List-specific drawable)
+- `shopping_replenish_add_menu.xml` (Shopping Replenish-specific menu)
 
 #### Generic Examples (Future Features)
 - `inventory_card.xml` (feature-shared within Inventory)
 - `inventory_scan_camera_overlay.xml` (Inventory Scan only)
 - `network_status_panel.xml` (feature-shared within Network)
+- `shared_primary_button_bg.xml` (app-wide shared drawable)
 
 #### Additional Constraints
 - Use lowercase only.
 - Use underscores only (no spaces, no hyphens, no camelCase).
 - Keep names explicit and descriptive.
-- Do not create new layouts that violate this scheme.
-- When modifying or replacing existing layouts, migrate names to this scheme when practical.
+- Do not create new assets that violate this scheme.
+- When modifying or replacing existing assets, migrate names to this scheme when practical.
 
 ---
 
