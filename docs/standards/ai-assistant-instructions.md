@@ -81,6 +81,33 @@ All markdown files in this project **MUST** follow these naming rules:
 This rule applies to every `.md` file in the project, including files in `.github/`, `.idea/`,
 `prompts/`, `docs/`, and the project root.
 
+### Rule 7 — Layout File Naming Convention (Non-Negotiable)
+All layout filenames in `res/layout/` **must** use lowercase snake_case and begin with a scope prefix.
+This convention is generic and applies to all current and future features.
+
+#### Required Prefix Strategy
+- `shared_` → components shared across the entire app
+- `<feature>_` → components shared within a feature
+- `<feature>_<subfeature>_` → components used only by a subfeature/screen
+
+#### Examples (Shopping)
+- `shared_loading_state.xml` (app-wide shared)
+- `shopping_tab_bar.xml` (shared by Shopping List and Replenish)
+- `shopping_list_item_row.xml` (Shopping List only)
+- `shopping_replenish_item_row.xml` (Shopping Replenish only)
+
+#### Generic Examples (Future Features)
+- `inventory_card.xml` (feature-shared within Inventory)
+- `inventory_scan_camera_overlay.xml` (Inventory Scan only)
+- `network_status_panel.xml` (feature-shared within Network)
+
+#### Additional Constraints
+- Use lowercase only.
+- Use underscores only (no spaces, no hyphens, no camelCase).
+- Keep names explicit and descriptive.
+- Do not create new layouts that violate this scheme.
+- When modifying or replacing existing layouts, migrate names to this scheme when practical.
+
 ---
 
 ## Pre-Work Checklist
@@ -312,7 +339,7 @@ fun loadShoppingItems(forceRefresh: Boolean = false)
 
 ---
 
-**Version:** 3.3
+**Version:** 3.4
 **Last Updated:** March 7, 2026
 **Status:** ACTIVE — Mandatory for all AI assistants
 **Compliance:** Required — no exceptions without explicit approval
