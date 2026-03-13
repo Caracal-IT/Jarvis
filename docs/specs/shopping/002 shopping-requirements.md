@@ -28,6 +28,7 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 - [X] Scan Flow — Scan from Shopping List and resolve found/not-found
 - [X] Replenish Sync — Hide/show based on Shopping List membership
 - [X] Persistence — Survives app restart and phone restart
+- [X] Shopping List FABs swapped (Add on end, Scan on start) and icon-only
 
 ## Functional Requirements
 
@@ -57,8 +58,9 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 [X] User must be able to associate multiple barcodes with a single Shopping item.  
 [X] User must be able to add, view, and remove barcodes from a Shopping item.  
 [X] User must be able to scan barcode values while editing an item and append them to that item.  
-[X] Shopping List must expose a scan action for item lookup/linking.  
-[X] Scanning from Shopping List must open a post-scan resolve screen.  
+[X] Shopping List must expose a scan action for item lookup/linking via an inline barcode icon on each item and a global scan FAB.  
+[X] Tapping the inline barcode icon opens the Scanner flow (icon-only, no visible text label).  
+[X] Scanning from Shopping List opens a post-scan resolve screen (`BarcodeResultFragment`) where the user can link the scanned barcode to an existing item or create a new item with the barcode attached.  
 [X] If scanned barcode is found, resolve screen must show which item it belongs to and preselect that item.  
 [X] Resolve screen must allow selecting an existing item and linking the scanned barcode.  
 [X] Resolve screen must allow adding a new item (with category selection) and attaching the scanned barcode.
@@ -156,3 +158,4 @@ Shopping feature is accepted when all are true:
 [X] Resolve screen supports both linking to an existing item and adding a new categorized item with the scanned barcode.  
 [X] Replenish hide/show synchronization with Shopping membership is reliable.  
 [X] Canonical naming, duplicate handling, and image semantics remain consistent in common user flows.
+[X] Shopping-list FABs are swapped: Add at left (bottom|start), Scan at right (bottom|end), both icon-only and accessible via contentDescription.

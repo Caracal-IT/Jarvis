@@ -32,7 +32,11 @@ class ShoppingListFragment : Fragment() {
     private val adapter by lazy {
         ShoppingListAdapter(
             onMenuRename = { row -> showRenameDialog(row) },
-            onMenuRemove = { row -> shoppingViewModel.removeShoppingItem(row.item.id) }
+            onMenuRemove = { row -> shoppingViewModel.removeShoppingItem(row.item.id) },
+            onItemBarcode = { _ ->
+                ScanAttachBarcodeDialogFragment.newInstance()
+                    .show(childFragmentManager, "scan_attach_dialog")
+            }
         )
     }
 
@@ -66,6 +70,7 @@ class ShoppingListFragment : Fragment() {
                 if (displayItems.isEmpty()) View.GONE else View.VISIBLE
         }
 
+        // Swap FAB behavior: primary (end) is Add, start FAB is Scan. Keep icons only.
         binding.fabAddItem.setOnClickListener {
             AddItemDialogFragment().show(childFragmentManager, TAG_ADD_DIALOG)
         }

@@ -20,10 +20,12 @@ import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
  *
  * @param onMenuRename Callback invoked when the user selects "Rename" for an item.
  * @param onMenuRemove Callback invoked when the user selects "Remove" for an item.
+ * @param onItemBarcode Optional callback when the inline barcode icon is tapped.
  */
 class ShoppingListAdapter(
     private val onMenuRename: (ShoppingDisplayItem.Item) -> Unit,
-    private val onMenuRemove: (ShoppingDisplayItem.Item) -> Unit
+    private val onMenuRemove: (ShoppingDisplayItem.Item) -> Unit,
+    private val onItemBarcode: ((ShoppingDisplayItem.Item) -> Unit)? = null
 ) : ListAdapter<ShoppingDisplayItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int =
@@ -48,7 +50,7 @@ class ShoppingListAdapter(
         when (val row = getItem(position)) {
             is ShoppingDisplayItem.Header -> (holder as HeaderViewHolder).bind(row)
             is ShoppingDisplayItem.Item -> (holder as ItemViewHolder).bind(
-                row, onMenuRename, onMenuRemove
+                row, onMenuRename, onMenuRemove, onItemBarcode
             )
         }
     }
@@ -75,11 +77,13 @@ class ShoppingListAdapter(
          * @param row The display item containing the [com.github.caracal.jarvis.shopping.data.ShoppingItem].
          * @param onMenuRename Callback for rename action.
          * @param onMenuRemove Callback for remove/delete action.
+         * @param onItemBarcode Optional callback when the inline barcode icon is tapped.
          */
         fun bind(
             row: ShoppingDisplayItem.Item,
             onMenuRename: (ShoppingDisplayItem.Item) -> Unit,
-            onMenuRemove: (ShoppingDisplayItem.Item) -> Unit
+            onMenuRemove: (ShoppingDisplayItem.Item) -> Unit,
+            onItemBarcode: ((ShoppingDisplayItem.Item) -> Unit)?
         ) {
             val item = row.item
             binding.tvItemName.text = item.name
@@ -107,6 +111,11 @@ class ShoppingListAdapter(
             }
             binding.btnDelete.setOnClickListener {
                 onMenuRemove(row)
+            }
+
+            // Inline barcode icon - only wire if caller provided a handler.
+            binding.btnItemBarcode.setOnClickListener {
+                onItemBarcode?.invoke(row)
             }
 
             // Add double-tap listener to reset swipe state

@@ -101,6 +101,17 @@
                 android:visibility="gone" />
         </LinearLayout>
 
+        <!-- NEW: Inline barcode action icon (no visible text) -->
+        <ImageButton
+            android:id="@+id/btnItemBarcode"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:src="@drawable/shopping_list_ic_barcode_scan"
+            android:contentDescription="@string/cd_scan_barcode"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/iron_man_cyan" />
+
     </LinearLayout>
 
 </FrameLayout>
