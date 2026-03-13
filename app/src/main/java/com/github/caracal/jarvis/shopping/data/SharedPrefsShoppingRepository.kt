@@ -24,8 +24,14 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
 
     override fun getShoppingList(): List<ShoppingItem> = shoppingList.sortedWith(itemComparator)
 
-    override fun getReplenishList(): List<ShoppingItem> =
-        BaselineData.baselineItems.sortedWith(itemComparator)
+    override fun getReplenishList(): List<ShoppingItem> {
+        val shoppingIds = shoppingList.asSequence().map { it.id }.toSet()
+        return BaselineData.baselineItems
+            .asSequence()
+            .filter { it.id !in shoppingIds }
+            .sortedWith(itemComparator)
+            .toList()
+    }
 
     override fun getCategories(): List<ShoppingCategory> =
         BaselineData.categories.sortedBy { it.name }
@@ -123,7 +129,7 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
                     )
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             shoppingList.clear()
         }
     }

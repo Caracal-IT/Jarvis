@@ -228,8 +228,8 @@ Android does not natively support real-time blur effects efficiently. Use these 
 |-----------------------------|-----------|--------------------------------|-----------------------------------|
 | Tab Bar Height              | 48        | `tab_height`                   | Fixed tab selector height         |
 | Menu Icon Size              | 48        | `icon_size_menu`               | Three-dot menu icons              |
-| Replenish Item Height       | 72        | `replenish_item_height`        | Fixed height for replenish rows   |
-| Replenish Item Image        | 48        | `replenish_item_image_size`    | Baseline item image thumbnail     |
+| Replenish Item Height       | 84        | `replenish_item_height`        | Fixed height for replenish rows   |
+| Replenish Item Image        | 52        | `replenish_item_image_size`    | Baseline item image thumbnail     |
 | Barcode List Height         | 200       | `barcode_list_height`          | Fixed barcode dialog list height  |
 
 ### Layout Patterns
@@ -309,7 +309,7 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Background:** Semi-transparent with lighter bluish tint (40% opacity: `#66101820`)
 - **NO blur effect** — Simple semi-transparent background only
 - **Border:** 1dp, `iron_man_cyan` at 50% opacity (stronger visible cyan border: `#8000E5FF`)
-- **Height:** 72dp fixed
+- **Height:** 84dp fixed
 - **Padding:** 16dp horizontal, 8dp vertical (internal content padding)
 - **Elevation:** 0dp (flat appearance)
 - **Text color:** `iron_man_gold`
@@ -438,10 +438,11 @@ Android does not natively support real-time blur effects efficiently. Use these 
 ## Icons and Graphics
 
 ### Icon Style
-- **Style:** Item images in lists must be semantic and recognizable (not abstract generic shapes)
-- **Color:** Full-color rendering for item images in shopping/replenish lists
-- **Size (standard):** 24dp
-- **Size (large/menu):** 48dp
+- **UI icons (navigation, actions):** Outlined style, 2dp stroke, `iron_man_gold` (active) or `iron_man_cyan` (inactive)
+- **Item images in lists:** Full-color, clipart-style illustrations — colorful, semantic, and recognizable at small sizes
+- **Item image rendering:** No tint applied — images render in their natural colors
+- **Size (standard UI icon):** 24dp
+- **Size (large/menu icon):** 48dp
 - **Format:** Vector drawable (XML) preferred
 
 ### Baseline Item Images
@@ -493,10 +494,10 @@ Android does not natively support real-time blur effects efficiently. Use these 
 
 - **Swipe left-to-right (→):** Reveals left-side action buttons on transparent green background
   - Background: `swipe_action_green_transparent` (`#6600FF66`)
-  - Two buttons: Rename (80dp) + Barcodes (80dp)
-  - Icons: Edit icon (`ic_rename`) and barcode icon (`ic_barcode`), gold color
+  - Button: Rename (80dp)
+  - Icon: Edit icon (`ic_rename`), gold color
   - Half swipe: Revealed state stays open
-  - Full swipe: Triggers primary right action (if no add action exists, use edit/rename)
+  - Full swipe: Triggers rename/edit action
 
 - **No in-row action buttons** — Actions are only shown on revealed background
 - **Opposite-direction swipe closes** — Swiping back toward center hides actions
@@ -504,9 +505,11 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Snap-open threshold:** 72dp; **snap-open distance:** 160dp
 
 #### Replenish List Items
-- **Double-tap:** Add item to Shopping List
+- **Add button tap:** Add item to Shopping List (primary action)
+- **Double-tap:** Add item to Shopping List (quick action shortcut)
   - Feedback: Toast message confirming addition
   - Visual: Standard ripple effect on tap
+- **Replenish List filtering:** Items currently in the Shopping List are automatically hidden from the Replenish List. When an item is removed from the Shopping List it automatically reappears in the Replenish List.
   
 #### Implementation Notes
 - Use `ItemTouchHelper` with custom `onChildDraw` to translate foreground view

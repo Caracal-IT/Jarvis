@@ -44,9 +44,13 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
 
     /** Reloads all lists and categories from the repository. */
     fun refresh() {
+        refreshLists()
+        _categories.value = repository.getCategories()
+    }
+
+    private fun refreshLists() {
         _shoppingList.value = repository.getShoppingList()
         _replenishList.value = repository.getReplenishList()
-        _categories.value = repository.getCategories()
     }
 
     /**
@@ -68,7 +72,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
             return false
         }
         _addItemError.value = null
-        _shoppingList.value = repository.getShoppingList()
+        refreshLists()
         return true
     }
 
@@ -91,7 +95,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
             return false
         }
         _renameItemError.value = null
-        _shoppingList.value = repository.getShoppingList()
+        refreshLists()
         return true
     }
 
@@ -102,30 +106,9 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      */
     fun removeShoppingItem(itemId: String) {
         repository.removeShoppingItem(itemId)
-        _shoppingList.value = repository.getShoppingList()
+        refreshLists()
     }
 
-    /**
-     * Associates a barcode with a Shopping List item.
-     *
-     * @param itemId The ID of the target item.
-     * @param barcode The barcode string to add.
-     */
-    fun addBarcode(itemId: String, barcode: String) {
-        repository.addBarcode(itemId, barcode)
-        _shoppingList.value = repository.getShoppingList()
-    }
-
-    /**
-     * Removes a barcode from a Shopping List item.
-     *
-     * @param itemId The ID of the target item.
-     * @param barcode The barcode string to remove.
-     */
-    fun removeBarcode(itemId: String, barcode: String) {
-        repository.removeBarcode(itemId, barcode)
-        _shoppingList.value = repository.getShoppingList()
-    }
 
     /**
      * Adds a baseline item to the Shopping List.
@@ -136,7 +119,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
     fun addBaselineItemToShoppingList(baselineItemId: String): Boolean {
         val added = repository.addBaselineItemToShoppingList(baselineItemId)
         if (added) {
-            _shoppingList.value = repository.getShoppingList()
+            refreshLists()
         }
         return added
     }
@@ -144,10 +127,5 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
     /** Clears the add-item error state after the dialog is dismissed. */
     fun clearAddItemError() {
         _addItemError.value = null
-    }
-
-    /** Clears the rename-item error state after the dialog is dismissed. */
-    fun clearRenameItemError() {
-        _renameItemError.value = null
     }
 }
