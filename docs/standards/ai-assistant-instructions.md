@@ -152,6 +152,8 @@ Before writing **any** code, adding **any** feature, or making **any** change, v
 - [ ] I am prepared to follow Kotlin and Android best practices.
 - [ ] I have verified the license of every dependency I intend to add.
 - [ ] I will validate all changes before submission.
+- [ ] I have checked the planned implementation and dependencies for relevant OWASP vulnerabilities and risks.
+- [ ] I will validate new dependencies and changed code against applicable OWASP guidance before submission.
 
 ---
 
@@ -261,6 +263,13 @@ No hardcoded strings, colors, or dimensions are permitted anywhere in source cod
 
 See `docs/standards/licenses.md` for the full approved package list and verification procedure.
 
+### OWASP Security Review (Non-Negotiable)
+- Every dependency change and security-relevant implementation **must** be reviewed for known OWASP risks and vulnerabilities.
+- Check for relevant issues such as insecure data storage, insecure communication, broken authentication, insufficient input validation, unsafe deserialization, exposed secrets, and known vulnerable dependencies.
+- Prefer current, maintained dependencies with no known critical or high-severity vulnerabilities.
+- If a vulnerability is identified, do not proceed as if the implementation is complete until it is fixed, mitigated, or explicitly documented as blocked.
+- When applicable, align security decisions with OWASP Top 10, OWASP Mobile Top 10, and dependency vulnerability checks.
+
 ### Performance and Reliability (Non-Negotiable)
 - Never perform network or database operations on the main thread.
 - Use `Dispatchers.IO` for all I/O-bound work.
@@ -296,6 +305,7 @@ fun loadShoppingItems(forceRefresh: Boolean = false)
 ### When Making Changes
 - Confirm no hardcoded values are introduced.
 - Run `./gradlew lint`.
+- **Check for OWASP vulnerabilities** in newly added dependencies and security-sensitive code paths.
 - **Update spec checkboxes** — when implementing a feature, mark the corresponding requirement checkbox as complete (`[X]`) in the relevant `docs/specs/` file.
 - Run `./gradlew test`.
 - Ensure all public symbols have KDoc.
