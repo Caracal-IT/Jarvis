@@ -10,8 +10,8 @@
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="tab_height">48dp</dimen>
     <dimen name="icon_size_menu">48dp</dimen>
-    <dimen name="replenish_item_height">72dp</dimen>
-    <dimen name="replenish_item_image_size">48dp</dimen>
+    <dimen name="replenish_item_height">84dp</dimen>
+    <dimen name="replenish_item_image_size">52dp</dimen>
     <dimen name="barcode_list_height">200dp</dimen>
     <dimen name="fab_bottom_padding">80dp</dimen>
 </resources>

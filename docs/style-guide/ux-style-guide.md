@@ -282,8 +282,8 @@ Android does not natively support real-time blur effects efficiently. Use these 
 
 #### Shopping List Item
 - **Layout:** Swipeable with foreground content and background action buttons
-- **Foreground content:** Item name + optional barcode count (no action buttons)
-- **Background actions:** Revealed on swipe (rename, barcodes on left; delete on right)
+- **Foreground content:** Item image + item name + optional barcode count (no action buttons)
+- **Background actions:** Revealed on swipe (edit on left; delete on right)
 - **Container style:** Card with semi-transparent background
 - **Item margin:** `spacing_small` (8dp) on all sides (space around each item)
 - **Corner radius:** 0dp (square corners, not rounded)
@@ -297,6 +297,8 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Elevation:** 0dp (flat appearance)
 - **Interaction:** Swipe to reveal action buttons (no menu icon on item)
 - **Action buttons:** 80dp width each, gold icons on colored backgrounds
+- **Item image container:** 48dp circular container with visible cyan border
+- **Item image style:** Full-color semantic image (no monochrome tint)
 - **No dividers** (spacing and borders provide separation)
 
 #### Replenish List Item
@@ -311,11 +313,10 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Padding:** 16dp horizontal, 8dp vertical (internal content padding)
 - **Elevation:** 0dp (flat appearance)
 - **Text color:** `iron_man_gold`
-- **Image/Icon container:** 48dp square with 4dp padding, `spacing_small` (8dp) margin from left edge
-- **Image/Icon background:** Transparent
-- **Image/Icon border:** 1dp, `iron_man_cyan` at 50% opacity, circular (oval shape)
-- **Image/Icon padding:** 4dp inside circle to prevent cutoff
-- **Image/Icon style:** Solid cyan tint or solid cyan-colored image content
+- **Image/Icon container:** 48dp circular container with visible cyan border
+- **Image/Icon background:** Transparent background (no 3D/glossy treatment)
+- **Image/Icon padding:** 4-6dp inside circle to prevent cutoff
+- **Image/Icon style:** Full-color semantic image (no monochrome cyan-only icons)
 - **Image requirements:** Clear contrast between item and background, semantically correct
 - **Interaction:** Tap entire row to add to Shopping List
 - **No dividers** (spacing and borders provide separation)
@@ -437,23 +438,21 @@ Android does not natively support real-time blur effects efficiently. Use these 
 ## Icons and Graphics
 
 ### Icon Style
-- **Style:** Outlined (not filled) for consistency with high-tech aesthetic
-- **Stroke width:** 2dp
-- **Color (active):** `iron_man_gold` (`#F1D56D`)
-- **Color (inactive):** `iron_man_cyan` (`#00E5FF`)
+- **Style:** Item images in lists must be semantic and recognizable (not abstract generic shapes)
+- **Color:** Full-color rendering for item images in shopping/replenish lists
 - **Size (standard):** 24dp
 - **Size (large/menu):** 48dp
 - **Format:** Vector drawable (XML) preferred
 
 ### Baseline Item Images
-- **Size:** 48dp square (in Replenish List)
+- **Size:** 48dp square (in Replenish and Shopping List rows)
 - **Format:** PNG or vector drawable
-- **Container:** Circular (24dp radius), 1dp `iron_man_cyan` border at 30% opacity
-- **Image background:** Transparent (no background color)
-- **Image style:** Solid cyan (`iron_man_cyan`) silhouette or icon
-- **Contrast requirement:** Clear visual separation between item subject and container background
-- **Semantic accuracy:** Image content must match the item (e.g., cheese icon for "Cheese")
-- **Consistency:** All baseline item images use the same solid cyan style
+- **Container:** Circular container with 1dp cyan border
+- **Image background:** Transparent image over bordered container
+- **Image style:** Full-color semantic icon/image matching the item
+- **Contrast requirement:** Clear visual separation between item subject and button/container background
+- **Semantic accuracy:** Image content must match the item (e.g., beef -> cow, chicken -> chicken, cheese -> cheese)
+- **Consistency:** All baseline item images must follow the same circular bordered container pattern
 
 ### Image Guidelines
 - **Aspect ratio:** Square (1:1) for item thumbnails
