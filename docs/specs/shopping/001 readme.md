@@ -16,9 +16,9 @@ Define what Shopping must deliver when the feature is complete.
 ## Quick Map
 
 | File | Primary Focus |
-|---|---|
-| `002 shopping-requirements.md` | End-to-end Shopping capability (add/edit/remove, barcodes, scan flow, persistence) |
-| `003 shopping-list-requirements.md` | Shopping List UX/behavior details (swipes, edit screen, barcode scan resolution, replenish sync) |
+| --- | --- |
+| `002 shopping-requirements.md` | End-to-end Shopping capability: add, edit, remove, barcodes, scan flow, persistence |
+| `003 shopping-list-requirements.md` | Shopping List UX and behavior: swipes, edit screen, barcode scan resolution, replenish sync |
 | `004 restock-requirements.md` | Replenish-based add flows and visibility rules |
 
 ## Boundaries
@@ -42,16 +42,16 @@ When Shopping behavior or scope changes, update:
 Use this quick map to trace requirement areas to current implementation points.
 
 | Requirement Area | Primary Implementation Points |
-|---|---|
-| Shopping list grouping/sorting | `app/src/main/java/com/github/caracal/jarvis/shopping/data/SharedPrefsShoppingRepository.kt` (`itemComparator`, `getShoppingList`) |
-| Replenish grouping/sorting and visibility sync | `app/src/main/java/com/github/caracal/jarvis/shopping/data/SharedPrefsShoppingRepository.kt` (`getReplenishList`) |
-| Shopping list rendering + swipes | `app/src/main/java/com/github/caracal/jarvis/shopping/list/ShoppingListFragment.kt`, `app/src/main/java/com/github/caracal/jarvis/shopping/list/ShoppingListSwipeCallback.kt` |
-| Replenish add flows (tap/double-tap) | `app/src/main/java/com/github/caracal/jarvis/shopping/replenish/ReplenishListFragment.kt`, `app/src/main/java/com/github/caracal/jarvis/shopping/replenish/DoubleTapItemTouchListener.kt` |
-| Add item flow (name + category) | `app/src/main/java/com/github/caracal/jarvis/shopping/list/AddItemDialogFragment.kt` |
-| Edit flow (name + category + barcodes) | `app/src/main/java/com/github/caracal/jarvis/shopping/list/EditItemDialogFragment.kt`, `app/src/main/java/com/github/caracal/jarvis/shopping/list/BarcodeListAdapter.kt` |
-| Scan flow and barcode resolution | `app/src/main/java/com/github/caracal/jarvis/shopping/list/BarcodeScannerFragment.kt`, `app/src/main/java/com/github/caracal/jarvis/shopping/list/BarcodeResultFragment.kt` |
-| Shopping state and orchestration | `app/src/main/java/com/github/caracal/jarvis/shopping/ui/ShoppingViewModel.kt` |
-| Baseline categories/items and IDs | `app/src/main/java/com/github/caracal/jarvis/shopping/data/BaselineData.kt` |
-| Baseline item images mapping | `app/src/main/java/com/github/caracal/jarvis/shopping/replenish/BaselineImageMapper.kt` |
+| --- | --- |
+| Shopping list grouping/sorting | `SharedPrefsShoppingRepository.kt` (`itemComparator`, `getShoppingList`) |
+| Replenish grouping/sorting and visibility sync | `SharedPrefsShoppingRepository.kt` (`getReplenishList`) |
+| Shopping list rendering and swipes | `ShoppingListFragment.kt`, `ShoppingListSwipeCallback.kt` |
+| Replenish add flows (tap/double-tap) | `ReplenishListFragment.kt`, `DoubleTapItemTouchListener.kt` |
+| Add item flow (name and category) | `AddItemDialogFragment.kt` |
+| Edit flow (name, category, barcodes) | `EditItemDialogFragment.kt`, `BarcodeListAdapter.kt` |
+| Scan flow and barcode resolution | `BarcodeScannerFragment.kt`, `BarcodeResultFragment.kt` |
+| Shopping state and orchestration | `ShoppingViewModel.kt` |
+| Baseline categories, items, and IDs | `BaselineData.kt` |
+| Baseline item image mapping | `BaselineImageMapper.kt` |
 
 Note: This appendix is for traceability only and does not replace the requirement details in `002 shopping-requirements.md`, `003 shopping-list-requirements.md`, or `004 restock-requirements.md`.

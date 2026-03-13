@@ -25,19 +25,17 @@ This document covers:
 
 ## Implementation Status Snapshot
 
-| Area | Requirement | Status |
-|---|---|---|
-| List Rendering | Group by category, then sort by item name | [X] |
-| List Rendering | Clear empty state and readable populated state | [X] |
-| Item Actions | Swipe right-to-left deletes item | [X] |
-| Item Actions | Swipe left-to-right reveals rename/edit action | [X] |
-| Edit Screen | Edit name and category in one screen | [X] |
-| Edit Screen | Add/remove multiple barcodes in one screen | [X] |
-| Scan Flow | Scan button available on Shopping List | [X] |
-| Scan Flow | If barcode not found: link existing item or add new item | [X] |
-| Replenish Sync | Hide items already present in Shopping List | [X] |
-| Replenish Sync | Re-show items removed from Shopping List | [X] |
-| Persistence | Shopping/Replenish state survives app/device restart | [X] |
+- [X] List Rendering — Group by category, then sort by item name
+- [X] List Rendering — Clear empty state and readable populated state
+- [X] Item Actions — Swipe right-to-left deletes item
+- [X] Item Actions — Swipe left-to-right reveals rename/edit action
+- [X] Edit Screen — Edit name and category in one screen
+- [X] Edit Screen — Add/remove multiple barcodes in one screen
+- [X] Scan Flow — Scan button available on Shopping List
+- [X] Scan Flow — If barcode not found: link existing item or add new item
+- [X] Replenish Sync — Hide items already present in Shopping List
+- [X] Replenish Sync — Re-show items removed from Shopping List
+- [X] Persistence — Shopping/Replenish state survives app/device restart
 
 ## Functional Requirements
 

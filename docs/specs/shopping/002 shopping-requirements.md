@@ -22,14 +22,12 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 ## Implementation Status Snapshot
 
-| Area | Requirement | Status |
-|---|---|---|
-| Shopping List | Grouped by category, sorted by item name | [X] |
-| Item Actions | Add/edit/remove with swipe actions | [X] |
-| Edit Flow | Edit name + category + multi-barcodes | [X] |
-| Scan Flow | Scan from Shopping List and resolve found/not-found | [X] |
-| Replenish Sync | Hide/show based on Shopping List membership | [X] |
-| Persistence | Survives app restart and phone restart | [X] |
+- [X] Shopping List — Grouped by category and sorted by item name
+- [X] Item Actions — Add/edit/remove with swipe actions
+- [X] Edit Flow — Edit name, category, and multiple barcodes
+- [X] Scan Flow — Scan from Shopping List and resolve found/not-found
+- [X] Replenish Sync — Hide/show based on Shopping List membership
+- [X] Persistence — Survives app restart and phone restart
 
 ## Functional Requirements
 
@@ -82,48 +80,48 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 #### Baseline Item Configuration Table
 
-| Category         | Baseline Item        |
-|------------------|----------------------|
-| Bakery           | Low-Carb Bread       |
-| Barbecue         | Charcoal             |
-| Barbecue         | Fire Lighters        |
-| Barbecue         | Wood                 |
-| Beverages        | Coffee               |
-| Beverages        | Tea                  |
-| Cleaning         | Cloths               |
-| Cleaning         | Dishwashing Liquid   |
-| Cleaning         | Fabric Softener      |
-| Cleaning         | Sponges              |
-| Cleaning         | Washing Machine Soap |
-| Condiments       | Mustard              |
-| Dairy            | Butter               |
-| Dairy            | Cheese               |
-| Dairy            | Milk                 |
-| Dairy            | Yogurt               |
-| Frozen Foods     | Frozen Berries       |
-| Frozen Foods     | Frozen Vegetables    |
-| Meat             | Beef                 |
-| Meat             | Chicken              |
-| Meat             | Pork                 |
-| Oils             | Coconut Oil          |
-| Oils             | Olive Oil            |
-| Pantry           | Nuts                 |
-| Pantry           | Sweeteners           |
-| Pantry           | Treats               |
-| Personal Care    | Body Wash            |
-| Personal Care    | Mouthwash            |
-| Personal Care    | Soap Bar             |
-| Personal Care    | Toothpaste           |
-| Produce          | Avocados             |
-| Produce          | Blueberries          |
-| Produce          | Mushrooms            |
-| Produce          | Strawberries         |
-| Produce          | Tomatoes             |
-| Produce          | Vegetables           |
-| Seafood          | Fish                 |
-| Seafood          | Shrimp               |
-| Seasonings       | Spices               |
-| Supplements      | Berocca Boost        |
+| Category | Baseline Item |
+| --- | --- |
+| Bakery | Low-Carb Bread |
+| Barbecue | Charcoal |
+| Barbecue | Fire Lighters |
+| Barbecue | Wood |
+| Beverages | Coffee |
+| Beverages | Tea |
+| Cleaning | Cloths |
+| Cleaning | Dishwashing Liquid |
+| Cleaning | Fabric Softener |
+| Cleaning | Sponges |
+| Cleaning | Washing Machine Soap |
+| Condiments | Mustard |
+| Dairy | Butter |
+| Dairy | Cheese |
+| Dairy | Milk |
+| Dairy | Yogurt |
+| Frozen Foods | Frozen Berries |
+| Frozen Foods | Frozen Vegetables |
+| Meat | Beef |
+| Meat | Chicken |
+| Meat | Pork |
+| Oils | Coconut Oil |
+| Oils | Olive Oil |
+| Pantry | Nuts |
+| Pantry | Sweeteners |
+| Pantry | Treats |
+| Personal Care | Body Wash |
+| Personal Care | Mouthwash |
+| Personal Care | Soap Bar |
+| Personal Care | Toothpaste |
+| Produce | Avocados |
+| Produce | Blueberries |
+| Produce | Mushrooms |
+| Produce | Strawberries |
+| Produce | Tomatoes |
+| Produce | Vegetables |
+| Seafood | Fish |
+| Seafood | Shrimp |
+| Seasonings | Spices |
+| Supplements | Berocca Boost |
 
 ### 6) Baseline Item Images
 

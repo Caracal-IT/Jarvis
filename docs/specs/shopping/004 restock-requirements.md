@@ -23,14 +23,12 @@ This document covers Replenish-based add flows only:
 
 ## Implementation Status Snapshot
 
-| Area | Requirement | Status |
-|---|---|---|
-| Add Flow | Add from Replenish to Shopping | [X] |
-| Add Flow | Double-tap quick add | [X] |
-| Visibility Sync | Hide if already in Shopping List | [X] |
-| Visibility Sync | Re-show when removed from Shopping List | [X] |
-| Presentation | Group by category and sort by item name | [X] |
-| Presentation | Baseline image per item with semantic match | [X] |
+- [X] Add Flow — Add from Replenish to Shopping
+- [X] Add Flow — Double-tap quick add
+- [X] Visibility Sync — Hide if already in Shopping List
+- [X] Visibility Sync — Re-show when removed from Shopping List
+- [X] Presentation — Group by category and sort by item name
+- [X] Presentation — Baseline image per item with semantic match
 
 ## Functional Requirements
 
