@@ -57,6 +57,7 @@ class BarcodeScannerFragment : DialogFragment() {
         dialog.setContentView(binding.root)
         binding.btnBack.setOnClickListener { dismiss() }
         cameraExecutor = Executors.newSingleThreadExecutor()
+
         return dialog
     }
 
@@ -76,8 +77,9 @@ class BarcodeScannerFragment : DialogFragment() {
         future.addListener({
             val provider = future.get()
             val preview = Preview.Builder().build().also {
-                it.surfaceProvider = binding.cameraPreview.surfaceProvider
+                it.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
             }
+
             val analysis = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
@@ -87,8 +89,12 @@ class BarcodeScannerFragment : DialogFragment() {
                     }
                 }
 
-            provider.unbindAll()
-            provider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+            try {
+                provider.unbindAll()
+                provider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, preview, analysis)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Failed to bind camera: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         }, getMainExecutor(requireContext()))
     }
 
@@ -108,8 +114,104 @@ class BarcodeScannerFragment : DialogFragment() {
         )
 
         BarcodeScanning.getClient().process(image)
-            .addOnSuccessListener { barcodes -> handleBarcodes(barcodes) }
+            .addOnSuccessListener { barcodes -> handleBarcodes(barcodes, proxy) }
             .addOnCompleteListener { proxy.close() }
+    }
+
+    private fun handleBarcodes(barcodes: List<Barcode>, proxy: ImageProxy) {
+        if (scanned || barcodes.isEmpty()) return
+
+        // Use the overlay frame to restrict which barcodes to accept.
+        val overlay = _binding?.scanOverlay
+        val previewView = _binding?.cameraPreview
+        val rotationDegrees = proxy.imageInfo.rotationDegrees
+
+        val accepted = barcodes.firstOrNull { bc ->
+            val raw = bc.rawValue
+            if (raw == null) return@firstOrNull false
+            val box = bc.boundingBox ?: return@firstOrNull false
+            if (overlay != null && previewView != null) {
+                val inFrame = isBarcodeInFrame(box, proxy.width, proxy.height, previewView.width, previewView.height, overlay.getFrameRect(), rotationDegrees)
+                if (inFrame) {
+                    // Provide haptic and visual feedback before final acceptance
+                    requireActivity().runOnUiThread {
+                        try {
+                            overlay.pulse()
+                            val vibrator = requireContext().getSystemService(android.os.Vibrator::class.java)
+                            vibrator?.let {
+                                try {
+                                    it.vibrate(android.os.VibrationEffect.createOneShot(40, android.os.VibrationEffect.DEFAULT_AMPLITUDE))
+                                } catch (_: Throwable) { /* ignore vibration errors */ }
+                            }
+                        } catch (_: Throwable) { /* ignore */ }
+                    }
+                }
+                return@firstOrNull inFrame
+            }
+            true
+        } ?: return
+
+        val raw = accepted.rawValue ?: return
+        scanned = true
+
+        val mode = arguments?.getString(ARG_MODE) ?: MODE_FOR_EDIT
+
+        requireActivity().runOnUiThread {
+            if (mode == MODE_FOR_EDIT) {
+                // Return the barcode to the edit screen.
+                setFragmentResult(RESULT_KEY, Bundle().apply {
+                    putString(RESULT_BARCODE, raw)
+                })
+                dismiss()
+            } else {
+                val shoppingViewModel =
+                    (parentFragment?.parentFragment as? ShoppingFragment)?.viewModel
+                val existingItem = shoppingViewModel?.findByBarcode(raw)
+
+                dismiss()
+                BarcodeResultFragment.newInstance(raw, existingItem?.id)
+                    .show(requireParentFragment().childFragmentManager, TAG_RESULT)
+            }
+        }
+    }
+
+    /**
+     * Returns true if the barcode bounding box (in image coordinates) lies inside the overlay frame
+     * when mapped to preview view coordinates. This uses basic scaling from image->view and does not
+     * attempt complex rotation transforms — sufficient for common device orientations.
+     */
+    private fun isBarcodeInFrame(
+        box: android.graphics.Rect,
+        imageWidth: Int,
+        imageHeight: Int,
+        viewWidth: Int,
+        viewHeight: Int,
+        frame: android.graphics.RectF,
+        rotationDegrees: Int
+    ): Boolean {
+        if (viewWidth == 0 || viewHeight == 0) return false
+
+        // compute center in image coordinates
+        val imgCenterX = (box.left + box.right) / 2f
+        val imgCenterY = (box.top + box.bottom) / 2f
+
+        // normalize to 0..1
+        val nx = imgCenterX / imageWidth.toFloat()
+        val ny = imgCenterY / imageHeight.toFloat()
+
+        // map normalized coords to view coords depending on rotation
+        val viewPoint = when ((rotationDegrees % 360 + 360) % 360) {
+            0 -> Pair(nx * viewWidth, ny * viewHeight)
+            90 -> Pair(ny * viewWidth, (1f - nx) * viewHeight)
+            180 -> Pair((1f - nx) * viewWidth, (1f - ny) * viewHeight)
+            270 -> Pair((1f - ny) * viewWidth, nx * viewHeight)
+            else -> Pair(nx * viewWidth, ny * viewHeight)
+        }
+
+        val centerX = viewPoint.first
+        val centerY = viewPoint.second
+
+        return frame.contains(centerX, centerY)
     }
 
     /** Converts a YUV_420_888 [ImageProxy] to NV21 byte array for ML Kit input. */
@@ -141,32 +243,6 @@ class BarcodeScannerFragment : DialogFragment() {
         }
 
         return nv21
-    }
-
-    private fun handleBarcodes(barcodes: List<Barcode>) {
-        if (scanned || barcodes.isEmpty()) return
-        val raw = barcodes.firstOrNull { it.rawValue != null }?.rawValue ?: return
-        scanned = true
-
-        val mode = arguments?.getString(ARG_MODE) ?: MODE_FOR_EDIT
-
-        requireActivity().runOnUiThread {
-            if (mode == MODE_FOR_EDIT) {
-                // Return the barcode to the edit screen.
-                setFragmentResult(RESULT_KEY, Bundle().apply {
-                    putString(RESULT_BARCODE, raw)
-                })
-                dismiss()
-            } else {
-                val shoppingViewModel =
-                    (parentFragment?.parentFragment as? ShoppingFragment)?.viewModel
-                val existingItem = shoppingViewModel?.findByBarcode(raw)
-
-                dismiss()
-                BarcodeResultFragment.newInstance(raw, existingItem?.id)
-                    .show(requireParentFragment().childFragmentManager, TAG_RESULT)
-            }
-        }
     }
 
     override fun onDestroyView() {

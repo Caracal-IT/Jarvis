@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
+    <!-- Primary camera preview -->
     <androidx.camera.view.PreviewView
         android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Scanning overlay frame -->
-    <View
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_gravity="center"
-        android:background="@drawable/shopping_list_bg_scan_frame" />
+    <!-- Scanning overlay frame (custom view) -->
+    <com.github.caracal.jarvis.shopping.list.ScanOverlayView
+        android:id="@+id/scanOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!-- Top bar -->
     <LinearLayout

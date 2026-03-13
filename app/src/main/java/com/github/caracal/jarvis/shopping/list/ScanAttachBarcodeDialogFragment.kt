@@ -16,7 +16,18 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private val shoppingViewModel by lazy {
-        (requireParentFragment() as ShoppingFragment).viewModel
+        // Try parent fragment chain first
+        var p = parentFragment
+        while (p != null && p !is ShoppingFragment) {
+            p = p.parentFragment
+        }
+        if (p is ShoppingFragment) return@lazy p.viewModel
+
+        // Fallback: try to locate ShoppingFragment by tag via Activity's supportFragmentManager
+        val activity = requireActivity()
+        val fm = activity.supportFragmentManager
+        val candidate = fm.findFragmentByTag("shopping_list") as? ShoppingFragment
+        candidate?.viewModel ?: throw IllegalStateException("ScanAttachBarcodeDialogFragment must be hosted under ShoppingFragment")
     }
 
     // Keep typed adapters so we can update them without unsafe casts
@@ -27,28 +38,35 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
         _binding = DialogScanAttachBarcodeBinding.inflate(layoutInflater)
 
         // Populate existing items spinner
-        val items = shoppingViewModel.shoppingList.value ?: emptyList()
-        val itemNames = items.map { it.name }
+        val initialItems = shoppingViewModel.shoppingList.value ?: emptyList()
+        val itemNames = initialItems.map { it.name }
         existingItemsAdapter = ArrayAdapter(
             requireContext(), R.layout.spinner_item, itemNames
         ).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
         binding.spinnerExistingItems.adapter = existingItemsAdapter
 
         // Populate categories for new item
-        val categories = shoppingViewModel.categories.value ?: emptyList()
+        val initialCategories = shoppingViewModel.categories.value ?: emptyList()
         newCategoryAdapter = ArrayAdapter(
-            requireContext(), R.layout.spinner_item, categories.map { it.name }
+            requireContext(), R.layout.spinner_item, initialCategories.map { it.name }
         ).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
         binding.spinnerNewCategory.adapter = newCategoryAdapter
 
         // Wire buttons
         binding.btnScan.setOnClickListener {
+            // Find a fragment to host the scanner dialog - prefer parent fragment, else fallback to activity-tagged ShoppingFragment
+            val hostFragment = parentFragment ?: requireActivity().supportFragmentManager.findFragmentByTag("shopping_list")
+            val fm = when (hostFragment) {
+                is androidx.fragment.app.Fragment -> hostFragment.childFragmentManager
+                else -> childFragmentManager
+            }
             BarcodeScannerFragment.newInstanceForList()
-                .show(requireParentFragment().childFragmentManager, "scan_barcode")
+                .show(fm, "scan_barcode")
             dismiss()
         }
 
         binding.btnLinkExisting.setOnClickListener {
+            val items = shoppingViewModel.shoppingList.value ?: return@setOnClickListener
             val index = binding.spinnerExistingItems.selectedItemPosition
             if (index < 0 || index >= items.size) return@setOnClickListener
             val barcode = binding.etExistingBarcode.text?.toString()?.trim() ?: ""
@@ -65,6 +83,7 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
         }
 
         binding.btnAddNewWithBarcode.setOnClickListener {
+            val categories = shoppingViewModel.categories.value ?: return@setOnClickListener
             val name = binding.etNewItemName.text?.toString()?.trim() ?: ""
             val catIndex = binding.spinnerNewCategory.selectedItemPosition
             val barcode = binding.etNewBarcode.text?.toString()?.trim() ?: ""
@@ -82,13 +101,13 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
         binding.btnClose.setOnClickListener { dismiss() }
 
         // Observe lists to update spinners if data changes
-        shoppingViewModel.shoppingList.observe(viewLifecycleOwner) { updated ->
+        shoppingViewModel.shoppingList.observe(this) { updated ->
             val names = updated.map { it.name }
             existingItemsAdapter?.let { adapter ->
                 adapter.clear(); adapter.addAll(names); adapter.notifyDataSetChanged()
             }
         }
-        shoppingViewModel.categories.observe(viewLifecycleOwner) { cats ->
+        shoppingViewModel.categories.observe(this) { cats ->
             val names = cats.map { it.name }
             newCategoryAdapter?.let { adapter ->
                 adapter.clear(); adapter.addAll(names); adapter.notifyDataSetChanged()

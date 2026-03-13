@@ -76,7 +76,7 @@ class ShoppingListAdapter(
          *
          * @param row The display item containing the [com.github.caracal.jarvis.shopping.data.ShoppingItem].
          * @param onMenuRename Callback for rename action.
-         * @param onMenuRemove Callback for remove/delete action.
+         * @param onMenuRemove Callback for the remove /delete action.
          * @param onItemBarcode Optional callback when the inline barcode icon is tapped.
          */
         fun bind(
@@ -104,7 +104,7 @@ class ShoppingListAdapter(
             // Reset recycled row state so actions are not visible when closed.
             resetClosedState()
 
-            // Wire up action buttons on revealed background
+            // Wire up action buttons on a revealed background
             binding.btnRename.setOnClickListener {
                 onMenuRename(row)
                 resetClosedState()
@@ -113,12 +113,17 @@ class ShoppingListAdapter(
                 onMenuRemove(row)
             }
 
-            // Inline barcode icon - only wire if caller provided a handler.
+            // Inline barcode icon - only wire if the caller provided a handler.
             binding.btnItemBarcode.setOnClickListener {
-                onItemBarcode?.invoke(row)
+                try {
+                    onItemBarcode?.invoke(row)
+                } catch (t: Throwable) {
+                    android.util.Log.e("ShoppingListAdapter", "Error invoking onItemBarcode", t)
+                    android.widget.Toast.makeText(binding.root.context, "Unable to open barcode actions.", android.widget.Toast.LENGTH_SHORT).show()
+                }
             }
 
-            // Add double-tap listener to reset swipe state
+            // Add a double-tap listener to reset the swipe state
             var lastTapTime = 0L
             binding.foreground.setOnClickListener {
                 val currentTime = System.currentTimeMillis()
@@ -136,7 +141,7 @@ class ShoppingListAdapter(
         fun getForeground(): View = binding.foreground
 
 
-        /** Sets the background color based on swipe direction (green for left actions, red for right action). */
+        /** Sets the background color based on a swipe direction (green for left actions, red for right action). */
         fun setBackgroundColor(colorRes: Int) {
             binding.actionsBackground.setBackgroundColor(
                 binding.root.context.getColor(colorRes)
@@ -158,7 +163,7 @@ class ShoppingListAdapter(
             binding.btnDelete.isEnabled = visible
         }
 
-        /** Shows left actions with progressive alpha for small swipe reveals. */
+        /** Shows left actions with progressive alpha for a small swipe reveal. */
         fun setLeftRevealFraction(fraction: Float) {
             val clamped = fraction.coerceIn(0f, 1f)
             val visible = clamped > 0f
@@ -177,7 +182,7 @@ class ShoppingListAdapter(
             binding.btnDelete.isEnabled = visible
         }
 
-        /** Resets the item to closed position and hides all action buttons. */
+        /** Resets the item to a closed position and hides all action buttons. */
         fun resetClosedState() {
             binding.foreground.translationX = 0f
             showLeftActions(false)
@@ -190,12 +195,9 @@ class ShoppingListAdapter(
             oldItem: ShoppingDisplayItem,
             newItem: ShoppingDisplayItem
         ): Boolean =
-            when {
-                oldItem is ShoppingDisplayItem.Header && newItem is ShoppingDisplayItem.Header ->
-                    oldItem.category.id == newItem.category.id
-                oldItem is ShoppingDisplayItem.Item && newItem is ShoppingDisplayItem.Item ->
-                    oldItem.item.id == newItem.item.id
-                else -> false
+            when (oldItem) {
+                is ShoppingDisplayItem.Header -> newItem is ShoppingDisplayItem.Header && oldItem.category.id == newItem.category.id
+                is ShoppingDisplayItem.Item -> newItem is ShoppingDisplayItem.Item && oldItem.item.id == newItem.item.id
             }
 
         override fun areContentsTheSame(
