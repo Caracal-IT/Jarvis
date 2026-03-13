@@ -11,6 +11,9 @@ import androidx.core.graphics.toColorInt
 /**
  * Full-screen overlay that dims the screen and cuts out a centered rounded rectangle.
  * The rectangle size is responsive (percentage of the smaller screen dimension).
+ *
+ * This version uses a darker scrim to create a more prominent "blur-like" effect on the
+ * camera preview.
  */
 class ScanOverlayView @JvmOverloads constructor(
     context: Context,
@@ -18,7 +21,8 @@ class ScanOverlayView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : View(context, attrs, defStyle) {
 
-    private val scrimPaint = Paint().apply { color = "#99000000".toColorInt() }
+    // Use a darker scrim for a more intense background dimming effect (C0 = 75% opacity)
+    private val scrimPaint = Paint().apply { color = "#C0000000".toColorInt() }
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR); isAntiAlias = true }
     private val strokePaint = Paint().apply { color = Color.WHITE; style = Paint.Style.STROKE; strokeWidth = 4f; isAntiAlias = true }
     private val frameRect = RectF()
