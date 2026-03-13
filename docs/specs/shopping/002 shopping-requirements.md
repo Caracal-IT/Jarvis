@@ -16,36 +16,61 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 [X] Quickly view Shopping items.  
 [X] Add needed items with minimal effort.  
-[X] Edit or remove items as plans change.  
+[X] Edit item details (name, category, barcodes) as plans change.  
+[X] Scan and resolve unknown barcodes without leaving Shopping workflows.  
 [X] Return later and find the same list state.
+
+## Implementation Status Snapshot
+
+| Area | Requirement | Status |
+|---|---|---|
+| Shopping List | Grouped by category, sorted by item name | [X] |
+| Item Actions | Add/edit/remove with swipe actions | [X] |
+| Edit Flow | Edit name + category + multi-barcodes | [X] |
+| Scan Flow | Scan from Shopping List and resolve found/not-found | [X] |
+| Replenish Sync | Hide/show based on Shopping List membership | [X] |
+| Persistence | Survives app restart and phone restart | [X] |
 
 ## Functional Requirements
 
-### List Visibility
+### 1) List Visibility
 
 [X] User must be able to view current Shopping items in a list.  
 [X] Shopping items must be displayed ordered by category, then by item name.  
 [X] Items must be grouped by category with category names displayed as header items.  
 [X] Empty states must be clear and readable.
 
-### Item Management
+### 2) Item Management
 
 [X] Shopping List must initially be empty.  
 [X] User must be able to add a Shopping item.  
 [X] When adding a Shopping item, user must select a category from the available categories (both with baseline items and empty categories).  
+[X] User must be able to edit a Shopping item in a dedicated edit screen.  
 [X] User must be able to rename a Shopping item.  
-[X] User must be able to remove any item (including baseline items) from the shopping list.  
+[X] User must be able to change a Shopping item category.  
+[X] User must be able to remove any item (including baseline items) from the Shopping List.  
 [X] User must be able to swipe right-to-left on a Shopping List item to delete it.  
-[X] User must be able to swipe left-to-right on a Shopping List item to show action options (rename).  
-[X] Baseline items can be removed from the shopping list but must persist in the Replenish List.  
-[X] Non-baseline items can be added and removed by the user.  
+[X] User must be able to swipe left-to-right on a Shopping List item to show action options (rename/edit).  
+[X] Baseline items can be removed from the Shopping List but must persist in baseline source data.  
+[X] Non-baseline items can be added and removed by the user.
+
+### 3) Barcode Management and Scan Flow
+
 [X] User must be able to associate multiple barcodes with a single Shopping item.  
 [X] User must be able to add, view, and remove barcodes from a Shopping item.  
+[X] User must be able to scan barcode values while editing an item and append them to that item.  
+[X] Shopping List must expose a scan action for item lookup/linking.  
+[X] If scanned barcode is found, app must show which item it belongs to.  
+[X] If scanned barcode is not found, user must be able to select an existing item and link the barcode.  
+[X] If scanned barcode is not found, user must be able to add a new item (with category selection) and attach the scanned barcode.
+
+### 4) Replenish Integration
+
 [X] User must be able to double-tap a Replenish List item to add it to the Shopping List.  
 [X] Replenish List must hide items that are currently in the Shopping List.  
 [X] Replenish List must re-display items when they are removed from the Shopping List.
 
-### Canonical Item Naming
+### 5) Canonical Item Naming
 
 [X] Shopping items must use canonical generic names.  
 [X] Baseline items must be managed through the Baseline Item Configuration Table below.  
@@ -100,14 +125,13 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 | Seasonings       | Spices               |
 | Supplements      | Berocca Boost        |
 
-
-### Baseline Item Images
+### 6) Baseline Item Images
 
 [X] A generated image must exist for each baseline item in the configuration table.  
 [X] Each generated image must semantically match its baseline item (for example, `Cheese` must use a cheese image).  
 [X] Each generated image must have clear contrast between the item and the image background.
 
-### Data Continuity
+### 7) Data Continuity
 
 [X] Shopping List must persist across app restarts and phone restarts in its current state (sorted by category, then item name).  
 [X] Replenish List must persist across app restarts and phone restarts in its current state (sorted by category, then item name).  
@@ -125,33 +149,11 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 
 Shopping feature is accepted when all are true:
 
-[X] User can open Shopping from Home.  
-[X] Shopping List starts empty when first opened.  
-[X] User can add items by selecting a category and entering an item name.  
-[X] Shopping items are grouped by category with category headers displayed.  
-[X] Items within each category are displayed in alphabetical order by item name.  
-[X] Replenish List is grouped by category with category headers displayed.  
-[X] Replenish List items are displayed in alphabetical order by item name within each category.  
-[X] User can add custom items to the shopping list.  
-[X] User can remove any item (including baseline items) from the shopping list.  
-[X] User can swipe right-to-left on a Shopping List item to delete it.  
-[X] User can swipe left-to-right on a Shopping List item to show action options (rename).  
-[X] User can double-tap a Replenish List item to add it to the Shopping List.  
-[X] Replenish List hides items that are currently in the Shopping List.  
-[X] Replenish List re-displays items when they are removed from the Shopping List.  
-[X] Baseline items can be removed from the Shopping List but remain available in the Replenish List.  
-[X] User can rename items successfully.  
-[X] User can associate multiple barcodes with each Shopping item.  
-[X] User can add, view, and remove barcodes from Shopping items.  
-[X] Shopping List persists after app restart in its current state and sorted order.  
-[X] Shopping List persists after phone restart in its current state and sorted order.  
-[X] Replenish List persists after app restart in its current state and sorted order.  
-[X] Replenish List persists after phone restart in its current state and sorted order.  
-[X] Canonical naming rules are enforced and brand-specific names are rejected.  
-[X] Duplicate handling follows documented rules.  
-[X] Baseline items are set through the Baseline Item Configuration Table.  
-[X] Each category group has a unique GUID identifier.  
-[X] Each baseline item has a unique GUID identifier.  
-[X] Each baseline item has a generated image that matches the item.  
-[X] Generated baseline item images maintain clear item-to-background contrast.  
-[X] Feature remains stable during common user flows.
+[X] Shopping List and Replenish List grouping/sorting rules are always correct.  
+[X] Add/edit/remove flows update immediately and persist correctly.  
+[X] Edit screen supports name, category, and multiple barcodes.  
+[X] Swipe gestures work in both directions with correct actions and feedback.  
+[X] Scan flow supports found barcode messaging and not-found resolution actions.  
+[X] Not-found resolution supports both linking existing item and adding a new categorized item with barcode.  
+[X] Replenish hide/show synchronization with Shopping membership is reliable.  
+[X] Canonical naming, duplicate handling, and image semantics remain consistent in common user flows.
