@@ -69,6 +69,11 @@ class ShoppingListFragment : Fragment() {
         binding.fabAddItem.setOnClickListener {
             AddItemDialogFragment().show(childFragmentManager, TAG_ADD_DIALOG)
         }
+
+        binding.fabScanBarcode.setOnClickListener {
+            BarcodeScannerFragment.newInstanceForList()
+                .show(childFragmentManager, TAG_SCAN_DIALOG)
+        }
     }
 
     /**
@@ -93,12 +98,15 @@ class ShoppingListFragment : Fragment() {
     }
 
     private fun showRenameDialog(row: ShoppingDisplayItem.Item) {
-        EditItemDialogFragment.newInstance(row.item.id, row.item.name)
-            .show(childFragmentManager, "edit_item")
+        EditItemDialogFragment.newInstance(
+            itemId = row.item.id,
+            itemName = row.item.name,
+            itemCategoryId = row.item.categoryId,
+            itemBarcodes = row.item.barcodes
+        ).show(childFragmentManager, "edit_item")
     }
 
     fun resetAllItemsSwipeState() {
-        // Notify all items to reset their swipe state
         for (i in 0 until adapter.itemCount) {
             adapter.notifyItemChanged(i)
         }
@@ -111,5 +119,6 @@ class ShoppingListFragment : Fragment() {
 
     companion object {
         private const val TAG_ADD_DIALOG = "add_item"
+        private const val TAG_SCAN_DIALOG = "scan_barcode"
     }
 }

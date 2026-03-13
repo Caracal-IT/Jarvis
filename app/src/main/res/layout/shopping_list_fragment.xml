@@ -26,6 +26,18 @@
         android:clipToPadding="false" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabScanBarcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/spacing_medium"
+        android:layout_marginBottom="80dp"
+        android:contentDescription="@string/cd_scan_barcode"
+        app:tint="@color/iron_man_gold"
+        app:backgroundTint="@color/iron_man_red"
+        app:srcCompat="@drawable/shopping_list_ic_barcode_scan" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

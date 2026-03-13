@@ -4,15 +4,21 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Window
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ShoppingListEditItemBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
+import com.github.caracal.jarvis.shopping.data.ShoppingCategory
 
 /**
- * Full-screen dialog fragment for editing a Shopping List item name.
+ * Full-screen dialog fragment for editing a Shopping List item.
  *
- * Provides a text field to edit the item name with validation feedback.
- * A back button allows dismissing the dialog and returning to the Shopping List.
+ * Allows changing the item name, category, and managing multiple barcodes.
+ * A barcode scan button opens [BarcodeScannerFragment] and injects the result.
  * The ViewModel is shared via the grandparent [ShoppingFragment].
  */
 class EditItemDialogFragment : DialogFragment() {
@@ -24,6 +30,15 @@ class EditItemDialogFragment : DialogFragment() {
         (requireParentFragment().requireParentFragment() as ShoppingFragment).viewModel
     }
 
+    private var categories: List<ShoppingCategory> = emptyList()
+    private val barcodes = mutableListOf<String>()
+    private val barcodeAdapter: BarcodeListAdapter by lazy {
+        BarcodeListAdapter { barcode ->
+            barcodes.remove(barcode)
+            barcodeAdapter.submitList(barcodes.toList())
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = ShoppingListEditItemBinding.inflate(layoutInflater)
 
@@ -33,22 +48,65 @@ class EditItemDialogFragment : DialogFragment() {
 
         val itemId = arguments?.getString(ARG_ITEM_ID) ?: return dialog
         val itemName = arguments?.getString(ARG_ITEM_NAME) ?: return dialog
+        val itemCategoryId = arguments?.getString(ARG_ITEM_CATEGORY_ID) ?: return dialog
+        val existingBarcodes = arguments?.getStringArrayList(ARG_ITEM_BARCODES) ?: arrayListOf()
 
-        // Pre-fill with current name
+        barcodes.clear()
+        barcodes.addAll(existingBarcodes)
+
+        // Pre-fill name
         binding.etItemName.setText(itemName)
 
-        // Back button - dismiss dialog
-        binding.btnBack.setOnClickListener {
-            dismiss()
+        // Set up category spinner
+        categories = shoppingViewModel.categories.value ?: emptyList()
+        val categoryNames = categories.map { it.name }
+        val spinnerAdapter = ArrayAdapter(
+            requireContext(), R.layout.spinner_item, categoryNames
+        ).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
+        binding.spinnerCategory.adapter = spinnerAdapter
+        val categoryIndex = categories.indexOfFirst { it.id == itemCategoryId }
+        if (categoryIndex >= 0) binding.spinnerCategory.setSelection(categoryIndex)
+
+        // Set up barcode RecyclerView
+        binding.rvBarcodes.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvBarcodes.adapter = barcodeAdapter
+        barcodeAdapter.submitList(barcodes.toList())
+
+        // Add barcode manually
+        binding.btnAddBarcode.setOnClickListener {
+            val barcode = binding.etBarcode.text?.toString()?.trim() ?: ""
+            if (barcode.isNotEmpty() && barcode !in barcodes) {
+                barcodes.add(barcode)
+                barcodeAdapter.submitList(barcodes.toList())
+                binding.etBarcode.text?.clear()
+            }
         }
 
-        // Save button
+        // Scan barcode button — open scanner and wait for result
+        binding.btnScanBarcode.setOnClickListener {
+            setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY) { _, bundle ->
+                val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
+                if (scanned.isNotEmpty() && scanned !in barcodes) {
+                    barcodes.add(scanned)
+                    barcodeAdapter.submitList(barcodes.toList())
+                    Toast.makeText(requireContext(), getString(R.string.msg_barcode_found, scanned), Toast.LENGTH_SHORT).show()
+                }
+            }
+            BarcodeScannerFragment.newInstanceForEdit()
+                .show(childFragmentManager, TAG_SCANNER)
+        }
+
+        // Back
+        binding.btnBack.setOnClickListener { dismiss() }
+
+        // Save
         binding.btnSave.setOnClickListener {
             val newName = binding.etItemName.text?.toString() ?: ""
-            val renamed = shoppingViewModel.renameShoppingItem(itemId, newName)
-            if (renamed) {
-                dismiss()
-            }
+            val catIndex = binding.spinnerCategory.selectedItemPosition
+            if (catIndex < 0 || catIndex >= categories.size) return@setOnClickListener
+            val newCategoryId = categories[catIndex].id
+            val updated = shoppingViewModel.updateShoppingItem(itemId, newName, newCategoryId, barcodes.toList())
+            if (updated) dismiss()
         }
 
         // Observe validation errors
@@ -61,7 +119,7 @@ class EditItemDialogFragment : DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        // Reset swipe states when returning to the shopping list.
+        shoppingViewModel.clearRenameItemError()
         (parentFragment as? ShoppingListFragment)?.resetAllItemsSwipeState()
     }
 
@@ -73,13 +131,22 @@ class EditItemDialogFragment : DialogFragment() {
     companion object {
         private const val ARG_ITEM_ID = "item_id"
         private const val ARG_ITEM_NAME = "item_name"
+        private const val ARG_ITEM_CATEGORY_ID = "item_category_id"
+        private const val ARG_ITEM_BARCODES = "item_barcodes"
+        private const val TAG_SCANNER = "barcode_scanner"
 
-        fun newInstance(itemId: String, itemName: String): EditItemDialogFragment =
-            EditItemDialogFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_ITEM_ID, itemId)
-                    putString(ARG_ITEM_NAME, itemName)
-                }
+        fun newInstance(
+            itemId: String,
+            itemName: String,
+            itemCategoryId: String,
+            itemBarcodes: List<String>
+        ): EditItemDialogFragment = EditItemDialogFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_ITEM_ID, itemId)
+                putString(ARG_ITEM_NAME, itemName)
+                putString(ARG_ITEM_CATEGORY_ID, itemCategoryId)
+                putStringArrayList(ARG_ITEM_BARCODES, ArrayList(itemBarcodes))
             }
+        }
     }
 }

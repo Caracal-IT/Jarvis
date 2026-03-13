@@ -36,6 +36,51 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
     override fun getCategories(): List<ShoppingCategory> =
         BaselineData.categories.sortedBy { it.name }
 
+    override fun updateShoppingItem(
+        itemId: String,
+        newName: String,
+        newCategoryId: String,
+        newBarcodes: List<String>
+    ): Boolean {
+        val index = shoppingList.indexOfFirst { it.id == itemId }
+        if (index < 0) return false
+        val trimmed = newName.trim()
+        val duplicate = shoppingList.any {
+            it.id != itemId &&
+                it.name.equals(trimmed, ignoreCase = true) &&
+                it.categoryId == newCategoryId
+        }
+        if (duplicate) return false
+        shoppingList[index] = shoppingList[index].copy(
+            name = trimmed,
+            categoryId = newCategoryId,
+            barcodes = newBarcodes
+        )
+        saveToPrefs()
+        return true
+    }
+
+    override fun findByBarcode(barcode: String): ShoppingItem? =
+        shoppingList.find { barcode in it.barcodes }
+
+    override fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String): Boolean {
+        val trimmed = name.trim()
+        val duplicate = shoppingList.any {
+            it.name.equals(trimmed, ignoreCase = true) && it.categoryId == categoryId
+        }
+        if (duplicate) return false
+        val newItem = ShoppingItem(
+            id = java.util.UUID.randomUUID().toString(),
+            name = trimmed,
+            categoryId = categoryId,
+            isBaseline = false,
+            barcodes = listOf(barcode)
+        )
+        shoppingList.add(newItem)
+        saveToPrefs()
+        return true
+    }
+
     override fun addShoppingItem(name: String, categoryId: String): ShoppingItem? {
         val trimmed = name.trim()
         val duplicate = shoppingList.any {

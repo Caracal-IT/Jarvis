@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="6dp">
+
+    <TextView
+        android:id="@+id/tvBarcode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/iron_man_cyan"
+        android:textSize="@dimen/text_size_small"
+        android:fontFamily="monospace" />
+
+    <ImageButton
+        android:id="@+id/btnDeleteBarcode"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:contentDescription="@string/cd_remove_barcode"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/iron_man_red" />
+
+</LinearLayout>
+
