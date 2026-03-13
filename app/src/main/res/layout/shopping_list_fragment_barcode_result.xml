@@ -32,6 +32,7 @@
                 app:tint="@color/iron_man_gold" />
 
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,6 +52,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:textColor="@color/iron_man_cyan"
+            android:textSize="@dimen/text_size_small"
+            android:fontFamily="monospace"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tvBarcodeStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/msg_barcode_not_linked_yet"
+            android:textColor="@color/iron_man_gold"
             android:textSize="@dimen/text_size_small"
             android:fontFamily="monospace"
             android:gravity="center" />
@@ -139,4 +151,3 @@
 
     </LinearLayout>
 </FrameLayout>
-

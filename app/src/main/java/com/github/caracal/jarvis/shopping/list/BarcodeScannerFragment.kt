@@ -7,20 +7,21 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResult
-import com.github.caracal.jarvis.R
-import com.github.caracal.jarvis.databinding.ShoppingListFragmentScanBinding
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.common.InputImage
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getMainExecutor
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
+import com.github.caracal.jarvis.R
+import com.github.caracal.jarvis.databinding.ShoppingListFragmentScanBinding
+import com.github.caracal.jarvis.shopping.ShoppingFragment
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -29,8 +30,8 @@ import java.util.concurrent.Executors
  *
  * On successful scan:
  * - If [MODE_FOR_EDIT], delivers a result via [setFragmentResult] with key [RESULT_KEY].
- * - If [MODE_FOR_LIST], checks if barcode exists in the Shopping List via ViewModel;
- *   if not found, replaces itself with [BarcodeResultFragment].
+ * - If [MODE_FOR_LIST], opens [BarcodeResultFragment] so the user can link to an existing
+ *   item or create a new item with the scanned barcode.
  */
 class BarcodeScannerFragment : DialogFragment() {
 
@@ -151,32 +152,19 @@ class BarcodeScannerFragment : DialogFragment() {
 
         requireActivity().runOnUiThread {
             if (mode == MODE_FOR_EDIT) {
-                // Return barcode to the edit screen
+                // Return the barcode to the edit screen.
                 setFragmentResult(RESULT_KEY, Bundle().apply {
                     putString(RESULT_BARCODE, raw)
                 })
                 dismiss()
             } else {
-                // Check if the barcode already belongs to an item
-                val shoppingViewModel = try {
-                    (requireParentFragment().requireParentFragment()
-                            as? com.github.caracal.jarvis.shopping.ShoppingFragment)?.viewModel
-                } catch (_: Exception) { null }
-
+                val shoppingViewModel =
+                    (parentFragment?.parentFragment as? ShoppingFragment)?.viewModel
                 val existingItem = shoppingViewModel?.findByBarcode(raw)
-                if (existingItem != null) {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.msg_barcode_found, existingItem.name),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    dismiss()
-                } else {
-                    // Replace it with the result fragment so the user can link or add new
-                    dismiss()
-                    BarcodeResultFragment.newInstance(raw)
-                        .show(requireParentFragment().childFragmentManager, TAG_RESULT)
-                }
+
+                dismiss()
+                BarcodeResultFragment.newInstance(raw, existingItem?.id)
+                    .show(requireParentFragment().childFragmentManager, TAG_RESULT)
             }
         }
     }

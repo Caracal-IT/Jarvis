@@ -32,7 +32,8 @@ This document covers:
 - [X] Edit Screen — Edit name and category in one screen
 - [X] Edit Screen — Add/remove multiple barcodes in one screen
 - [X] Scan Flow — Scan button available on Shopping List
-- [X] Scan Flow — If barcode not found: link existing item or add new item
+- [X] Scan Flow — Post-scan resolve screen opens for found and not-found barcodes
+- [X] Scan Flow — Resolve screen supports link existing item and add new item with scanned barcode
 - [X] Replenish Sync — Hide items already present in Shopping List
 - [X] Replenish Sync — Re-show items removed from Shopping List
 - [X] Persistence — Shopping/Replenish state survives app/device restart
@@ -69,10 +70,11 @@ This document covers:
 ### 4) Barcode Scan Flow (Shopping List Screen)
 
 [X] Shopping List must expose a scan action button.  
-[X] Scanning must look up whether the barcode already belongs to a Shopping List item.  
-[X] If barcode is found, app must notify user which item it belongs to.  
-[X] If barcode is not found, app must offer linking it to an existing item.  
-[X] If barcode is not found, app must offer adding a new item with selected category and the scanned barcode attached.
+[X] Scanning must open a post-scan resolve screen for barcode actions.  
+[X] If barcode is found, resolve screen must show which item it currently belongs to.  
+[X] If barcode is found, resolve screen must preselect the matched existing item.  
+[X] Resolve screen must allow linking the scanned barcode to an existing item.  
+[X] Resolve screen must allow adding a new item with selected category and the scanned barcode attached.
 
 ### 5) Replenish List Sync Rules
 
@@ -111,7 +113,8 @@ Shopping List requirements are accepted when all are true:
 [X] Add, edit, and remove operations reflect immediately in the Shopping List.  
 [X] Swipe delete and swipe edit gestures work with correct visual direction/background semantics.  
 [X] Edit screen supports name change, category change, and multi-barcode management.  
-[X] Shopping List scan action supports found/not-found decision flow.  
+[X] Shopping List scan action opens the resolve screen for found and not-found outcomes.  
+[X] Resolve screen supports both "link existing item" and "add new item" outcomes with the scanned barcode attached.  
 [X] Not-found flow supports both "link existing item" and "add new item" outcomes.  
 [X] Replenish List hide/show rules remain synchronized with Shopping List membership.  
 [X] Sorting and grouping rules remain correct after all updates and restarts.  

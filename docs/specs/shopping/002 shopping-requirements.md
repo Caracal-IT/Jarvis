@@ -58,9 +58,10 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 [X] User must be able to add, view, and remove barcodes from a Shopping item.  
 [X] User must be able to scan barcode values while editing an item and append them to that item.  
 [X] Shopping List must expose a scan action for item lookup/linking.  
-[X] If scanned barcode is found, app must show which item it belongs to.  
-[X] If scanned barcode is not found, user must be able to select an existing item and link the barcode.  
-[X] If scanned barcode is not found, user must be able to add a new item (with category selection) and attach the scanned barcode.
+[X] Scanning from Shopping List must open a post-scan resolve screen.  
+[X] If scanned barcode is found, resolve screen must show which item it belongs to and preselect that item.  
+[X] Resolve screen must allow selecting an existing item and linking the scanned barcode.  
+[X] Resolve screen must allow adding a new item (with category selection) and attaching the scanned barcode.
 
 ### 4) Replenish Integration
 
@@ -151,7 +152,7 @@ Shopping feature is accepted when all are true:
 [X] Add/edit/remove flows update immediately and persist correctly.  
 [X] Edit screen supports name, category, and multiple barcodes.  
 [X] Swipe gestures work in both directions with correct actions and feedback.  
-[X] Scan flow supports found barcode messaging and not-found resolution actions.  
-[X] Not-found resolution supports both linking existing item and adding a new categorized item with barcode.  
+[X] Scan flow opens a resolve screen for found and not-found outcomes, with clear found-item context when matched.  
+[X] Resolve screen supports both linking to an existing item and adding a new categorized item with the scanned barcode.  
 [X] Replenish hide/show synchronization with Shopping membership is reliable.  
 [X] Canonical naming, duplicate handling, and image semantics remain consistent in common user flows.

@@ -13,7 +13,7 @@ import com.github.caracal.jarvis.shopping.data.ShoppingCategory
 import com.github.caracal.jarvis.shopping.data.ShoppingItem
 
 /**
- * Screen shown when a scanned barcode is not linked to any existing Shopping List item.
+ * Screen shown after a barcode scan from the Shopping List.
  *
  * The user can either:
  * 1. Link the barcode to an existing item in the Shopping List.
@@ -38,40 +38,54 @@ class BarcodeResultFragment : DialogFragment() {
         dialog.setContentView(binding.root)
 
         val barcode = arguments?.getString(ARG_BARCODE) ?: run { dismiss(); return dialog }
+        val matchedItemId = arguments?.getString(ARG_MATCHED_ITEM_ID)
 
-        binding.tvScannedBarcode.text = getString(R.string.msg_barcode_found, barcode)
+        binding.tvScannedBarcode.text = getString(R.string.msg_scanned_barcode, barcode)
 
-        // Populate existing items spinner
+        // Populate existing items spinner.
         shoppingItems = shoppingViewModel.shoppingList.value ?: emptyList()
         val itemNames = shoppingItems.map { it.name }
         binding.spinnerExistingItem.adapter = ArrayAdapter(
-            requireContext(), R.layout.spinner_item, itemNames
+            requireContext(),
+            R.layout.spinner_item,
+            itemNames
         ).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
 
-        // Populate new category spinner
+        // Populate new category spinner.
         categories = shoppingViewModel.categories.value ?: emptyList()
         binding.spinnerNewCategory.adapter = ArrayAdapter(
-            requireContext(), R.layout.spinner_item, categories.map { it.name }
+            requireContext(),
+            R.layout.spinner_item,
+            categories.map { it.name }
         ).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
+
+        configureHeaderAndSelection(matchedItemId)
 
         binding.btnBack.setOnClickListener { dismiss() }
 
-        // Link barcode to existing item
+        // Link barcode to existing item.
         binding.btnLinkItem.setOnClickListener {
             val index = binding.spinnerExistingItem.selectedItemPosition
             if (index < 0 || index >= shoppingItems.size) return@setOnClickListener
             val item = shoppingItems[index]
             val newBarcodes = (item.barcodes + barcode).distinct()
             val updated = shoppingViewModel.updateShoppingItem(
-                item.id, item.name, item.categoryId, newBarcodes
+                item.id,
+                item.name,
+                item.categoryId,
+                newBarcodes
             )
             if (updated) {
-                Toast.makeText(requireContext(), getString(R.string.msg_barcode_linked, item.name), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.msg_barcode_linked, item.name),
+                    Toast.LENGTH_SHORT
+                ).show()
                 dismiss()
             }
         }
 
-        // Add new item with barcode
+        // Add new item with barcode.
         binding.btnAddNewItem.setOnClickListener {
             val name = binding.etNewItemName.text?.toString()?.trim() ?: ""
             val catIndex = binding.spinnerNewCategory.selectedItemPosition
@@ -79,12 +93,43 @@ class BarcodeResultFragment : DialogFragment() {
             val categoryId = categories[catIndex].id
             val newItem = shoppingViewModel.addShoppingItemWithBarcode(name, categoryId, barcode)
             if (newItem) {
-                Toast.makeText(requireContext(), getString(R.string.msg_item_added_to_list, name), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.msg_item_added_to_list, name),
+                    Toast.LENGTH_SHORT
+                ).show()
                 dismiss()
             }
         }
 
         return dialog
+    }
+
+    private fun configureHeaderAndSelection(matchedItemId: String?) {
+        if (shoppingItems.isEmpty()) {
+            binding.spinnerExistingItem.isEnabled = false
+            binding.btnLinkItem.isEnabled = false
+            binding.tvTitle.text = getString(R.string.title_barcode_not_found)
+            binding.tvBarcodeStatus.text = getString(R.string.msg_no_items_to_link)
+            return
+        }
+
+        if (matchedItemId == null) {
+            binding.tvTitle.text = getString(R.string.title_barcode_not_found)
+            binding.tvBarcodeStatus.text = getString(R.string.msg_barcode_not_linked_yet)
+            return
+        }
+
+        val matchedIndex = shoppingItems.indexOfFirst { it.id == matchedItemId }
+        if (matchedIndex >= 0) {
+            val matchedItem = shoppingItems[matchedIndex]
+            binding.spinnerExistingItem.setSelection(matchedIndex)
+            binding.tvTitle.text = getString(R.string.title_barcode_found)
+            binding.tvBarcodeStatus.text = getString(R.string.msg_barcode_already_linked, matchedItem.name)
+        } else {
+            binding.tvTitle.text = getString(R.string.title_barcode_not_found)
+            binding.tvBarcodeStatus.text = getString(R.string.msg_barcode_not_linked_yet)
+        }
     }
 
     override fun onDestroyView() {
@@ -94,10 +139,13 @@ class BarcodeResultFragment : DialogFragment() {
 
     companion object {
         private const val ARG_BARCODE = "barcode"
+        private const val ARG_MATCHED_ITEM_ID = "matched_item_id"
 
-        fun newInstance(barcode: String) = BarcodeResultFragment().apply {
-            arguments = Bundle().apply { putString(ARG_BARCODE, barcode) }
+        fun newInstance(barcode: String, matchedItemId: String? = null) = BarcodeResultFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_BARCODE, barcode)
+                putString(ARG_MATCHED_ITEM_ID, matchedItemId)
+            }
         }
     }
 }
-

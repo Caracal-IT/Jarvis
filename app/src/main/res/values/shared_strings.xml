@@ -16,6 +16,7 @@
     <string name="dialog_title_edit_item">Edit Item</string>
     <string name="title_scan_barcode">Scan Barcode</string>
     <string name="title_barcode_not_found">Barcode Not Found</string>
+    <string name="title_barcode_found">Barcode Found</string>
     <string name="hint_select_category">Category</string>
     <string name="hint_item_name">Item name</string>
     <string name="hint_barcode">Barcode</string>
@@ -43,6 +44,10 @@
     <string name="msg_barcode_found">Found item: %1$s</string>
     <string name="msg_barcode_linked">Barcode linked to %1$s.</string>
     <string name="msg_camera_permission_denied">Camera permission is required to scan barcodes.</string>
+    <string name="msg_scanned_barcode">Scanned barcode: %1$s</string>
+    <string name="msg_barcode_not_linked_yet">This barcode is not linked yet. Link it to an item or add a new one.</string>
+    <string name="msg_barcode_already_linked">This barcode is already linked to %1$s.</string>
+    <string name="msg_no_items_to_link">Your Shopping List has no items yet. Add a new item below.</string>
     <plurals name="barcode_count">
         <item quantity="one">%d barcode</item>
         <item quantity="other">%d barcodes</item>
