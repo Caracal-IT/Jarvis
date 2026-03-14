@@ -16,8 +16,8 @@ import com.github.caracal.jarvis.shopping.data.ShoppingItem
  * Screen shown after a barcode scan from the Shopping List.
  *
  * The user can either:
- * 1. Link the barcode to an existing item in the Shopping List.
- * 2. Create a new item with that barcode attached.
+ * 1. Link the barcode to an existing item in the Replenish List.
+ * 2. Create a new item (which is also added to the Replenish List).
  */
 class BarcodeResultFragment : DialogFragment() {
 
@@ -25,13 +25,10 @@ class BarcodeResultFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private val shoppingViewModel by lazy {
-        // This fragment is shown from BarcodeScannerFragment using the childFragmentManager
-        // of ShoppingListFragment. Thus, its parent is ShoppingListFragment, and its
-        // grandparent is ShoppingFragment which hosts the ViewModel.
         (requireParentFragment().requireParentFragment() as ShoppingFragment).viewModel
     }
 
-    private var shoppingItems: List<ShoppingItem> = emptyList()
+    private var replenishItems: List<ShoppingItem> = emptyList()
     private var categories: List<ShoppingCategory> = emptyList()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -45,9 +42,9 @@ class BarcodeResultFragment : DialogFragment() {
 
         binding.tvScannedBarcode.text = getString(R.string.msg_scanned_barcode, barcode)
 
-        // Populate existing items spinner.
-        shoppingItems = shoppingViewModel.shoppingList.value ?: emptyList()
-        val itemNames = shoppingItems.map { it.name }
+        // Populate items from the replenish list (all items not currently on the shopping list)
+        replenishItems = shoppingViewModel.replenishList.value ?: emptyList()
+        val itemNames = replenishItems.map { it.name }
         binding.spinnerExistingItem.adapter = ArrayAdapter(
             requireContext(),
             R.layout.spinner_item,
@@ -66,11 +63,11 @@ class BarcodeResultFragment : DialogFragment() {
 
         binding.btnBack.setOnClickListener { dismiss() }
 
-        // Link barcode to existing item.
+        // Link barcode to existing item in the replenish list and move it to shopping list.
         binding.btnLinkItem.setOnClickListener {
             val index = binding.spinnerExistingItem.selectedItemPosition
-            if (index < 0 || index >= shoppingItems.size) return@setOnClickListener
-            val item = shoppingItems[index]
+            if (index < 0 || index >= replenishItems.size) return@setOnClickListener
+            val item = replenishItems[index]
             val newBarcodes = (item.barcodes + barcode).distinct()
             val updated = shoppingViewModel.updateShoppingItem(
                 item.id,
@@ -79,6 +76,8 @@ class BarcodeResultFragment : DialogFragment() {
                 newBarcodes
             )
             if (updated) {
+                // Move it to the shopping list
+                shoppingViewModel.addBaselineItemToShoppingList(item.id)
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.msg_barcode_linked, item.name),
@@ -88,14 +87,16 @@ class BarcodeResultFragment : DialogFragment() {
             }
         }
 
-        // Add new item with barcode.
+        // Add new item with barcode. It will be added to the shopping list, 
+        // which automatically makes it part of the system (and thus the replenish list 
+        // if removed from shopping later).
         binding.btnAddNewItem.setOnClickListener {
             val name = binding.etNewItemName.text?.toString()?.trim() ?: ""
             val catIndex = binding.spinnerNewCategory.selectedItemPosition
             if (name.isEmpty() || catIndex < 0 || catIndex >= categories.size) return@setOnClickListener
             val categoryId = categories[catIndex].id
-            val newItem = shoppingViewModel.addShoppingItemWithBarcode(name, categoryId, barcode)
-            if (newItem) {
+            val added = shoppingViewModel.addShoppingItemWithBarcode(name, categoryId, barcode)
+            if (added) {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.msg_item_added_to_list, name),
@@ -109,7 +110,7 @@ class BarcodeResultFragment : DialogFragment() {
     }
 
     private fun configureHeaderAndSelection(matchedItemId: String?) {
-        if (shoppingItems.isEmpty()) {
+        if (replenishItems.isEmpty()) {
             binding.spinnerExistingItem.isEnabled = false
             binding.btnLinkItem.isEnabled = false
             binding.tvTitle.text = getString(R.string.title_barcode_not_found)
@@ -123,9 +124,9 @@ class BarcodeResultFragment : DialogFragment() {
             return
         }
 
-        val matchedIndex = shoppingItems.indexOfFirst { it.id == matchedItemId }
+        val matchedIndex = replenishItems.indexOfFirst { it.id == matchedItemId }
         if (matchedIndex >= 0) {
-            val matchedItem = shoppingItems[matchedIndex]
+            val matchedItem = replenishItems[matchedIndex]
             binding.spinnerExistingItem.setSelection(matchedIndex)
             binding.tvTitle.text = getString(R.string.title_barcode_found)
             binding.tvBarcodeStatus.text = getString(R.string.msg_barcode_already_linked, matchedItem.name)
