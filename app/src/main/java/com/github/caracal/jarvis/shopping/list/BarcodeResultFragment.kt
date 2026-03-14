@@ -16,7 +16,7 @@ import com.github.caracal.jarvis.shopping.data.ShoppingItem
  * Screen shown after a barcode scan from the Shopping List.
  *
  * The user can either:
- * 1. Link the barcode to an existing item in the Replenish List.
+ * 1. Link the barcode to an existing item in the Replenish List or Shopping List.
  * 2. Create a new item (which is also added to the Replenish List).
  */
 class BarcodeResultFragment : DialogFragment() {
@@ -28,7 +28,7 @@ class BarcodeResultFragment : DialogFragment() {
         (requireParentFragment().requireParentFragment() as ShoppingFragment).viewModel
     }
 
-    private var replenishItems: List<ShoppingItem> = emptyList()
+    private var allItems: List<ShoppingItem> = emptyList()
     private var categories: List<ShoppingCategory> = emptyList()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -42,9 +42,15 @@ class BarcodeResultFragment : DialogFragment() {
 
         binding.tvScannedBarcode.text = getString(R.string.msg_scanned_barcode, barcode)
 
-        // Populate items from the replenish list (all items not currently on the shopping list)
-        replenishItems = shoppingViewModel.replenishList.value ?: emptyList()
-        val itemNames = replenishItems.map { it.name }
+        // Combine replenish list and shopping list into a unique list sorted alphabetically.
+        val shoppingList = shoppingViewModel.shoppingList.value ?: emptyList()
+        val replenishList = shoppingViewModel.replenishList.value ?: emptyList()
+        
+        allItems = (shoppingList + replenishList)
+            .distinctBy { it.id }
+            .sortedBy { it.name.lowercase() }
+
+        val itemNames = allItems.map { it.name }
         binding.spinnerExistingItem.adapter = ArrayAdapter(
             requireContext(),
             R.layout.spinner_item,
@@ -63,11 +69,11 @@ class BarcodeResultFragment : DialogFragment() {
 
         binding.btnBack.setOnClickListener { dismiss() }
 
-        // Link barcode to existing item in the replenish list and move it to shopping list.
+        // Link barcode to existing item and ensure it's on the shopping list.
         binding.btnLinkItem.setOnClickListener {
             val index = binding.spinnerExistingItem.selectedItemPosition
-            if (index < 0 || index >= replenishItems.size) return@setOnClickListener
-            val item = replenishItems[index]
+            if (index < 0 || index >= allItems.size) return@setOnClickListener
+            val item = allItems[index]
             val newBarcodes = (item.barcodes + barcode).distinct()
             val updated = shoppingViewModel.updateShoppingItem(
                 item.id,
@@ -76,7 +82,8 @@ class BarcodeResultFragment : DialogFragment() {
                 newBarcodes
             )
             if (updated) {
-                // Move it to the shopping list
+                // If it's not on the list, move it to the shopping list.
+                // addBaselineItemToShoppingList handles setting isOnShoppingList = true for any item by ID now.
                 shoppingViewModel.addBaselineItemToShoppingList(item.id)
                 Toast.makeText(
                     requireContext(),
@@ -87,9 +94,7 @@ class BarcodeResultFragment : DialogFragment() {
             }
         }
 
-        // Add new item with barcode. It will be added to the shopping list, 
-        // which automatically makes it part of the system (and thus the replenish list 
-        // if removed from shopping later).
+        // Add new item with barcode.
         binding.btnAddNewItem.setOnClickListener {
             val name = binding.etNewItemName.text?.toString()?.trim() ?: ""
             val catIndex = binding.spinnerNewCategory.selectedItemPosition
@@ -110,7 +115,7 @@ class BarcodeResultFragment : DialogFragment() {
     }
 
     private fun configureHeaderAndSelection(matchedItemId: String?) {
-        if (replenishItems.isEmpty()) {
+        if (allItems.isEmpty()) {
             binding.spinnerExistingItem.isEnabled = false
             binding.btnLinkItem.isEnabled = false
             binding.tvTitle.text = getString(R.string.title_barcode_not_found)
@@ -124,9 +129,9 @@ class BarcodeResultFragment : DialogFragment() {
             return
         }
 
-        val matchedIndex = replenishItems.indexOfFirst { it.id == matchedItemId }
+        val matchedIndex = allItems.indexOfFirst { it.id == matchedItemId }
         if (matchedIndex >= 0) {
-            val matchedItem = replenishItems[matchedIndex]
+            val matchedItem = allItems[matchedIndex]
             binding.spinnerExistingItem.setSelection(matchedIndex)
             binding.tvTitle.text = getString(R.string.title_barcode_found)
             binding.tvBarcodeStatus.text = getString(R.string.msg_barcode_already_linked, matchedItem.name)

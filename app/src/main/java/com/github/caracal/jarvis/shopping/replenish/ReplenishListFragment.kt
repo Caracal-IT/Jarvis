@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ShoppingReplenishFragmentBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 import com.github.caracal.jarvis.shopping.data.BaselineData
 import com.github.caracal.jarvis.shopping.data.ShoppingItem
+import com.github.caracal.jarvis.shopping.list.BarcodeScannerFragment
 import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
 
 /**
@@ -31,15 +33,32 @@ class ReplenishListFragment : Fragment() {
     }
 
     private val adapter by lazy {
-        ReplenishListAdapter { row ->
-            val added = shoppingViewModel.addBaselineItemToShoppingList(row.item.id)
-            val message = if (added) {
-                getString(R.string.msg_item_added_to_list, row.item.name)
-            } else {
-                getString(R.string.msg_item_already_in_list, row.item.name)
+        ReplenishListAdapter(
+            onAddToList = { row: ShoppingDisplayItem.Item ->
+                val added = shoppingViewModel.addBaselineItemToShoppingList(row.item.id)
+                val message = if (added) {
+                    getString(R.string.msg_item_added_to_list, row.item.name)
+                } else {
+                    getString(R.string.msg_item_already_in_list, row.item.name)
+                }
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            },
+            onItemBarcode = { row: ShoppingDisplayItem.Item ->
+                // Directly open scanner to link barcode to this specific replenish item.
+                setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY) { _, bundle ->
+                    val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
+                    val updatedBarcodes = (row.item.barcodes + scanned).distinct()
+                    shoppingViewModel.updateShoppingItem(
+                        row.item.id,
+                        row.item.name,
+                        row.item.categoryId,
+                        updatedBarcodes
+                    )
+                }
+                BarcodeScannerFragment.newInstanceForEdit()
+                    .show(childFragmentManager, "scan_barcode_replenish")
             }
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        }
+        )
     }
 
     override fun onCreateView(
@@ -58,13 +77,13 @@ class ReplenishListFragment : Fragment() {
 
         // Setup double-tap gesture to add items
         val doubleTapListener = DoubleTapItemTouchListener(binding.rvReplenishList) { position ->
-            val item = adapter.currentList.getOrNull(position)
-            if (item is ShoppingDisplayItem.Item) {
-                val added = shoppingViewModel.addBaselineItemToShoppingList(item.item.id)
+            val displayItem = adapter.currentList.getOrNull(position)
+            if (displayItem is ShoppingDisplayItem.Item) {
+                val added = shoppingViewModel.addBaselineItemToShoppingList(displayItem.item.id)
                 val message = if (added) {
-                    getString(R.string.msg_item_added_to_list, item.item.name)
+                    getString(R.string.msg_item_added_to_list, displayItem.item.name)
                 } else {
-                    getString(R.string.msg_item_already_in_list, item.item.name)
+                    getString(R.string.msg_item_already_in_list, displayItem.item.name)
                 }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }
