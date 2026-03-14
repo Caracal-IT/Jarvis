@@ -25,7 +25,10 @@ class BarcodeResultFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private val shoppingViewModel by lazy {
-        (requireParentFragment() as ShoppingFragment).viewModel
+        // This fragment is shown from BarcodeScannerFragment using the childFragmentManager
+        // of ShoppingListFragment. Thus, its parent is ShoppingListFragment, and its
+        // grandparent is ShoppingFragment which hosts the ViewModel.
+        (requireParentFragment().requireParentFragment() as ShoppingFragment).viewModel
     }
 
     private var shoppingItems: List<ShoppingItem> = emptyList()
