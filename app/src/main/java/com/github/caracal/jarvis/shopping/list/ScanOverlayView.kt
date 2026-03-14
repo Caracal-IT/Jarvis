@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.github.caracal.jarvis.shopping.list
 
 import android.animation.ValueAnimator
@@ -6,6 +8,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import androidx.annotation.Keep
 
 /**
  * Full-screen overlay that dims the screen and cuts out a centered rounded rectangle.
@@ -32,6 +35,10 @@ class ScanOverlayView @JvmOverloads constructor(
 
     // pulse animation state
     private var pulseAnimator: ValueAnimator? = null
+
+    @Suppress("unused")
+    // Keep a bound reference to pulse() so static analyzers recognize the method is intentionally exposed.
+    private val _pulseRef: () -> Unit = { pulse() }
 
     init {
         cornerRadiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, resources.displayMetrics)
@@ -73,6 +80,7 @@ class ScanOverlayView @JvmOverloads constructor(
     /**
      * Pulse the frame border briefly to give visual feedback (used when barcode center is inside).
      */
+    @Keep
     @Suppress("unused")
     fun pulse() {
         pulseAnimator?.cancel()

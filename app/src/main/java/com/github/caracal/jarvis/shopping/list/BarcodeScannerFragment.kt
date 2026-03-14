@@ -120,6 +120,13 @@ class BarcodeScannerFragment : DialogFragment() {
 
         // Process only on the main thread.
         activity?.runOnUiThread {
+            // Provide immediate visual feedback for detection: pulse the overlay if present.
+            try {
+                _binding?.scanOverlay?.pulse()
+            } catch (t: Throwable) {
+                // Non-fatal: log and continue
+                android.util.Log.w("BarcodeScannerFragment", "Overlay pulse failed", t)
+            }
             if (mode == MODE_FOR_EDIT) {
                 // Return the barcode to the edit screen.
                 setFragmentResult(RESULT_KEY, Bundle().apply {
