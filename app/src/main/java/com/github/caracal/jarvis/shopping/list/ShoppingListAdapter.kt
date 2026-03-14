@@ -102,12 +102,16 @@ class ShoppingListAdapter(
             }
 
             // Reset recycled row state so actions are not visible when closed.
-            resetClosedState()
+            binding.foreground.translationX = 0f
+            showLeftActions(false)
+            showRightActions(false)
 
             // Wire up action buttons on a revealed background
             binding.btnRename.setOnClickListener {
                 onMenuRename(row)
-                resetClosedState()
+                binding.foreground.translationX = 0f
+                showLeftActions(false)
+                showRightActions(false)
             }
             binding.btnDelete.setOnClickListener {
                 onMenuRemove(row)
@@ -115,25 +119,7 @@ class ShoppingListAdapter(
 
             // Inline barcode icon - only wire if the caller provided a handler.
             binding.btnItemBarcode.setOnClickListener {
-                try {
-                    onItemBarcode?.invoke(row)
-                } catch (t: Throwable) {
-                    android.util.Log.e("ShoppingListAdapter", "Error invoking onItemBarcode", t)
-                    android.widget.Toast.makeText(binding.root.context, "Unable to open barcode actions.", android.widget.Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            // Add a double-tap listener to reset the swipe state
-            var lastTapTime = 0L
-            binding.foreground.setOnClickListener {
-                val currentTime = System.currentTimeMillis()
-                if (currentTime - lastTapTime < 300) {
-                    // Double-tap detected - reset swipe state
-                    resetClosedState()
-                    lastTapTime = 0L
-                } else {
-                    lastTapTime = currentTime
-                }
+                onItemBarcode?.invoke(row)
             }
         }
 
@@ -180,13 +166,6 @@ class ShoppingListAdapter(
             binding.btnDelete.visibility = if (visible) View.VISIBLE else View.INVISIBLE
             binding.btnDelete.alpha = clamped
             binding.btnDelete.isEnabled = visible
-        }
-
-        /** Resets the item to a closed position and hides all action buttons. */
-        fun resetClosedState() {
-            binding.foreground.translationX = 0f
-            showLeftActions(false)
-            showRightActions(false)
         }
     }
 

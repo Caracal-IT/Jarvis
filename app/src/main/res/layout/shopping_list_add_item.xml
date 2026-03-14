@@ -72,6 +72,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/label_add_to_replenish_list"
+                android:textColor="@color/iron_man_gold"
+                android:fontFamily="monospace" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/swAddToReplenishList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                app:thumbTint="@color/switch_thumb_color"
+                app:trackTint="@color/switch_track_color" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="end"
             android:layout_marginTop="@dimen/spacing_large">
 

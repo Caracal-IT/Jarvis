@@ -14,10 +14,6 @@ import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
 
 /**
  * Fragment displaying the user's current Shopping List.
- *
- * Shows items grouped by category with a floating action button to add new items.
- * Each item exposes a popup menu for rename, remove, and barcode management actions.
- * The ViewModel is shared via the parent [ShoppingFragment].
  */
 class ShoppingListFragment : Fragment() {
 
@@ -30,11 +26,10 @@ class ShoppingListFragment : Fragment() {
 
     private val adapter by lazy {
         ShoppingListAdapter(
-            onMenuRename = { row -> showRenameDialog(row) },
+            onMenuRename = { row -> showRenamePage(row) },
             onMenuRemove = { row -> shoppingViewModel.removeShoppingItem(row.item.id) },
             onItemBarcode = { row ->
-                // Directly open scanner to link barcode to this specific item.
-                // NOTE: Use childFragmentManager to listen for results from the scanner dialog.
+                // Use Fragment Result API to listen for the scan result from the scanner page.
                 childFragmentManager.setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner) { _, bundle ->
                     val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
                     val updatedBarcodes = (row.item.barcodes + scanned).distinct()
@@ -46,7 +41,7 @@ class ShoppingListFragment : Fragment() {
                     )
                 }
                 BarcodeScannerFragment.newInstanceForEdit()
-                    .show(childFragmentManager, TAG_SCAN_DIALOG)
+                    .show(childFragmentManager, TAG_SCAN_PAGE)
             }
         )
     }
@@ -65,10 +60,9 @@ class ShoppingListFragment : Fragment() {
         binding.rvShoppingList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvShoppingList.adapter = adapter
 
-        // Re-attach the swipe callback.
         val swipeCallback = ShoppingListSwipeCallback(
             adapter = adapter,
-            onFullSwipeEdit = { row -> showRenameDialog(row) },
+            onFullSwipeEdit = { row -> showRenamePage(row) },
             onFullSwipeDelete = { row -> shoppingViewModel.removeShoppingItem(row.item.id) }
         )
         ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.rvShoppingList)
@@ -80,24 +74,18 @@ class ShoppingListFragment : Fragment() {
                 if (displayItems.isEmpty()) View.GONE else View.VISIBLE
         }
 
-        // Swap FAB behavior: primary (end) is Add, start FAB is Scan. Keep icons only.
         binding.fabAddItem.setOnClickListener {
-            AddItemDialogFragment().show(childFragmentManager, TAG_ADD_DIALOG)
+            (requireParentFragment() as ShoppingFragment).navigateTo(AddItemFragment())
         }
 
         binding.fabScanBarcode.setOnClickListener {
+            // Scanner remains a full-screen dialog as it requires a specific lifecycle/camera setup,
+            // but its results are handled as a navigation flow.
             BarcodeScannerFragment.newInstanceForList()
-                .show(childFragmentManager, TAG_SCAN_DIALOG)
+                .show(childFragmentManager, TAG_SCAN_PAGE)
         }
     }
 
-    /**
-     * Converts a flat list of [ShoppingItem] into a mixed list of headers and items,
-     * inserting a [ShoppingDisplayItem.Header] whenever the category changes.
-     *
-     * @param items The sorted flat list of shopping items.
-     * @return A list suitable for submission to [ShoppingListAdapter].
-     */
     private fun buildDisplayItems(items: List<ShoppingItem>): List<ShoppingDisplayItem> {
         val result = mutableListOf<ShoppingDisplayItem>()
         var lastCategoryId: String? = null
@@ -113,19 +101,21 @@ class ShoppingListFragment : Fragment() {
         return result
     }
 
-    private fun showRenameDialog(row: ShoppingDisplayItem.Item) {
-        EditItemDialogFragment.newInstance(
+    private fun showRenamePage(row: ShoppingDisplayItem.Item) {
+        val fragment = EditItemFragment.newInstance(
             itemId = row.item.id,
             itemName = row.item.name,
             itemCategoryId = row.item.categoryId,
             itemBarcodes = row.item.barcodes
-        ).show(childFragmentManager, "edit_item")
+        )
+        (requireParentFragment() as ShoppingFragment).navigateTo(fragment)
     }
 
+    /**
+     * Resets the swipe state of all items in the list.
+     */
     fun resetAllItemsSwipeState() {
-        for (i in 0 until adapter.itemCount) {
-            adapter.notifyItemChanged(i)
-        }
+        adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
     override fun onDestroyView() {
@@ -134,7 +124,6 @@ class ShoppingListFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG_ADD_DIALOG = "add_item"
-        private const val TAG_SCAN_DIALOG = "scan_barcode"
+        private const val TAG_SCAN_PAGE = "scan_page"
     }
 }

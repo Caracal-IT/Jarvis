@@ -6,6 +6,7 @@
     <color name="iron_man_gold_dark">#CFB53B</color>
     <color name="iron_man_cyan">#00E5FF</color>
     <color name="iron_man_dark_tech">#020810</color>
+    <color name="iron_man_green">#00FF66</color>
     <color name="swipe_action_green_transparent">#6600FF66</color>
     <!-- Convenience alias -->
     <color name="dark_tech">@color/iron_man_dark_tech</color>

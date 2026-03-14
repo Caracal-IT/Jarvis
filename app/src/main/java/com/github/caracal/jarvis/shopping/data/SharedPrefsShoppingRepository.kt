@@ -28,7 +28,7 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
         allItems.filter { it.isOnShoppingList }.sortedWith(itemComparator)
 
     override fun getReplenishList(): List<ShoppingItem> =
-        allItems.filter { !it.isOnShoppingList }.sortedWith(itemComparator)
+        allItems.filter { !it.isOnShoppingList || it.isBaseline }.sortedWith(itemComparator)
 
     override fun getCategories(): List<ShoppingCategory> =
         BaselineData.categories.sortedBy { it.name }
@@ -60,7 +60,7 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
     override fun findByBarcode(barcode: String): ShoppingItem? =
         allItems.find { barcode in it.barcodes }
 
-    override fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String): Boolean {
+    override fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean): Boolean {
         val trimmed = name.trim()
         val existing = allItems.find {
             it.name.equals(trimmed, ignoreCase = true) && it.categoryId == categoryId
@@ -69,13 +69,17 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
         if (existing != null) {
             val index = allItems.indexOf(existing)
             val updatedBarcodes = (existing.barcodes + barcode).distinct()
-            allItems[index] = existing.copy(isOnShoppingList = true, barcodes = updatedBarcodes)
+            allItems[index] = existing.copy(
+                isOnShoppingList = true, 
+                barcodes = updatedBarcodes,
+                isBaseline = existing.isBaseline || isBaseline
+            )
         } else {
             val newItem = ShoppingItem(
                 id = java.util.UUID.randomUUID().toString(),
                 name = trimmed,
                 categoryId = categoryId,
-                isBaseline = false,
+                isBaseline = isBaseline,
                 barcodes = listOf(barcode),
                 isOnShoppingList = true
             )
@@ -85,19 +89,18 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
         return true
     }
 
-    override fun addShoppingItem(name: String, categoryId: String): ShoppingItem? {
+    override fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean): ShoppingItem {
         val trimmed = name.trim()
         val existing = allItems.find {
             it.name.equals(trimmed, ignoreCase = true) && it.categoryId == categoryId
         }
 
         if (existing != null) {
-            // If it's already on the shopping list, we treat it as a duplicate error.
-            if (existing.isOnShoppingList) {
-                return null
-            }
             val index = allItems.indexOf(existing)
-            val updated = existing.copy(isOnShoppingList = true)
+            val updated = existing.copy(
+                isOnShoppingList = true,
+                isBaseline = existing.isBaseline || isBaseline
+            )
             allItems[index] = updated
             saveToPrefs()
             return updated
@@ -107,7 +110,7 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
             id = java.util.UUID.randomUUID().toString(),
             name = trimmed,
             categoryId = categoryId,
-            isBaseline = false,
+            isBaseline = isBaseline,
             barcodes = emptyList(),
             isOnShoppingList = true
         )
@@ -135,9 +138,14 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
     override fun removeShoppingItem(itemId: String) {
         val index = allItems.indexOfFirst { it.id == itemId }
         if (index >= 0) {
-            // "Soft delete": keep the item but mark it as not on the shopping list
-            // so it stays in the replenish list.
-            allItems[index] = allItems[index].copy(isOnShoppingList = false)
+            val item = allItems[index]
+            if (item.isBaseline) {
+                // Keep it but mark as not on list.
+                allItems[index] = item.copy(isOnShoppingList = false)
+            } else {
+                // Permanently remove non-baseline items.
+                allItems.removeAt(index)
+            }
             saveToPrefs()
         }
     }

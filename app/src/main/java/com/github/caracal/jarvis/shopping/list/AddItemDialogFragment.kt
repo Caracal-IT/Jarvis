@@ -53,9 +53,10 @@ class AddItemDialogFragment : DialogFragment() {
         binding.btnSave.setOnClickListener {
             val name = binding.etItemName.text?.toString() ?: ""
             val categoryIndex = binding.spinnerCategory.selectedItemPosition
+            val isBaseline = binding.swAddToReplenishList.isChecked
             if (categoryIndex >= 0 && categoryIndex < categories.size) {
                 val categoryId = categories[categoryIndex].id
-                val added = shoppingViewModel.addShoppingItem(name, categoryId)
+                val added = shoppingViewModel.addShoppingItem(name, categoryId, isBaseline)
                 if (added) dismiss()
             }
         }

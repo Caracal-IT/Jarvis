@@ -59,15 +59,16 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      * @param name The display name for the new item.
      * @param categoryId The ID of the category to assign.
      * @param barcode The barcode to attach immediately.
+     * @param isBaseline Whether the item should persist in the Replenish List.
      * @return True if the item was added successfully.
      */
-    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String): Boolean {
+    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean = false): Boolean {
         val validation = NamingValidator.validate(name)
         if (!validation.isValid) {
             _addItemError.value = validation.errorMessage
             return false
         }
-        val added = repository.addShoppingItemWithBarcode(name, categoryId, barcode)
+        val added = repository.addShoppingItemWithBarcode(name, categoryId, barcode, isBaseline)
         if (!added) {
             _addItemError.value = "An item with that name already exists in this category."
             return false
@@ -82,19 +83,21 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      *
      * @param name The display name for the new item.
      * @param categoryId The ID of the category to assign.
+     * @param isBaseline Whether the item should persist in the Replenish List.
      * @return True if the item was added successfully, false on validation or duplicate error.
      */
-    fun addShoppingItem(name: String, categoryId: String): Boolean {
+    fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean = false): Boolean {
         val validation = NamingValidator.validate(name)
         if (!validation.isValid) {
             _addItemError.value = validation.errorMessage
             return false
         }
-        val result = repository.addShoppingItem(name, categoryId)
+        val result = repository.addShoppingItem(name, categoryId, isBaseline)
         if (result == null) {
             _addItemError.value = "An item with that name already exists in this category."
             return false
         }
+
         _addItemError.value = null
         refreshLists()
         return true

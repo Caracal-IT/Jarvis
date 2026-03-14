@@ -1,7 +1,7 @@
 # Jarvis UX Style Guide
 
-**Version:** 1.0  
-**Last Updated:** March 9, 2026  
+**Version:** 1.1  
+**Last Updated:** March 10, 2026  
 **Status:** ACTIVE
 
 ---
@@ -26,6 +26,7 @@ For high-level feature requirements, see `docs/specs/`. This document contains o
 4. **Dark Command Center** — Deep dark backgrounds for reduced eye strain and focus
 5. **Frosted Glass Layers** — Semi-transparent surfaces with blur effects for depth and sophistication
 6. **Responsive Clarity** — Every interaction provides immediate, clear feedback
+7. **Mobile-First Controls** — Use touch-optimized controls only. Avoid standard desktop-style radio buttons; use toggle buttons or switches instead.
 
 ---
 
@@ -355,6 +356,14 @@ Android does not natively support real-time blur effects efficiently. Use these 
 - **Padding:** 12dp horizontal, 8dp vertical
 - **Corner radius:** 4dp
 
+#### Toggle Button / Switch (Mobile Friendly Selection)
+- **Requirement:** Replace standard radio buttons with toggle buttons or switches.
+- **Toggle Group:** Use `MaterialButtonToggleGroup` for mutually exclusive selections.
+- **Switch:** Use `SwitchMaterial` for simple on/off states.
+- **Color (Active):** `iron_man_red` background with `iron_man_gold` text/thumb.
+- **Color (Inactive):** `iron_man_dark_tech` background with `iron_man_cyan` text/thumb.
+- **Corner Radius:** 8dp.
+
 #### Buttons
 
 ##### Primary Button
@@ -402,7 +411,7 @@ Android does not natively support real-time blur effects efficiently. Use these 
 ### Dialogs and Popups
 
 #### Dialog
-- **Background:** Lighter bluish-white tint at 94% opacity with frosted glass effect (`#F01A2A3A`)
+- **Background:** Lighter bluish-white tint at 94% opacity with frosted glass effect (24dp blur) (`#F01A2A3A`)
 - **Blur radius:** 24dp
 - **Border:** 1dp, `iron_man_cyan` at 50% opacity (strong visible border: `#8000E5FF`)
 - **Corner radius:** 12dp
@@ -737,6 +746,7 @@ Before considering any UI implementation complete, verify:
 | Version | Date           | Changes                                        |
 |---------|----------------|------------------------------------------------|
 | 1.0     | March 9, 2026  | Initial style guide creation                   |
+| 1.1     | March 10, 2026 | Added mobile-friendly controls requirement (switches/toggle buttons). |
 
 ---
 

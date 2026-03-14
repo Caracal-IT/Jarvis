@@ -48,18 +48,20 @@ interface ShoppingRepository {
      * @param name Canonical generic name for the new item.
      * @param categoryId The ID of the category this item belongs to.
      * @param barcode The initial barcode to attach.
+     * @param isBaseline Whether this item should persist in the Replenish List after removal from Shopping List.
      * @return True if the item was added, false if a duplicate exists.
      */
-    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String): Boolean
+    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean = false): Boolean
 
     /**
      * Adds a new item to the Shopping List.
      *
      * @param name Canonical generic name for the new item.
      * @param categoryId The ID of the category this item belongs to.
+     * @param isBaseline Whether this item should persist in the Replenish List after removal from Shopping List.
      * @return The newly created [ShoppingItem], or null if a duplicate exists.
      */
-    fun addShoppingItem(name: String, categoryId: String): ShoppingItem?
+    fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean = false): ShoppingItem?
 
     /**
      * Renames an existing Shopping List item.
@@ -74,6 +76,7 @@ interface ShoppingRepository {
      * Removes an item from the Shopping List.
      *
      * Baseline items removed from the Shopping List continue to appear in the Replenish List.
+     * Non-baseline items are permanently removed.
      *
      * @param itemId The ID of the item to remove.
      */
