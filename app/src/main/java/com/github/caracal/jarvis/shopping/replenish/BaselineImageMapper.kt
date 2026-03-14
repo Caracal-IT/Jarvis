@@ -56,8 +56,8 @@ object BaselineImageMapper {
      * Returns the drawable resource ID for the given item name.
      *
      * @param itemName The display name of the item.
-     * @return The matching drawable resource ID, or [R.drawable.shopping_replenish_ic_item_placeholder] if not found.
+     * @return The matching drawable resource ID, or [R.drawable.shared_ic_supplies] if not found.
      */
     fun getDrawableResId(itemName: String): Int =
-        nameToDrawable[itemName] ?: R.drawable.shopping_replenish_ic_item_placeholder
+        nameToDrawable[itemName] ?: R.drawable.shared_ic_supplies
 }
