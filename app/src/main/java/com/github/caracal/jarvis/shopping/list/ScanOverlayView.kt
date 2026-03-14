@@ -6,7 +6,6 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import androidx.core.graphics.toColorInt
 
 /**
  * Full-screen overlay that dims the screen and cuts out a centered rounded rectangle.
@@ -21,10 +20,9 @@ class ScanOverlayView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : View(context, attrs, defStyle) {
 
-    // Use a darker scrim for a more intense background dimming effect (C0 = 75% opacity)
-    private val scrimPaint = Paint().apply { color = "#C0000000".toColorInt() }
+    private val scrimPaint = Paint().apply { isAntiAlias = true }
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR); isAntiAlias = true }
-    private val strokePaint = Paint().apply { color = Color.WHITE; style = Paint.Style.STROKE; strokeWidth = 4f; isAntiAlias = true }
+    private val strokePaint = Paint().apply { style = Paint.Style.STROKE; strokeWidth = 4f; isAntiAlias = true }
     private val frameRect = RectF()
     private val cornerRadiusPx: Float
 
@@ -37,6 +35,9 @@ class ScanOverlayView @JvmOverloads constructor(
 
     init {
         cornerRadiusPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, resources.displayMetrics)
+        // Initialize paints with color resources to avoid hardcoded values
+        scrimPaint.color = context.getColor(com.github.caracal.jarvis.R.color.overlay_scrim_strong)
+        strokePaint.color = context.getColor(com.github.caracal.jarvis.R.color.overlay_frame)
         setLayerType(LAYER_TYPE_SOFTWARE, null) // required for PorterDuff CLEAR
     }
 
@@ -72,6 +73,7 @@ class ScanOverlayView @JvmOverloads constructor(
     /**
      * Pulse the frame border briefly to give visual feedback (used when barcode center is inside).
      */
+    @Suppress("unused")
     fun pulse() {
         pulseAnimator?.cancel()
         pulseAnimator = ValueAnimator.ofFloat(0f, 1f, 0f).apply {

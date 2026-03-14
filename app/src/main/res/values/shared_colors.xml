@@ -8,6 +8,45 @@
     <color name="iron_man_dark_tech">#020810</color>
     <color name="iron_man_green">#00FF66</color>
     <color name="swipe_action_green_transparent">#6600FF66</color>
+    <!-- Overlay / scrim colors -->
+    <color name="overlay_dim">#88000000</color>
+    <color name="overlay_scrim_strong">#C0000000</color>
+    <color name="overlay_frame">#FFFFFFFF</color>
+    <color name="neutral_grey_700">#424242</color>
+    <color name="neutral_grey_400">#BDBDBD</color>
+
+    <!-- Additional drawable colors (migrated from inline vector hex values) -->
+    <color name="color_22000000">#22000000</color>
+    <color name="color_c62828">#C62828</color>
+    <color name="color_7f1d1d">#7F1D1D</color>
+    <color name="color_ffe58a">#FFE58A</color>
+    <color name="color_2b1b12">#2B1B12</color>
+    <color name="color_ffd24a">#FFD24A</color>
+    <color name="color_e9b73a">#E9B73A</color>
+    <color name="color_8f6a1e">#8F6A1E</color>
+    <color name="color_d73a32">#D73A32</color>
+    <color name="color_e5a820">#E5A820</color>
+    <color name="color_b37a10">#B37A10</color>
+    <color name="color_66ffffff">#66FFFFFF</color>
+    <color name="color_81c784">#81C784</color>
+    <color name="color_3b2b20">#3B2B20</color>
+    <color name="color_ba68c8">#BA68C8</color>
+    <color name="color_ff7043">#FF7043</color>
+    <color name="color_b0bec5">#B0BEC5</color>
+    <color name="color_80deea">#80DEEA</color>
+    <color name="color_5c6bc0">#5C6BC0</color>
+    <color name="color_8d6e63">#8D6E63</color>
+    <color name="color_a66a43">#A66A43</color>
+    <color name="color_f4d7c2">#F4D7C2</color>
+    <color name="color_e8c26b">#E8C26B</color>
+    <color name="color_5a3826">#5A3826</color>
+    <color name="color_2b1a12">#2B1A12</color>
+    <color name="color_ffffff">#FFFFFFFF</color>
+    <color name="color_f1d56d">#F1D56D</color>
+    <color name="color_cfb53b">#CFB53B</color>
+    <color name="color_66101820">#66101820</color>
+    <color name="color_8000E5FF">#8000E5FF</color>
+
     <!-- Convenience alias -->
     <color name="dark_tech">@color/iron_man_dark_tech</color>
 </resources>
