@@ -168,3 +168,43 @@ Shopping feature is accepted when all are true:
 [X] Replenish hide/show synchronization with Shopping membership is reliable.  
 [X] Canonical naming, duplicate handling, and image semantics remain consistent in common user flows.
 [X] Shopping-list FABs are swapped: Add at left (bottom|start), Scan at right (bottom|end), both icon-only and accessible via contentDescription.
+
+## Data / Repository Behavior (implementation details)
+
+The Shopping feature uses a SharedPreferences-backed repository (`SharedPrefsShoppingRepository`) to persist shopping and replenish data. The following behaviors are part of the canonical implementation and are considered requirements for correctness and test coverage:
+
+- Storage: the repository persists the full item list as JSON in SharedPreferences under `shopping_prefs` using the key `shopping_list_v1`. Each item JSON object contains: id, name, category_id, is_baseline, is_on_shopping_list and a `barcodes` array.
+
+- Sorting: item ordering uses an item comparator which sorts first by the category name (resolved via `BaselineData.categoryById(categoryId)`) then by the item name, both compared case-insensitively.
+
+- Categories: `getCategories()` returns the canonical Baseline categories (from `BaselineData`) sorted by name.
+
+- updateShoppingItem(...) semantics:
+  - Will return `false` and refuse the update if the new name (trimmed) would duplicate another item's name in the same category (case-insensitive), preserving uniqueness per-category.
+  - If the update succeeds, the item is replaced (copy) and the repository is saved to prefs.
+
+- addShoppingItemWithBarcode(name, categoryId, barcode, isBaseline):
+  - If an existing item matches the same name (case-insensitive) and category, the method merges the barcode into that item (append + distinct) and sets `isOnShoppingList = true`. The existing item's `isBaseline` flag is ORed with the provided `isBaseline`.
+  - If no existing item matches, a new ShoppingItem is created with a generated UUID, the provided barcode as the single-element barcode list, `isOnShoppingList = true`, and `isBaseline` as provided.
+  - The method always persists changes and returns `true` when the addition/merge completes.
+
+- addShoppingItem(name, categoryId, isBaseline):
+  - If an item with the same name and category exists, it is marked `isOnShoppingList = true` and returned (no duplicate is created).
+  - Otherwise a new item is created, added to the repository, persisted, and returned.
+
+- removeShoppingItem(itemId):
+  - If the item is a baseline item, it is not deleted from storage; instead it is retained but marked `isOnShoppingList = false` so that baseline data is preserved while removing it from the active shopping list.
+  - If the item is non-baseline, it is permanently removed from storage.
+  - Changes are saved to SharedPreferences.
+
+- addBarcode(itemId, barcode) / removeBarcode(itemId, barcode):
+  - `addBarcode` appends the barcode to the item's barcode list only if it is not already present (deduplicated via list membership), then persists.
+  - `removeBarcode` removes the barcode from the item's barcode list and persists.
+
+- findByBarcode(barcode):
+  - Returns the first ShoppingItem whose barcode list contains the given barcode (no guaranteed global uniqueness is enforced by the repository; business logic should handle duplicates as needed).
+
+- Baseline population:
+  - On initialization the repository calls `ensureBaselineItems()` which ensures every baseline item from `BaselineData.baselineItems` exists in storage (added with `isOnShoppingList = false` if missing).
+
+These behaviors are part of the contract and must be covered by unit tests and QA scenarios (duplicate-name rejection, barcode merging, baseline vs. non-baseline remove semantics, persistence across restarts).
