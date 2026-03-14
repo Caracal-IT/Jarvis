@@ -28,7 +28,10 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 - [X] Scan Flow — Scan from Shopping List and resolve found/not-found
 - [X] Replenish Sync — Hide/show based on Shopping List membership
 - [X] Persistence — Survives app restart and phone restart
-- [X] Shopping List FABs swapped (Add on end, Scan on start) and icon-only
+- [X] Inline barcode icon present on each Shopping List row (icon-only)
+- [X] Shopping List FABs swapped: Add at left (bottom|start), Scan at right (bottom|end), both icon-only
+- [X] Scan overlay and acceptance rules implemented (blur/dim outside rectangle; only accept barcodes whose center is inside the rectangle)
+- [X] Scan attach dialog implemented (Scan / Link existing / Add new flows) with haptic and pulse feedback on-in-frame detection
 
 ## Functional Requirements
 
@@ -59,11 +62,17 @@ Deliver Shopping as a user-ready feature that allows users to maintain a practic
 [X] User must be able to add, view, and remove barcodes from a Shopping item.  
 [X] User must be able to scan barcode values while editing an item and append them to that item.  
 [X] Shopping List must expose a scan action for item lookup/linking via an inline barcode icon on each item and a global scan FAB.  
-[X] Tapping the inline barcode icon opens the Scanner flow (icon-only, no visible text label).  
-[X] Scanning from Shopping List opens a post-scan resolve screen (`BarcodeResultFragment`) where the user can link the scanned barcode to an existing item or create a new item with the barcode attached.  
-[X] If scanned barcode is found, resolve screen must show which item it belongs to and preselect that item.  
-[X] Resolve screen must allow selecting an existing item and linking the scanned barcode.  
-[X] Resolve screen must allow adding a new item (with category selection) and attaching the scanned barcode.
+[X] Inline barcode icon: the icon is icon-only (no visible label) and opens the "scan / attach" dialog for that item.  
+[X] Tapping the inline barcode icon opens a small "Scan / Link / Add" dialog that lets the user: 
+  - Scan a barcode using the camera (launch the scanner flow).  
+  - Select an existing item from a spinner and enter/confirm a barcode to link.  
+  - Create a new item (name + category) and attach the barcode in one flow.  
+[X] The global Scan FAB opens the scanner in list mode and follows the same post-scan resolve flow.  
+[X] The scanner UI uses a centered rounded rectangle scan window; the area outside the window is dimmed and (on supported devices) blurred via a RenderEffect to focus the user on the target.  
+[X] Barcode acceptance rule: the scanner will only accept a barcode if the detected barcode's bounding-box center lies inside the scan rectangle (prevents accidental off-center scans).  
+[X] The scan window is responsive: default is a fraction of the smaller screen dimension (responsive to portrait/landscape) rather than a hardcoded absolute size.  
+[X] When a barcode's center is inside the scan window the UI gives clear feedback: a short haptic pulse and a brief outline pulse animation around the frame before acceptance.  
+[X] Devices that do not support RenderEffect will still show the dimmed overlay and the selection rules (no crash, graceful degradation).
 
 ### 4) Replenish Integration
 

@@ -31,12 +31,15 @@ This document covers:
 - [X] Item Actions — Swipe left-to-right reveals rename/edit action
 - [X] Edit Screen — Edit name and category in one screen
 - [X] Edit Screen — Add/remove multiple barcodes in one screen
-- [X] Scan Flow — Scan button available on Shopping List
+- [X] Scan Flow — Inline barcode icon present on each item and Scan FAB available
 - [X] Scan Flow — Post-scan resolve screen opens for found and not-found barcodes
 - [X] Scan Flow — Resolve screen supports link existing item and add new item with scanned barcode
 - [X] Replenish Sync — Hide items already present in Shopping List
 - [X] Replenish Sync — Re-show items removed from Shopping List
 - [X] Persistence — Shopping/Replenish state survives app/device restart
+- [X] Scan UI — Dim/blur overlay outside scan window and responsive centered rounded rectangle
+- [X] Scan acceptance — Only accept barcodes whose bounding-box center is inside the scan frame
+- [X] Feedback — Haptic and pulse feedback when detection is inside the scan window
 
 ## Functional Requirements
 
@@ -69,12 +72,14 @@ This document covers:
 
 ### 4) Barcode Scan Flow (Shopping List Screen)
 
-[X] Shopping List must expose a scan action button.  
-[X] Scanning must open a post-scan resolve screen for barcode actions.  
-[X] If barcode is found, resolve screen must show which item it currently belongs to.  
-[X] If barcode is found, resolve screen must preselect the matched existing item.  
-[X] Resolve screen must allow linking the scanned barcode to an existing item.  
-[X] Resolve screen must allow adding a new item with selected category and the scanned barcode attached.
+[X] Shopping List must expose a scan action button (global FAB) and an inline per-item barcode icon.  
+[X] Both the inline icon and the global FAB are icon-only and use contentDescription for accessibility.  
+[X] Tapping the inline barcode icon opens a "Scan / Link / Add" dialog: the dialog supports scanning, linking to an existing item (spinner), or adding a new item with the barcode pre-attached.  
+[X] The scanner UI presents a centered rounded rectangle scan window; the rest of the preview is dimmed and, where supported, blurred.  
+[X] The scan window size is responsive (a fraction of the screen's smaller dimension) and adapts to portrait or landscape.  
+[X] The scanner will only accept detections whose bounding-box center maps inside the scan window.  
+[X] When a barcode is detected inside the window users receive both visual (pulse) and haptic feedback before acceptance.  
+[X] The post-scan resolve flow (found/not-found) supports linking to an existing item or creating a new categorized item with the scanned barcode.
 
 ### 5) Replenish List Sync Rules
 
@@ -96,8 +101,7 @@ This document covers:
 [X] Shopping List content must be restored after app restart in its current state and sorted order.  
 [X] Shopping List content must be restored after phone restart in its current state and sorted order.  
 [X] Replenish List content must be restored after app restart in its current state and sorted order.  
-[X] Replenish List content must be restored after phone restart in its current state and sorted order.  
-[X] List integrity must be maintained during normal update cycles.
+[X] Replenish List content must be restored after phone restart in its current state and sorted order.
 
 ## Non-Functional Requirements
 
