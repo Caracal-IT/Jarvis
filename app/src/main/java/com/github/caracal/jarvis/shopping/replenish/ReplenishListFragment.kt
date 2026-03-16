@@ -85,7 +85,10 @@ class ReplenishListFragment : Fragment() {
         binding.rvReplenishList.addOnItemTouchListener(doubleTapListener)
 
         shoppingViewModel.replenishList.observe(viewLifecycleOwner) { items ->
-            adapter.submitList(buildDisplayItems(items))
+            // Exclude any items that are currently on the shopping list so they are not shown
+            // in the Replenish list UI.
+            val filtered = items.filter { !it.isOnShoppingList }
+            adapter.submitList(buildDisplayItems(filtered))
         }
     }
 
