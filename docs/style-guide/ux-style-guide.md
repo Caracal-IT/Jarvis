@@ -271,9 +271,16 @@ Android does not natively support real-time blur effects efficiently. Use these 
 #### Floating Action Button (FAB)
 - **Size:** 56dp (standard Material 3)
 - **Position:** Bottom-right, `spacing_medium` from edges
-- **Background:** `iron_man_red`
+- **Background:** `iron_man_red` background with white or gold icon
 - **Icon color:** `iron_man_gold` or white
 - **Elevation:** 6dp
+
+### Note: Jarvis Shopping FAB placement and style
+- In the Shopping feature the default FAB layout deviates from a single bottom-right FAB:
+  - The app exposes two icon-only FABs at the bottom of the Shopping screen:
+    - **Add FAB** — located at the bottom start (left) position. Icon-only, no visible label; `contentDescription` must be provided for accessibility.
+    - **Scan FAB** — located at the bottom end (right) position. Icon-only, no visible label; `contentDescription` must be provided for accessibility.
+  - Both FABs are icon-only to reduce visual clutter and match the minimal Jarvis aesthetic. Keep touch targets at least 48dp and provide clear accessible labels via `android:contentDescription`.
 
 ---
 
