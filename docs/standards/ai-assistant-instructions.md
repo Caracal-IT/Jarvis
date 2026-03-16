@@ -13,7 +13,8 @@
 2. Read this file (`docs/standards/ai-assistant-instructions.md`) SECOND.
 3. Read `docs/standards/kotlin-android-best-practices.md` THIRD.
 4. Always review `docs/specs/` for additional feature and product context before implementation.
-5. Only then proceed with any work.
+5. If working on UI/UX, read `docs/style-guide/ux-style-guide.md` for visual implementation details.
+6. Only then proceed with any work.
 
 **Failure to follow this protocol is unacceptable.**
 
@@ -59,16 +60,9 @@ this document expands on them.
 ### Rule 5 — All Generated Assets Must Be Coherent
 - All generated assets (icons, backgrounds, UI elements) **must** adhere to the
   **Jarvis / Iron Man** theme.
-- Strictly use the defined color palette:
-
-  | Token                  | Hex       | Usage                                 |
-  |------------------------|-----------|---------------------------------------|
-  | Iron Man Red           | `#7A0019` | Primary actions, active states        |
-  | Iron Man Gold (Dark)   | `#F1D56D` | Accent, active text / icon highlights |
-  | Cyan                   | `#00E5FF` | Secondary text, inactive states       |
-  | Dark Tech              | `#020810` | Backgrounds                           |
-
-- Maintain a futuristic, high-tech, geometric vector style for all visual elements.
+- Follow the color palette, typography, spacing, and component specifications defined in
+  `docs/style-guide/ux-style-guide.md`.
+- Maintain a futuristic, high-tech, geometric visual style for all elements.
 
 ### Rule 6 — Markdown File Naming (Non-Negotiable)
 All markdown files in this project **MUST** follow these naming rules:
@@ -87,6 +81,49 @@ All markdown files in this project **MUST** follow these naming rules:
 This rule applies to every `.md` file in the project, including files in `.github/`, `.idea/`,
 `prompts/`, `docs/`, and the project root.
 
+### Rule 7 — Resource Naming Convention (Non-Negotiable)
+All resource names and filenames under `res/` **must** use lowercase snake_case and begin with a scope prefix.
+
+**Scope clarification:** In this project, this rule applies to **all Android resources inside `res/`**.
+Files outside `res/` (for example, Kotlin files under `app/src/main/java/`) follow language-specific naming conventions.
+
+#### Required Prefix Strategy
+- `shared_` -> resources shared across the entire app
+- `<feature>_` -> resources shared within a feature
+- `<feature>_<subfeature>_` -> resources used only by a specific subfeature/screen
+
+#### Applies To The Entire `res/` Tree
+- `res/layout/`
+- `res/drawable*/` and `res/mipmap*/`
+- `res/menu/`
+- `res/navigation/`
+- `res/anim/` and `res/animator/`
+- `res/font/`
+- `res/raw/`
+- `res/values*/` resource identifiers and related resource names
+- Any current or future resource directories under `res/`
+
+#### Examples (Shopping)
+- `shared_empty_state_panel.xml` (app-wide shared)
+- `shopping_tab_bar.xml` (shared by Shopping List and Replenish)
+- `shopping_list_item_row.xml` (Shopping List only)
+- `shopping_replenish_item_row.xml` (Shopping Replenish only)
+- `shopping_list_swipe_bg.xml` (Shopping List-specific drawable)
+- `shopping_replenish_add_menu.xml` (Shopping Replenish-specific menu)
+
+#### Generic Examples (Future Features)
+- `inventory_card.xml` (feature-shared within Inventory)
+- `inventory_scan_camera_overlay.xml` (Inventory Scan only)
+- `network_status_panel.xml` (feature-shared within Network)
+- `shared_primary_button_bg.xml` (app-wide shared drawable)
+
+#### Additional Constraints
+- Use lowercase only.
+- Use underscores only (no spaces, no hyphens, no camelCase).
+- Keep names explicit and descriptive.
+- Do not create new resources that violate this scheme.
+- When modifying or replacing existing resources, migrate names to this scheme when practical.
+
 ---
 
 ## Pre-Work Checklist
@@ -100,9 +137,10 @@ Before writing **any** code, adding **any** feature, or making **any** change, v
 - [ ] I have read `docs/standards/licenses.md`.
 - [ ] I have read `docs/standards/license-quick-reference.md`.
 - [ ] I have reviewed `docs/specs/` for additional context relevant to the task.
+- [ ] I have reviewed `docs/style-guide/ux-style-guide.md` for UI implementation details.
 
 ### Relevant Feature Documentation
-- [ ] If working on **UI / Fragments** — read all docs above plus any feature-specific docs in `docs/specs/`.
+- [ ] If working on **UI / Fragments** — read all docs above plus `docs/style-guide/ux-style-guide.md` plus any feature-specific docs in `docs/specs/`.
 - [ ] If working on **data / repository** — read all docs above plus any feature-specific docs in `docs/specs/`.
 - [ ] If working on **scanning / camera** — read all docs above plus any feature-specific docs in `docs/specs/`.
 - [ ] If working on **navigation** — read all docs above plus any feature-specific docs in `docs/specs/`.
@@ -114,6 +152,8 @@ Before writing **any** code, adding **any** feature, or making **any** change, v
 - [ ] I am prepared to follow Kotlin and Android best practices.
 - [ ] I have verified the license of every dependency I intend to add.
 - [ ] I will validate all changes before submission.
+- [ ] I have checked the planned implementation and dependencies for relevant OWASP vulnerabilities and risks.
+- [ ] I will validate new dependencies and changed code against applicable OWASP guidance before submission.
 
 ---
 
@@ -223,6 +263,13 @@ No hardcoded strings, colors, or dimensions are permitted anywhere in source cod
 
 See `docs/standards/licenses.md` for the full approved package list and verification procedure.
 
+### OWASP Security Review (Non-Negotiable)
+- Every dependency change and security-relevant implementation **must** be reviewed for known OWASP risks and vulnerabilities.
+- Check for relevant issues such as insecure data storage, insecure communication, broken authentication, insufficient input validation, unsafe deserialization, exposed secrets, and known vulnerable dependencies.
+- Prefer current, maintained dependencies with no known critical or high-severity vulnerabilities.
+- If a vulnerability is identified, do not proceed as if the implementation is complete until it is fixed, mitigated, or explicitly documented as blocked.
+- When applicable, align security decisions with OWASP Top 10, OWASP Mobile Top 10, and dependency vulnerability checks.
+
 ### Performance and Reliability (Non-Negotiable)
 - Never perform network or database operations on the main thread.
 - Use `Dispatchers.IO` for all I/O-bound work.
@@ -258,6 +305,7 @@ fun loadShoppingItems(forceRefresh: Boolean = false)
 ### When Making Changes
 - Confirm no hardcoded values are introduced.
 - Run `./gradlew lint`.
+- **Check for OWASP vulnerabilities** in newly added dependencies and security-sensitive code paths.
 - **Update spec checkboxes** — when implementing a feature, mark the corresponding requirement checkbox as complete (`[X]`) in the relevant `docs/specs/` file.
 - Run `./gradlew test`.
 - Ensure all public symbols have KDoc.
@@ -317,7 +365,7 @@ fun loadShoppingItems(forceRefresh: Boolean = false)
 
 ---
 
-**Version:** 3.3
+**Version:** 3.4
 **Last Updated:** March 7, 2026
 **Status:** ACTIVE — Mandatory for all AI assistants
 **Compliance:** Required — no exceptions without explicit approval

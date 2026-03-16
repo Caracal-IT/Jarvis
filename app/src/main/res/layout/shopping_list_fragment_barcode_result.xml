@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shared_bg_jarvis">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_large"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialog"
+        android:padding="@dimen/spacing_large">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/shared_ic_arrow_back"
+                android:contentDescription="@string/action_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/iron_man_gold" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_barcode_not_found"
+                android:textColor="@color/iron_man_gold"
+                android:textSize="@dimen/text_size_title"
+                android:textStyle="bold"
+                android:paddingStart="@dimen/spacing_medium"
+                android:paddingEnd="@dimen/spacing_medium"
+                android:fontFamily="monospace" />
+        </LinearLayout>
+
+        <!-- Scanned barcode display -->
+        <TextView
+            android:id="@+id/tvScannedBarcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:textColor="@color/iron_man_cyan"
+            android:textSize="@dimen/text_size_small"
+            android:fontFamily="monospace"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tvBarcodeStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/msg_barcode_not_linked_yet"
+            android:textColor="@color/iron_man_gold"
+            android:textSize="@dimen/text_size_small"
+            android:fontFamily="monospace"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/iron_man_cyan"
+            android:alpha="0.3"
+            android:layout_marginVertical="@dimen/spacing_medium" />
+
+        <!-- Link to existing item -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_link_to_existing"
+            android:textColor="@color/iron_man_gold"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="@dimen/spacing_small" />
+
+        <Spinner
+            android:id="@+id/spinnerExistingItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shopping_list_bg_spinner"
+            android:padding="12dp" />
+
+        <Button
+            android:id="@+id/btnLinkItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/action_link_barcode"
+            style="@style/Widget.Jarvis.Button.Primary" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/iron_man_cyan"
+            android:alpha="0.3"
+            android:layout_marginVertical="@dimen/spacing_medium" />
+
+        <!-- Add new item -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_add_new_item"
+            android:textColor="@color/iron_man_gold"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="@dimen/spacing_small" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNewItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_item_name"
+            style="@style/Widget.Jarvis.TextInputLayout">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNewItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                style="@style/Widget.Jarvis.TextInputEditText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spinnerNewCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:background="@drawable/shopping_list_bg_spinner"
+            android:padding="12dp" />
+
+        <Button
+            android:id="@+id/btnAddNewItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/action_add_new_item"
+            style="@style/Widget.Jarvis.Button.Primary" />
+
+    </LinearLayout>
+</FrameLayout>

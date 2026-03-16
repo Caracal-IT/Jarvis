@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.Jarvis.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconSize">36dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="itemPaddingTop">20dp</item>
+        <item name="itemPaddingBottom">0dp</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.Jarvis.BottomNavItem</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.Jarvis.BottomNavItem</item>
+    </style>
+
+    <style name="TextAppearance.Jarvis.BottomNavItem" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="Widget.Jarvis.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/iron_man_red</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Jarvis.SmallComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.Jarvis.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <!-- Jarvis Dialog Style with frosted glass effect -->
+    <style name="Theme.Jarvis.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.Jarvis.Dialog.Title</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.Jarvis.Dialog.Body</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Jarvis.Button.Primary</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Jarvis.Button.Secondary</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Jarvis.Dialog</item>
+        <item name="backgroundTint">@color/iron_man_dark_tech</item>
+    </style>
+
+    <style name="ShapeAppearance.Jarvis.Dialog" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="TextAppearance.Jarvis.Dialog.Title" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">@color/iron_man_gold</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Jarvis.Dialog.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/iron_man_cyan</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <!-- Button styles -->
+    <style name="Widget.Jarvis.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/iron_man_red</item>
+        <item name="android:textColor">@color/iron_man_gold</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <style name="Widget.Jarvis.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/iron_man_cyan</item>
+        <item name="android:textColor">@color/iron_man_cyan</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Text Input Layout style -->
+    <style name="Widget.Jarvis.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/text_input_stroke_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="hintTextColor">@color/iron_man_cyan</item>
+        <item name="android:textColorHint">@color/iron_man_cyan</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+    </style>
+
+    <style name="Widget.Jarvis.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/iron_man_gold</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+</resources>

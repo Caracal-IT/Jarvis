@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <!-- Primary camera preview -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraPreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Scanning overlay frame (custom view) -->
+    <com.github.caracal.jarvis.shopping.list.ScanOverlayView
+        android:id="@+id/scanOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Top bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_height"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/overlay_dim"
+        android:padding="@dimen/spacing_small">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/icon_size_menu"
+            android:layout_height="@dimen/icon_size_menu"
+            android:src="@drawable/shared_ic_arrow_back"
+            android:contentDescription="@string/action_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/iron_man_gold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/title_scan_barcode"
+            android:textColor="@color/iron_man_gold"
+            android:textSize="@dimen/text_size_body"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:paddingStart="@dimen/spacing_small"
+            android:paddingEnd="@dimen/spacing_small" />
+
+    </LinearLayout>
+
+    <!-- Bottom hint -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/hint_scan_barcode"
+        android:textColor="@color/iron_man_cyan"
+        android:textSize="@dimen/text_size_small"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:background="@color/overlay_dim"
+        android:padding="@dimen/spacing_medium" />
+
+</FrameLayout>

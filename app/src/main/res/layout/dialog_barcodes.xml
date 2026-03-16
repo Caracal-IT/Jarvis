@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/spacing_medium">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBarcodes"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/barcode_list_height" />
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/spacing_medium"
         android:gravity="center_vertical">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etBarcode"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilBarcode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/hint_barcode"
-            android:inputType="text"
-            android:maxLines="1" />
+            style="@style/Widget.Jarvis.TextInputLayout">
 
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                style="@style/Widget.Jarvis.TextInputEditText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
             android:id="@+id/btnAddBarcode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_small"
-            android:text="@string/action_add"
-            android:textColor="@color/iron_man_dark_tech"
-            android:backgroundTint="@color/iron_man_gold" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:src="@android:drawable/ic_input_add"
+            android:contentDescription="@string/action_add"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/iron_man_cyan" />
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBarcodes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

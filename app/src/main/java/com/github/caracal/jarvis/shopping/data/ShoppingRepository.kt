@@ -19,13 +19,49 @@ interface ShoppingRepository {
     fun getCategories(): List<ShoppingCategory>
 
     /**
+     * Updates an existing Shopping List item's name, category and barcodes.
+     *
+     * @param itemId The ID of the item to update.
+     * @param newName The new canonical name.
+     * @param newCategoryId The new category ID.
+     * @param newBarcodes The full replacement barcode list.
+     * @return True if the update succeeded, false if a duplicate name exists or item not found.
+     */
+    fun updateShoppingItem(
+        itemId: String,
+        newName: String,
+        newCategoryId: String,
+        newBarcodes: List<String>
+    ): Boolean
+
+    /**
+     * Finds a Shopping List item by barcode.
+     *
+     * @param barcode The barcode to search for.
+     * @return The [ShoppingItem] that has this barcode, or null if not found.
+     */
+    fun findByBarcode(barcode: String): ShoppingItem?
+
+    /**
+     * Adds a new item to the Shopping List with an initial barcode.
+     *
+     * @param name Canonical generic name for the new item.
+     * @param categoryId The ID of the category this item belongs to.
+     * @param barcode The initial barcode to attach.
+     * @param isBaseline Whether this item should persist in the Replenish List after removal from Shopping List.
+     * @return True if the item was added, false if a duplicate exists.
+     */
+    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean = false): Boolean
+
+    /**
      * Adds a new item to the Shopping List.
      *
      * @param name Canonical generic name for the new item.
      * @param categoryId The ID of the category this item belongs to.
+     * @param isBaseline Whether this item should persist in the Replenish List after removal from Shopping List.
      * @return The newly created [ShoppingItem], or null if a duplicate exists.
      */
-    fun addShoppingItem(name: String, categoryId: String): ShoppingItem?
+    fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean = false): ShoppingItem?
 
     /**
      * Renames an existing Shopping List item.
@@ -40,6 +76,7 @@ interface ShoppingRepository {
      * Removes an item from the Shopping List.
      *
      * Baseline items removed from the Shopping List continue to appear in the Replenish List.
+     * Non-baseline items are permanently removed.
      *
      * @param itemId The ID of the item to remove.
      */

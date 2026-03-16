@@ -1,0 +1,9 @@
+# AI Assistant Instructions
+
+This assistant MUST always follow the project's canonical instructions located at:
+/docs/standards/ai-assistant-instructions.md
+
+Before performing any task, please read and adhere to the following:
+1. /docs/standards/readme.md
+2. /docs/standards/ai-assistant-instructions.md
+3. /docs/standards/kotlin-android-best-practices.md

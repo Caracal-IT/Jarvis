@@ -5,19 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.caracal.jarvis.databinding.ShoppingListFragmentBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
-import com.github.caracal.jarvis.shopping.data.BaselineData
 import com.github.caracal.jarvis.shopping.data.ShoppingItem
 import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
 
 /**
  * Fragment displaying the user's current Shopping List.
- *
- * Shows items grouped by category with a floating action button to add new items.
- * Each item exposes a popup menu for rename, remove, and barcode management actions.
- * The ViewModel is shared via the parent [ShoppingFragment].
  */
 class ShoppingListFragment : Fragment() {
 
@@ -30,9 +26,23 @@ class ShoppingListFragment : Fragment() {
 
     private val adapter by lazy {
         ShoppingListAdapter(
-            onMenuRename = { row -> showRenameDialog(row) },
+            onMenuRename = { row -> showRenamePage(row) },
             onMenuRemove = { row -> shoppingViewModel.removeShoppingItem(row.item.id) },
-            onMenuBarcodes = { row -> showBarcodeDialog(row) }
+            onItemBarcode = { row ->
+                // Use Fragment Result API to listen for the scan result from the scanner page.
+                childFragmentManager.setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner) { _, bundle ->
+                    val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
+                    val updatedBarcodes = (row.item.barcodes + scanned).distinct()
+                    shoppingViewModel.updateShoppingItem(
+                        row.item.id,
+                        row.item.name,
+                        row.item.categoryId,
+                        updatedBarcodes
+                    )
+                }
+                BarcodeScannerFragment.newInstanceForEdit()
+                    .show(childFragmentManager, TAG_SCAN_PAGE)
+            }
         )
     }
 
@@ -50,34 +60,40 @@ class ShoppingListFragment : Fragment() {
         binding.rvShoppingList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvShoppingList.adapter = adapter
 
+        val swipeCallback = ShoppingListSwipeCallback(
+            adapter = adapter,
+            onFullSwipeEdit = { row -> showRenamePage(row) },
+            onFullSwipeDelete = { row -> shoppingViewModel.removeShoppingItem(row.item.id) }
+        )
+        ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.rvShoppingList)
+
         shoppingViewModel.shoppingList.observe(viewLifecycleOwner) { items ->
             val displayItems = buildDisplayItems(items)
             adapter.submitList(displayItems)
-            binding.tvEmptyState.visibility =
-                if (displayItems.isEmpty()) View.VISIBLE else View.GONE
-            binding.rvShoppingList.visibility =
+            binding.rvShoppingList.visibility = 
                 if (displayItems.isEmpty()) View.GONE else View.VISIBLE
         }
 
         binding.fabAddItem.setOnClickListener {
-            AddItemDialogFragment().show(childFragmentManager, TAG_ADD_DIALOG)
+            (requireParentFragment() as ShoppingFragment).navigateTo(AddItemFragment())
+        }
+
+        binding.fabScanBarcode.setOnClickListener {
+            // Scanner remains a full-screen dialog as it requires a specific lifecycle/camera setup,
+            // but its results are handled as a navigation flow.
+            BarcodeScannerFragment.newInstanceForList()
+                .show(childFragmentManager, TAG_SCAN_PAGE)
         }
     }
 
-    /**
-     * Converts a flat list of [ShoppingItem] into a mixed list of headers and items,
-     * inserting a [ShoppingDisplayItem.Header] whenever the category changes.
-     *
-     * @param items The sorted flat list of shopping items.
-     * @return A list suitable for submission to [ShoppingListAdapter].
-     */
     private fun buildDisplayItems(items: List<ShoppingItem>): List<ShoppingDisplayItem> {
         val result = mutableListOf<ShoppingDisplayItem>()
         var lastCategoryId: String? = null
+
         for (item in items) {
             if (item.categoryId != lastCategoryId) {
-                val category = BaselineData.categoryById(item.categoryId) ?: continue
-                result.add(ShoppingDisplayItem.Header(category))
+                val category = shoppingViewModel.categories.value?.find { it.id == item.categoryId }
+                category?.let { result.add(ShoppingDisplayItem.Header(it)) }
                 lastCategoryId = item.categoryId
             }
             result.add(ShoppingDisplayItem.Item(item))
@@ -85,14 +101,21 @@ class ShoppingListFragment : Fragment() {
         return result
     }
 
-    private fun showRenameDialog(row: ShoppingDisplayItem.Item) {
-        RenameItemDialogFragment.newInstance(row.item.id, row.item.name)
-            .show(childFragmentManager, TAG_RENAME_DIALOG)
+    private fun showRenamePage(row: ShoppingDisplayItem.Item) {
+        val fragment = EditItemFragment.newInstance(
+            itemId = row.item.id,
+            itemName = row.item.name,
+            itemCategoryId = row.item.categoryId,
+            itemBarcodes = row.item.barcodes
+        )
+        (requireParentFragment() as ShoppingFragment).navigateTo(fragment)
     }
 
-    private fun showBarcodeDialog(row: ShoppingDisplayItem.Item) {
-        BarcodeDialogFragment.newInstance(row.item.id, row.item.name, row.item.barcodes)
-            .show(childFragmentManager, TAG_BARCODE_DIALOG)
+    /**
+     * Resets the swipe state of all items in the list.
+     */
+    fun resetAllItemsSwipeState() {
+        adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
     override fun onDestroyView() {
@@ -101,8 +124,6 @@ class ShoppingListFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG_ADD_DIALOG = "add_item"
-        private const val TAG_RENAME_DIALOG = "rename_item"
-        private const val TAG_BARCODE_DIALOG = "barcodes"
+        private const val TAG_SCAN_PAGE = "scan_page"
     }
 }

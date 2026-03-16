@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.DialogBarcodesBinding
-import com.github.caracal.jarvis.databinding.ListItemBarcodeBinding
+import com.github.caracal.jarvis.databinding.ShoppingListItemBarcodeBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 
 /**
@@ -35,33 +35,41 @@ class BarcodeDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogBarcodesBinding.inflate(layoutInflater)
 
-        itemId = requireArguments().getString(ARG_ITEM_ID)!!
-        val itemName = requireArguments().getString(ARG_ITEM_NAME)!!
+        // Guard argument retrieval to avoid NPEs
+        itemId = requireArguments().getString(ARG_ITEM_ID) ?: throw IllegalStateException("Missing item id")
+        val itemName = requireArguments().getString(ARG_ITEM_NAME) ?: ""
         val initialBarcodes = requireArguments().getStringArrayList(ARG_BARCODES) ?: arrayListOf()
 
         barcodeAdapter = BarcodeAdapter(
             barcodes = initialBarcodes.toMutableList(),
             onRemove = { barcode ->
-                shoppingViewModel.removeBarcode(itemId, barcode)
-                barcodeAdapter.removeBarcode(barcode)
+                val item = shoppingViewModel.shoppingList.value?.find { it.id == itemId } ?: return@BarcodeAdapter
+                val newBarcodes = item.barcodes - barcode
+                val updated = shoppingViewModel.updateShoppingItem(itemId, item.name, item.categoryId, newBarcodes)
+                if (updated) barcodeAdapter.removeBarcode(barcode)
             }
         )
 
         binding.rvBarcodes.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBarcodes.adapter = barcodeAdapter
 
-        shoppingViewModel.shoppingList.observe(this) { items ->
-            val item = items.find { it.id == itemId }
-            if (item != null) {
-                barcodeAdapter.updateBarcodes(item.barcodes)
-            }
-        }
-
         binding.btnAddBarcode.setOnClickListener {
             val barcode = binding.etBarcode.text?.toString()?.trim() ?: ""
             if (barcode.isNotEmpty()) {
-                shoppingViewModel.addBarcode(itemId, barcode)
-                binding.etBarcode.text?.clear()
+                val item = shoppingViewModel.shoppingList.value?.find { it.id == itemId }
+                if (item != null && barcode !in item.barcodes) {
+                    val newBarcodes = item.barcodes + barcode
+                    val updated = shoppingViewModel.updateShoppingItem(itemId, item.name, item.categoryId, newBarcodes)
+                    if (updated) binding.etBarcode.text?.clear()
+                }
+            }
+        }
+
+        // Observe using viewLifecycleOwner to avoid lifecycle surprises in DialogFragment
+        shoppingViewModel.shoppingList.observe(viewLifecycleOwner) { items ->
+            val item = items.find { it.id == itemId }
+            if (item != null) {
+                barcodeAdapter.updateBarcodes(item.barcodes)
             }
         }
 
@@ -90,7 +98,7 @@ class BarcodeDialogFragment : DialogFragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BarcodeViewHolder =
             BarcodeViewHolder(
-                ListItemBarcodeBinding.inflate(
+                ShoppingListItemBarcodeBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -130,7 +138,7 @@ class BarcodeDialogFragment : DialogFragment() {
 
         /** ViewHolder for a single barcode row. */
         class BarcodeViewHolder(
-            private val binding: ListItemBarcodeBinding
+            private val binding: ShoppingListItemBarcodeBinding
         ) : RecyclerView.ViewHolder(binding.root) {
 
             /**
@@ -141,7 +149,7 @@ class BarcodeDialogFragment : DialogFragment() {
              */
             fun bind(barcode: String, onRemove: (String) -> Unit) {
                 binding.tvBarcode.text = barcode
-                binding.btnRemoveBarcode.setOnClickListener { onRemove(barcode) }
+                binding.btnDeleteBarcode.setOnClickListener { onRemove(barcode) }
             }
         }
     }
@@ -158,6 +166,7 @@ class BarcodeDialogFragment : DialogFragment() {
          * @param itemName The display name shown as the dialog title.
          * @param barcodes The current list of barcodes for this item.
          */
+        @Suppress("unused")
         fun newInstance(
             itemId: String,
             itemName: String,

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shared_bg_jarvis">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_large"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialog"
+        android:padding="@dimen/spacing_large">
+
+        <!-- Header row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/shared_ic_arrow_back"
+                android:contentDescription="@string/action_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/iron_man_gold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dialog_title_edit_item"
+                android:textColor="@color/iron_man_gold"
+                android:textSize="@dimen/text_size_title"
+                android:textStyle="bold"
+                android:paddingStart="@dimen/spacing_medium"
+                android:paddingEnd="@dimen/spacing_medium"
+                android:fontFamily="monospace" />
+        </LinearLayout>
+
+        <!-- Item name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:hint="@string/hint_item_name"
+            style="@style/Widget.Jarvis.TextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                style="@style/Widget.Jarvis.TextInputEditText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Category spinner -->
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:prompt="@string/hint_select_category"
+            android:background="@drawable/shopping_list_bg_spinner"
+            android:padding="12dp" />
+
+        <!-- Barcodes section header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/spacing_large">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/label_barcodes"
+                android:textColor="@color/iron_man_gold"
+                android:textSize="@dimen/text_size_body"
+                android:textStyle="bold"
+                android:fontFamily="monospace" />
+
+            <ImageButton
+                android:id="@+id/btnScanBarcode"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/shopping_list_ic_barcode_scan"
+                android:contentDescription="@string/cd_scan_barcode"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/iron_man_cyan" />
+
+        </LinearLayout>
+
+        <!-- Add barcode manually row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/spacing_small">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilBarcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/hint_barcode"
+                style="@style/Widget.Jarvis.TextInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBarcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    style="@style/Widget.Jarvis.TextInputEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/btnAddBarcode"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:src="@android:drawable/ic_input_add"
+                android:contentDescription="@string/action_add"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/iron_man_cyan" />
+
+        </LinearLayout>
+
+        <!-- Barcode list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBarcodes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="160dp"
+            android:nestedScrollingEnabled="true"
+            android:layout_marginTop="@dimen/spacing_small" />
+
+        <!-- Save button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginTop="@dimen/spacing_large">
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_save"
+                style="@style/Widget.Jarvis.Button.Primary" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

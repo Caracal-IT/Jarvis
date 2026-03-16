@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_tech">
+    android:background="@drawable/shared_bg_jarvis">
 
     <TextView
         android:id="@+id/tvEmptyState"
@@ -25,15 +25,27 @@
         android:paddingBottom="@dimen/fab_bottom_padding"
         android:clipToPadding="false" />
 
+    <!-- Requested positions: Add on the left (start), Scan (barcode) on the right (end) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/spacing_medium"
         android:contentDescription="@string/cd_add_item"
-        app:tint="@color/iron_man_dark_tech"
-        app:backgroundTint="@color/iron_man_gold"
+        app:tint="@color/iron_man_gold"
+        app:backgroundTint="@color/iron_man_red"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabScanBarcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/spacing_medium"
+        android:contentDescription="@string/cd_scan_barcode"
+        app:tint="@color/iron_man_gold"
+        app:backgroundTint="@color/iron_man_red"
+        app:srcCompat="@drawable/shopping_list_ic_barcode_scan" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

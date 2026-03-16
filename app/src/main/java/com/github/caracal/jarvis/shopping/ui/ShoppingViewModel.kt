@@ -44,9 +44,38 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
 
     /** Reloads all lists and categories from the repository. */
     fun refresh() {
+        refreshLists()
+        _categories.value = repository.getCategories()
+    }
+
+    private fun refreshLists() {
         _shoppingList.value = repository.getShoppingList()
         _replenishList.value = repository.getReplenishList()
-        _categories.value = repository.getCategories()
+    }
+
+    /**
+     * Adds a new item to the Shopping List with an initial barcode attached.
+     *
+     * @param name The display name for the new item.
+     * @param categoryId The ID of the category to assign.
+     * @param barcode The barcode to attach immediately.
+     * @param isBaseline Whether the item should persist in the Replenish List.
+     * @return True if the item was added successfully.
+     */
+    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean = false): Boolean {
+        val validation = NamingValidator.validate(name)
+        if (!validation.isValid) {
+            _addItemError.value = validation.errorMessage
+            return false
+        }
+        val added = repository.addShoppingItemWithBarcode(name, categoryId, barcode, isBaseline)
+        if (!added) {
+            _addItemError.value = "An item with that name already exists in this category."
+            return false
+        }
+        _addItemError.value = null
+        refreshLists()
+        return true
     }
 
     /**
@@ -54,23 +83,63 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      *
      * @param name The display name for the new item.
      * @param categoryId The ID of the category to assign.
+     * @param isBaseline Whether the item should persist in the Replenish List.
      * @return True if the item was added successfully, false on validation or duplicate error.
      */
-    fun addShoppingItem(name: String, categoryId: String): Boolean {
+    fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean = false): Boolean {
         val validation = NamingValidator.validate(name)
         if (!validation.isValid) {
             _addItemError.value = validation.errorMessage
             return false
         }
-        val result = repository.addShoppingItem(name, categoryId)
+        val result = repository.addShoppingItem(name, categoryId, isBaseline)
         if (result == null) {
             _addItemError.value = "An item with that name already exists in this category."
             return false
         }
+
         _addItemError.value = null
-        _shoppingList.value = repository.getShoppingList()
+        refreshLists()
         return true
     }
+
+    /**
+     * Updates an existing Shopping List item's name, category and barcodes.
+     *
+     * @param itemId The ID of the item to update.
+     * @param newName The new display name.
+     * @param newCategoryId The new category ID.
+     * @param newBarcodes The full replacement barcode list.
+     * @return True if the update succeeded, false on validation or duplicate error.
+     */
+    fun updateShoppingItem(
+        itemId: String,
+        newName: String,
+        newCategoryId: String,
+        newBarcodes: List<String>
+    ): Boolean {
+        val validation = NamingValidator.validate(newName)
+        if (!validation.isValid) {
+            _renameItemError.value = validation.errorMessage
+            return false
+        }
+        val success = repository.updateShoppingItem(itemId, newName, newCategoryId, newBarcodes)
+        if (!success) {
+            _renameItemError.value = "An item with that name already exists in this category."
+            return false
+        }
+        _renameItemError.value = null
+        refreshLists()
+        return true
+    }
+
+    /**
+     * Finds a Shopping List item by barcode.
+     *
+     * @param barcode The barcode string to search for.
+     * @return The matching [ShoppingItem] or null.
+     */
+    fun findByBarcode(barcode: String) = repository.findByBarcode(barcode)
 
     /**
      * Renames an existing Shopping List item after validating the new name.
@@ -79,6 +148,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      * @param newName The new display name.
      * @return True if the rename succeeded, false on validation or duplicate error.
      */
+    @Suppress("unused")
     fun renameShoppingItem(itemId: String, newName: String): Boolean {
         val validation = NamingValidator.validate(newName)
         if (!validation.isValid) {
@@ -91,7 +161,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
             return false
         }
         _renameItemError.value = null
-        _shoppingList.value = repository.getShoppingList()
+        refreshLists()
         return true
     }
 
@@ -102,30 +172,9 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      */
     fun removeShoppingItem(itemId: String) {
         repository.removeShoppingItem(itemId)
-        _shoppingList.value = repository.getShoppingList()
+        refreshLists()
     }
 
-    /**
-     * Associates a barcode with a Shopping List item.
-     *
-     * @param itemId The ID of the target item.
-     * @param barcode The barcode string to add.
-     */
-    fun addBarcode(itemId: String, barcode: String) {
-        repository.addBarcode(itemId, barcode)
-        _shoppingList.value = repository.getShoppingList()
-    }
-
-    /**
-     * Removes a barcode from a Shopping List item.
-     *
-     * @param itemId The ID of the target item.
-     * @param barcode The barcode string to remove.
-     */
-    fun removeBarcode(itemId: String, barcode: String) {
-        repository.removeBarcode(itemId, barcode)
-        _shoppingList.value = repository.getShoppingList()
-    }
 
     /**
      * Adds a baseline item to the Shopping List.
@@ -136,7 +185,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
     fun addBaselineItemToShoppingList(baselineItemId: String): Boolean {
         val added = repository.addBaselineItemToShoppingList(baselineItemId)
         if (added) {
-            _shoppingList.value = repository.getShoppingList()
+            refreshLists()
         }
         return added
     }
@@ -146,7 +195,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
         _addItemError.value = null
     }
 
-    /** Clears the rename-item error state after the dialog is dismissed. */
+    /** Clears the rename/edit-item error state after the dialog is dismissed. */
     fun clearRenameItemError() {
         _renameItemError.value = null
     }

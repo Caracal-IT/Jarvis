@@ -1,12 +1,13 @@
 package com.github.caracal.jarvis.shopping.list
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.Window
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.github.caracal.jarvis.R
-import com.github.caracal.jarvis.databinding.DialogAddItemBinding
+import com.github.caracal.jarvis.databinding.ShoppingListAddItemBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 import com.github.caracal.jarvis.shopping.data.ShoppingCategory
 
@@ -19,7 +20,7 @@ import com.github.caracal.jarvis.shopping.data.ShoppingCategory
  */
 class AddItemDialogFragment : DialogFragment() {
 
-    private var _binding: DialogAddItemBinding? = null
+    private var _binding: ShoppingListAddItemBinding? = null
     private val binding get() = _binding!!
 
     private val shoppingViewModel by lazy {
@@ -29,40 +30,44 @@ class AddItemDialogFragment : DialogFragment() {
     private var categories: List<ShoppingCategory> = emptyList()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogAddItemBinding.inflate(layoutInflater)
+        _binding = ShoppingListAddItemBinding.inflate(layoutInflater)
+
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(binding.root)
 
         categories = shoppingViewModel.categories.value ?: emptyList()
         val categoryNames = categories.map { it.name }
         val spinnerAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_item,
             categoryNames
-        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+        ).also { it.setDropDownViewResource(R.layout.spinner_dropdown_item) }
         binding.spinnerCategory.adapter = spinnerAdapter
 
         shoppingViewModel.addItemError.observe(this) { error ->
             binding.tilItemName.error = error
         }
 
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle(R.string.dialog_title_add_item)
-            .setView(binding.root)
-            .setPositiveButton(R.string.action_add, null)
-            .setNegativeButton(R.string.action_cancel, null)
-            .create()
-
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                val name = binding.etItemName.text?.toString() ?: ""
-                val categoryIndex = binding.spinnerCategory.selectedItemPosition
-                if (categoryIndex >= 0 && categoryIndex < categories.size) {
-                    val categoryId = categories[categoryIndex].id
-                    val added = shoppingViewModel.addShoppingItem(name, categoryId)
-                    if (added) dismiss()
-                }
+        binding.btnBack.setOnClickListener { dismiss() }
+        binding.btnSave.setOnClickListener {
+            val name = binding.etItemName.text?.toString() ?: ""
+            val categoryIndex = binding.spinnerCategory.selectedItemPosition
+            val isBaseline = binding.swAddToReplenishList.isChecked
+            if (categoryIndex >= 0 && categoryIndex < categories.size) {
+                val categoryId = categories[categoryIndex].id
+                val added = shoppingViewModel.addShoppingItem(name, categoryId, isBaseline)
+                if (added) dismiss()
             }
         }
+
         return dialog
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        // Reset swipe states when returning to the shopping list.
+        (parentFragment as? ShoppingListFragment)?.resetAllItemsSwipeState()
     }
 
     override fun onDestroyView() {

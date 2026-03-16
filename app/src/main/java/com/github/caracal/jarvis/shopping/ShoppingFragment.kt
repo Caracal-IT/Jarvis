@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
-import androidx.fragment.app.viewModels
+import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ShoppingFragmentBinding
 import com.github.caracal.jarvis.shopping.list.ShoppingListFragment
 import com.github.caracal.jarvis.shopping.replenish.ReplenishListFragment
@@ -17,16 +18,16 @@ import com.github.caracal.jarvis.shopping.ui.ShoppingViewModelFactory
  * Root fragment for the Shopping feature.
  *
  * Hosts a two-tab layout containing [ShoppingListFragment] and [ReplenishListFragment].
- * The shared [ShoppingViewModel] is owned here and accessed by child fragments to avoid
- * duplicate ViewModel instantiation.
+ * The shared [ShoppingViewModel] is scoped to the Activity to ensure consistency
+ * across all shopping-related fragments.
  */
 class ShoppingFragment : Fragment() {
 
     private var _binding: ShoppingFragmentBinding? = null
     private val binding get() = _binding!!
 
-    /** Shared ViewModel accessed by child fragments via [requireParentFragment]. */
-    internal val viewModel: ShoppingViewModel by viewModels {
+    /** Shared ViewModel scoped to the Activity. */
+    internal val viewModel: ShoppingViewModel by activityViewModels {
         ShoppingViewModelFactory(requireContext())
     }
 
@@ -87,6 +88,14 @@ class ShoppingFragment : Fragment() {
         }
         binding.btnTabShoppingList.isSelected = false
         binding.btnTabReplenish.isSelected = true
+    }
+
+    /** Navigates to a sub-page within the shopping feature. */
+    fun navigateTo(fragment: Fragment) {
+        parentFragmentManager.commit {
+            replace(R.id.shopping_container, fragment)
+            addToBackStack(null)
+        }
     }
 
     override fun onDestroyView() {

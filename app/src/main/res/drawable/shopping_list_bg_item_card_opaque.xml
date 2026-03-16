@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Opaque foreground card for swipe rows - matches action background when revealing -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FF0A1410" />
+    <corners android:radius="0dp" />
+    <stroke
+        android:width="1dp"
+        android:color="#8000E5FF" />
+</shape>
+

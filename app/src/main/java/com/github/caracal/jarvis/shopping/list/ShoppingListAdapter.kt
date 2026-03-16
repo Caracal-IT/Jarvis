@@ -3,29 +3,29 @@ package com.github.caracal.jarvis.shopping.list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ListItemCategoryHeaderBinding
-import com.github.caracal.jarvis.databinding.ListItemShoppingBinding
+import com.github.caracal.jarvis.databinding.ShoppingListItemSwipeableBinding
+import com.github.caracal.jarvis.shopping.replenish.BaselineImageMapper
 import com.github.caracal.jarvis.shopping.ui.ShoppingDisplayItem
 
 /**
  * Adapter for the Shopping List RecyclerView.
  *
  * Renders both category header rows and shopping item rows. Item rows expose a popup
- * menu with rename, remove, and barcode management options.
+ * menu with rename and remove options.
  *
  * @param onMenuRename Callback invoked when the user selects "Rename" for an item.
  * @param onMenuRemove Callback invoked when the user selects "Remove" for an item.
- * @param onMenuBarcodes Callback invoked when the user selects "Manage Barcodes" for an item.
+ * @param onItemBarcode Optional callback when the inline barcode icon is tapped.
  */
 class ShoppingListAdapter(
     private val onMenuRename: (ShoppingDisplayItem.Item) -> Unit,
     private val onMenuRemove: (ShoppingDisplayItem.Item) -> Unit,
-    private val onMenuBarcodes: (ShoppingDisplayItem.Item) -> Unit
+    private val onItemBarcode: ((ShoppingDisplayItem.Item) -> Unit)? = null
 ) : ListAdapter<ShoppingDisplayItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     override fun getItemViewType(position: Int): Int =
@@ -41,7 +41,7 @@ class ShoppingListAdapter(
                 ListItemCategoryHeaderBinding.inflate(inflater, parent, false)
             )
             else -> ItemViewHolder(
-                ListItemShoppingBinding.inflate(inflater, parent, false)
+                ShoppingListItemSwipeableBinding.inflate(inflater, parent, false)
             )
         }
     }
@@ -50,7 +50,7 @@ class ShoppingListAdapter(
         when (val row = getItem(position)) {
             is ShoppingDisplayItem.Header -> (holder as HeaderViewHolder).bind(row)
             is ShoppingDisplayItem.Item -> (holder as ItemViewHolder).bind(
-                row, onMenuRename, onMenuRemove, onMenuBarcodes
+                row, onMenuRename, onMenuRemove, onItemBarcode
             )
         }
     }
@@ -66,27 +66,29 @@ class ShoppingListAdapter(
         }
     }
 
-    /** ViewHolder for shopping item rows. */
+    /** ViewHolder for shopping item rows with swipe-to-reveal actions. */
     class ItemViewHolder(
-        private val binding: ListItemShoppingBinding
+        private val binding: ShoppingListItemSwipeableBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         /**
-         * Binds the item data and wires the popup menu callbacks.
+         * Binds the item data and wires the action button callbacks.
          *
          * @param row The display item containing the [com.github.caracal.jarvis.shopping.data.ShoppingItem].
-         * @param onMenuRename Callback for rename selection.
-         * @param onMenuRemove Callback for remove selection.
-         * @param onMenuBarcodes Callback for barcode management selection.
+         * @param onMenuRename Callback for rename action.
+         * @param onMenuRemove Callback for the remove /delete action.
+         * @param onItemBarcode Optional callback when the inline barcode icon is tapped.
          */
         fun bind(
             row: ShoppingDisplayItem.Item,
             onMenuRename: (ShoppingDisplayItem.Item) -> Unit,
             onMenuRemove: (ShoppingDisplayItem.Item) -> Unit,
-            onMenuBarcodes: (ShoppingDisplayItem.Item) -> Unit
+            onItemBarcode: ((ShoppingDisplayItem.Item) -> Unit)?
         ) {
             val item = row.item
             binding.tvItemName.text = item.name
+            val drawableRes = BaselineImageMapper.getDrawableResId(item.name)
+            binding.ivShoppingItemImage.setImageResource(drawableRes)
             val barcodeCount = item.barcodes.size
             if (barcodeCount > 0) {
                 binding.tvBarcodeCount.visibility = View.VISIBLE
@@ -98,19 +100,72 @@ class ShoppingListAdapter(
             } else {
                 binding.tvBarcodeCount.visibility = View.GONE
             }
-            binding.btnItemMenu.setOnClickListener { view ->
-                val popup = PopupMenu(view.context, view)
-                popup.inflate(R.menu.menu_shopping_item)
-                popup.setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.action_rename -> { onMenuRename(row); true }
-                        R.id.action_remove -> { onMenuRemove(row); true }
-                        R.id.action_barcodes -> { onMenuBarcodes(row); true }
-                        else -> false
-                    }
-                }
-                popup.show()
+
+            // Reset recycled row state so actions are not visible when closed.
+            binding.foreground.translationX = 0f
+            showLeftActions(false)
+            showRightActions(false)
+
+            // Wire up action buttons on a revealed background
+            binding.btnRename.setOnClickListener {
+                onMenuRename(row)
+                binding.foreground.translationX = 0f
+                showLeftActions(false)
+                showRightActions(false)
             }
+            binding.btnDelete.setOnClickListener {
+                onMenuRemove(row)
+            }
+
+            // Inline barcode icon - only wire if the caller provided a handler.
+            binding.btnItemBarcode.setOnClickListener {
+                onItemBarcode?.invoke(row)
+            }
+        }
+
+        /** Returns the foreground view that can be swiped. */
+        fun getForeground(): View = binding.foreground
+
+
+        /** Sets the background color based on a swipe direction (green for left actions, red for right action). */
+        fun setBackgroundColor(colorRes: Int) {
+            binding.actionsBackground.setBackgroundColor(
+                binding.root.context.getColor(colorRes)
+            )
+        }
+
+        /** Shows or hides the left action buttons (edit) based on visibility. */
+        fun showLeftActions(visible: Boolean) {
+            binding.leftActions.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+            binding.leftActions.alpha = if (visible) 1f else 0f
+            binding.leftActions.isEnabled = visible
+            binding.btnRename.isEnabled = visible
+        }
+
+        /** Shows or hides the right action button (delete) based on visibility. */
+        fun showRightActions(visible: Boolean) {
+            binding.btnDelete.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+            binding.btnDelete.alpha = if (visible) 1f else 0f
+            binding.btnDelete.isEnabled = visible
+        }
+
+        /** Shows left actions with progressive alpha for a small swipe reveal. */
+        fun setLeftRevealFraction(fraction: Float) {
+            val clamped = fraction.coerceIn(0f, 1f)
+            val visible = clamped > 0f
+            binding.leftActions.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+            binding.leftActions.alpha = clamped
+            binding.leftActions.isEnabled = visible
+            binding.btnRename.isEnabled = visible
+        }
+
+        /** Shows right action with progressive alpha for small swipe reveals. */
+        fun setRightRevealFraction(fraction: Float) {
+            val clamped = fraction.coerceIn(0f, 1f)
+            val visible = clamped > 0f
+            binding.btnDelete.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+            binding.btnDelete.alpha = clamped
+            binding.btnDelete.isEnabled = visible
         }
     }
 
@@ -119,12 +174,9 @@ class ShoppingListAdapter(
             oldItem: ShoppingDisplayItem,
             newItem: ShoppingDisplayItem
         ): Boolean =
-            when {
-                oldItem is ShoppingDisplayItem.Header && newItem is ShoppingDisplayItem.Header ->
-                    oldItem.category.id == newItem.category.id
-                oldItem is ShoppingDisplayItem.Item && newItem is ShoppingDisplayItem.Item ->
-                    oldItem.item.id == newItem.item.id
-                else -> false
+            when (oldItem) {
+                is ShoppingDisplayItem.Header -> newItem is ShoppingDisplayItem.Header && oldItem.category.id == newItem.category.id
+                is ShoppingDisplayItem.Item -> newItem is ShoppingDisplayItem.Item && oldItem.item.id == newItem.item.id
             }
 
         override fun areContentsTheSame(

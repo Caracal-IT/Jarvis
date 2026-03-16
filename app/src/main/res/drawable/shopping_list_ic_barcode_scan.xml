@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Barcode lines -->
+    <path android:fillColor="@color/iron_man_cyan" android:pathData="M2,4h2v16H2zM5,4h1v16H5zM7,4h2v16H7zM10,4h1v16H10zM12,4h2v16H12zM15,4h1v16H15zM17,4h2v16H17zM20,4h2v16H20z"/>
+    <!-- Corner brackets -->
+    <path android:fillColor="@color/iron_man_gold" android:strokeColor="@color/iron_man_gold" android:strokeWidth="0.5"
+        android:pathData="M0,0 v6h1.5V1.5H6V0z M18,0 v1.5h4.5V6H24V0z M0,18 v6h6v-1.5H1.5V18z M22.5,18 v4.5H18V24h6v-6z"/>
+</vector>

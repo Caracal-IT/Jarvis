@@ -4,7 +4,7 @@
     android:id="@+id/feature_placeholder_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_tech">
+    android:background="@drawable/shared_bg_jarvis">
 
     <TextView
         android:id="@+id/tvFeatureTitle"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
         android:letterSpacing="0.1"
-        android:textColor="@color/iron_man_gold_dark"
+        android:textColor="@color/iron_man_gold"
         android:textSize="@dimen/text_size_title"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tvFeaturePlaceholder"

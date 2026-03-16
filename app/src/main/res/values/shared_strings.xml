@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Jarvis</string>
+    <string name="greeting">J.A.R.V.I.S. SYSTEM ONLINE</string>
+    <string name="title_shopping">Shopping</string>
+    <string name="title_system">System</string>
+    <string name="title_comms">Network</string>
+    <string name="title_power">Armor</string>
+    <string name="placeholder_coming_soon">— COMING SOON —</string>
+    <string name="feature_temporarily_unavailable_message">This feature is temporarily unavailable.</string>
+    <!-- Shopping Feature -->
+    <string name="tab_shopping_list">Shopping List</string>
+    <string name="tab_replenish">Replenish</string>
+    <string name="msg_shopping_list_empty">Your shopping list is empty.\nTap + to add items.</string>
+    <string name="dialog_title_add_item">Add Item</string>
+    <string name="dialog_title_rename_item">Rename Item</string>
+    <string name="dialog_title_edit_item">Edit Item</string>
+    <string name="title_scan_barcode">Scan Barcode</string>
+    <string name="title_barcode_not_found">Barcode Not Found</string>
+    <string name="title_barcode_found">Barcode Found</string>
+    <string name="hint_select_category">Category</string>
+    <string name="hint_item_name">Item name</string>
+    <string name="hint_barcode">Barcode</string>
+    <string name="hint_scan_barcode">Point camera at barcode to scan</string>
+    <string name="label_barcodes">Barcodes</string>
+    <string name="label_link_to_existing">Link barcode to existing item</string>
+    <string name="label_add_new_item">Or add as new item</string>
+    <string name="label_add_to_replenish_list">Add to Replenish List</string>
+    <string name="action_add">Add</string>
+    <string name="action_save">Save</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_back">Back</string>
+    <string name="action_done">Done</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_manage_barcodes">Manage Barcodes</string>
+    <string name="action_link_barcode">Link to Selected Item</string>
+    <string name="action_add_new_item">Add New Item with Barcode</string>
+    <string name="cd_add_item">Add item to shopping list</string>
+    <string name="cd_scan_barcode">Scan barcode</string>
+    <string name="cd_item_menu">Item options</string>
+    <string name="cd_item_image">Item image</string>
+    <string name="cd_remove_barcode">Remove barcode</string>
+    <string name="msg_item_added_to_list">%1$s added to Shopping List.</string>
+    <string name="msg_item_already_in_list">%1$s is already in your Shopping List.</string>
+    <string name="msg_barcode_found">Found item: %1$s</string>
+    <string name="msg_barcode_linked">Barcode linked to %1$s.</string>
+    <string name="msg_camera_permission_denied">Camera permission is required to scan barcodes.</string>
+    <string name="msg_scanned_barcode">Scanned barcode: %1$s</string>
+    <string name="msg_barcode_not_linked_yet">This barcode is not linked yet. Link it to an item or add a new one.</string>
+    <string name="msg_barcode_already_linked">This barcode is already linked to %1$s.</string>
+    <string name="msg_no_items_to_link">Your Shopping List has no items yet. Add a new item below.</string>
+    <plurals name="barcode_count">
+        <item quantity="one">%d barcode</item>
+        <item quantity="other">%d barcodes</item>
+    </plurals>
+</resources>

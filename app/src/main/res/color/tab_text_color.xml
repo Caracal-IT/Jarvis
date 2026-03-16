@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Color state list for tab text colors -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/iron_man_gold" android:state_selected="true" />  <!-- Active tab -->
+    <item android:color="@color/iron_man_cyan" />  <!-- Inactive tab -->
+</selector>
+

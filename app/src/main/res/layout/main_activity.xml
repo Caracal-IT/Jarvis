@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_jarvis"
+    android:background="@drawable/shared_bg_jarvis"
     tools:context=".MainActivity">
 
     <TextView
@@ -47,7 +47,7 @@
             android:textColor="@color/iron_man_cyan"
             android:textSize="14sp"
             app:backgroundTint="@null"
-            app:icon="@drawable/ic_supplies"
+            app:icon="@drawable/shared_ic_supplies"
             app:iconGravity="textTop"
             app:iconSize="32dp"
             app:iconTint="@color/iron_man_cyan" />
@@ -65,7 +65,7 @@
             android:textColor="@color/iron_man_cyan"
             android:textSize="14sp"
             app:backgroundTint="@null"
-            app:icon="@drawable/ic_system"
+            app:icon="@drawable/shared_ic_system"
             app:iconGravity="textTop"
             app:iconSize="32dp"
             app:iconTint="@color/iron_man_cyan" />
@@ -83,7 +83,7 @@
             android:textColor="@color/iron_man_cyan"
             android:textSize="14sp"
             app:backgroundTint="@null"
-            app:icon="@drawable/ic_network"
+            app:icon="@drawable/shared_ic_network"
             app:iconGravity="textTop"
             app:iconSize="32dp"
             app:iconTint="@color/iron_man_cyan" />
@@ -101,7 +101,7 @@
             android:textColor="@color/iron_man_cyan"
             android:textSize="14sp"
             app:backgroundTint="@null"
-            app:icon="@drawable/ic_power"
+            app:icon="@drawable/shared_ic_power"
             app:iconGravity="textTop"
             app:iconSize="32dp"
             app:iconTint="@color/iron_man_cyan" />
