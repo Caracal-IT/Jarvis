@@ -201,9 +201,14 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
     private fun loadFromPrefs() {
         allItems.clear()
         val json = prefs.getString(KEY_SHOPPING_LIST, null) ?: return
-        try {
-            val array = JSONArray(json)
-            for (i in 0 until array.length()) {
+        val array = try {
+            JSONArray(json)
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Failed to parse persisted shopping list; resetting to empty.", e)
+            return
+        }
+        for (i in 0 until array.length()) {
+            try {
                 val obj = array.getJSONObject(i)
                 val barcodes = mutableListOf<String>()
                 val barcodesArray = obj.optJSONArray(FIELD_BARCODES)
@@ -222,10 +227,10 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
                         isOnShoppingList = obj.optBoolean(FIELD_IS_ON_SHOPPING_LIST, true)
                     )
                 )
+            } catch (e: Exception) {
+                // Skip only the malformed record; don't discard the rest of the list.
+                android.util.Log.e(TAG, "Skipping malformed shopping item at index $i.", e)
             }
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Failed to parse persisted shopping list; resetting to empty.", e)
-            allItems.clear()
         }
     }
 

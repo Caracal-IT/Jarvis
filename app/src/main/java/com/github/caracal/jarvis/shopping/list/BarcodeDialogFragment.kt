@@ -65,8 +65,9 @@ class BarcodeDialogFragment : DialogFragment() {
             }
         }
 
-        // Observe using viewLifecycleOwner to avoid lifecycle surprises in DialogFragment
-        shoppingViewModel.shoppingList.observe(viewLifecycleOwner) { items ->
+        // This DialogFragment has no onCreateView, so it never has a fragment view;
+        // observe using the fragment itself as the LifecycleOwner.
+        shoppingViewModel.shoppingList.observe(this) { items ->
             val item = items.find { it.id == itemId }
             if (item != null) {
                 barcodeAdapter.updateBarcodes(item.barcodes)

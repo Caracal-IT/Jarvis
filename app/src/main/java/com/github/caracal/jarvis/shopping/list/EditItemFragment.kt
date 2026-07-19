@@ -29,6 +29,7 @@ class EditItemFragment : Fragment() {
     }
 
     private lateinit var itemId: String
+    private var itemName: String = ""
     private var categories: List<ShoppingCategory> = emptyList()
     private val barcodeAdapter = BarcodeListAdapter { barcode -> removeBarcode(barcode) }
 
@@ -49,7 +50,7 @@ class EditItemFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val itemName = arguments?.getString(ARG_ITEM_NAME) ?: ""
+        itemName = arguments?.getString(ARG_ITEM_NAME) ?: ""
         val itemCategoryId = arguments?.getString(ARG_ITEM_CATEGORY_ID) ?: ""
         val itemBarcodes = arguments?.getStringArrayList(ARG_ITEM_BARCODES) ?: arrayListOf()
 
@@ -118,7 +119,7 @@ class EditItemFragment : Fragment() {
             barcodeAdapter.submitList(current)
         } else {
             Toast.makeText(
-                requireContext(), getString(R.string.msg_barcode_already_linked, ""), Toast.LENGTH_SHORT
+                requireContext(), getString(R.string.msg_barcode_already_linked, itemName), Toast.LENGTH_SHORT
             ).show()
         }
     }

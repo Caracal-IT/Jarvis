@@ -24,6 +24,7 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Full-screen dialog fragment that opens the camera and scans for barcodes using ML Kit.
@@ -42,6 +43,7 @@ class BarcodeScannerFragment : DialogFragment() {
 
     private var cameraExecutor: ExecutorService? = null
     private var mode: Int = MODE_FOR_LIST
+    private val barcodeHandled = AtomicBoolean(false)
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -85,6 +87,9 @@ class BarcodeScannerFragment : DialogFragment() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
+            // The dialog may have been dismissed before this async callback fires.
+            if (_binding == null) return@addListener
+
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
             val preview = Preview.Builder().build().also {
@@ -120,6 +125,10 @@ class BarcodeScannerFragment : DialogFragment() {
         // We only process the first barcode found in the frame.
         val barcode = barcodes.first()
         val raw = barcode.rawValue ?: return
+
+        // Guard against overlapping analyzer callbacks acting on the same barcode
+        // before the dialog has actually dismissed.
+        if (!barcodeHandled.compareAndSet(false, true)) return
 
         // Process only on the main thread.
         activity?.runOnUiThread {

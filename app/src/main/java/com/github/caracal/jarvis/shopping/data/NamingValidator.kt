@@ -10,7 +10,7 @@ object NamingValidator {
 
     /** Known brand name fragments that are not permitted as item names. */
     private val knownBrands: Set<String> = setOf(
-        "coca-cola", "cocacola", "pepsi", "nestle", "kellogg",
+        "coca-cola", "cocacola", "coca cola", "pepsi", "nestle", "kellogg",
         "heinz", "campbell", "dole", "del monte", "kraft", "lays", "doritos",
         "pringles", "oreo", "nabisco", "quaker", "tropicana", "minute maid",
         "gatorade", "red bull", "monster energy", "sprite", "fanta",
