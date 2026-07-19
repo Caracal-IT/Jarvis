@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Jarvis Design Asset Gallery</title>
+<style>
+  /*
+    Single dark theme by design: Jarvis's own UI has no light variant
+    (see docs/standards/design/style-guide.md §2.3) — this catalog stays
+    faithful to that HUD world rather than offering a light mode nothing
+    in the app actually has.
+  */
+  :root {
+    color-scheme: dark;
+    --bg: #020810;
+    --bg-grid: #050d18;
+    --panel: rgba(4, 18, 26, 0.55);
+    --panel-hover: rgba(0, 229, 255, 0.06);
+    --border: rgba(0, 229, 255, 0.28);
+    --border-strong: rgba(0, 229, 255, 0.75);
+    --gold: #F1D56D;
+    --gold-dark: #CFB53B;
+    --cyan: #00E5FF;
+    --red: #7A0019;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(0, 229, 255, 0.10), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(0, 229, 255, 0.025) 0 1px, transparent 1px 48px),
+      repeating-linear-gradient(90deg, rgba(0, 229, 255, 0.025) 0 1px, transparent 1px 48px),
+      var(--bg);
+    color: var(--gold);
+    font-family: var(--mono);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--cyan); }
+
+  :focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  header.masthead {
+    padding: 40px clamp(20px, 5vw, 56px) 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-shadow: 0 0 18px rgba(0, 229, 255, 0.25);
+    text-wrap: balance;
+  }
+
+  p.sub {
+    margin: 0 0 24px;
+    max-width: 65ch;
+    color: var(--cyan);
+    font-size: 13px;
+    opacity: 0.85;
+    line-height: 1.6;
+  }
+
+  p.sub code {
+    font-family: var(--mono);
+    color: var(--gold-dark);
+  }
+
+  .statusbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    width: fit-content;
+  }
+
+  .stat {
+    background: var(--bg-grid);
+    padding: 10px 20px;
+    min-width: 120px;
+  }
+
+  .stat .label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    opacity: 0.75;
+    margin-bottom: 4px;
+  }
+
+  .stat .value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  main {
+    padding: 8px clamp(20px, 5vw, 56px) 64px;
+  }
+
+  section { margin-top: 44px; }
+
+  h2 {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 6px;
+    padding: 0 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    border-bottom: 1px solid var(--border);
+  }
+
+  h2::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+    flex-shrink: 0;
+  }
+
+  h2 .count {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--cyan);
+    opacity: 0.8;
+    font-variant-numeric: tabular-nums;
+  }
+
+  p.section-note {
+    margin: 10px 0 18px;
+    max-width: 70ch;
+    font-size: 12.5px;
+    color: var(--cyan);
+    opacity: 0.75;
+    line-height: 1.6;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+    gap: 14px;
+  }
+
+  .tile {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile { transition: none; }
+  }
+
+  .tile:hover, .tile:focus-within {
+    border-color: var(--border-strong);
+    background: var(--panel-hover);
+    transform: translateY(-2px);
+  }
+
+  .tile img {
+    width: 100%;
+    max-width: 88px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background: #000;
+    border-radius: 7px;
+  }
+
+  .tile .name {
+    font-size: 10.5px;
+    color: var(--cyan);
+    word-break: break-word;
+    line-height: 1.35;
+  }
+
+  .tile .kind {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    opacity: 0.8;
+  }
+
+  footer {
+    padding: 24px clamp(20px, 5vw, 56px) 48px;
+    border-top: 1px solid var(--border);
+    color: var(--cyan);
+    font-size: 11.5px;
+    opacity: 0.7;
+  }
+
+  footer a { color: var(--gold-dark); }
+</style>
+</head>
+<body>
+  <header class="masthead">
+    <h1>Jarvis Design Asset Gallery</h1>
+    <p class="sub">
+      Rendered previews of every drawable resource in <code>app/src/main/res/drawable</code> —
+      a visual companion to <code>docs/standards/design/style-guide.md</code>.
+      Android vector-drawable XML doesn't preview in a file browser or GitHub diff,
+      so each asset here is also rasterized to SVG/PNG for reference.
+    </p>
+    <div class="statusbar" id="statusbar"></div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Backgrounds &amp; Shapes <span class="count" id="count-backgrounds"></span></h2>
+      <p class="section-note">Layer-lists, shapes, and the ripple background pattern — the stroke-and-glow surfaces described in style-guide.md §5.2. Rendered on their own canvas since these have no intrinsic bounds.</p>
+      <div class="grid" id="backgrounds"></div>
+    </section>
+
+    <section>
+      <h2>System &amp; Navigation Icons <span class="count" id="count-system"></span></h2>
+      <div class="grid" id="system"></div>
+    </section>
+
+    <section>
+      <h2>Launcher &amp; Splash <span class="count" id="count-launcher"></span></h2>
+      <div class="grid" id="launcher"></div>
+    </section>
+
+    <section>
+      <h2>Item Icons — Shopping / Replenish <span class="count" id="count-items"></span></h2>
+      <div class="grid" id="items"></div>
+    </section>
+  </main>
+
+  <footer>
+    Source of truth: <a href="../../../../app/src/main/res/drawable">app/src/main/res/drawable</a>.
+    Re-sync this gallery whenever assets change there — see style-guide.md.
+  </footer>
+
+<script>
+const backgrounds = [
+  "bg_button", "bg_dialog", "shared_bg_jarvis", "shopping_bg_tab",
+  "shopping_list_bg_icon_circle", "shopping_list_bg_item_card",
+  "shopping_list_bg_item_card_opaque", "shopping_list_bg_scan_frame",
+  "shopping_list_bg_spinner", "shopping_replenish_bg_icon_circle"
+];
+const system = [
+  "shared_ic_arrow_back", "shared_ic_network", "shared_ic_power",
+  "shared_ic_supplies", "shared_ic_system",
+  "shopping_list_ic_barcode_scan", "shopping_list_ic_rename"
+];
+const launcher = [
+  "shared_ic_launcher_background", "shared_ic_launcher_foreground",
+  "shared_ic_launcher_monochrome", "shared_ic_splash_icon"
+];
+const items = [
+  "shopping_replenish_ic_item_avocados","shopping_replenish_ic_item_beef",
+  "shopping_replenish_ic_item_berocca_boost","shopping_replenish_ic_item_blueberries",
+  "shopping_replenish_ic_item_body_wash","shopping_replenish_ic_item_butter",
+  "shopping_replenish_ic_item_charcoal","shopping_replenish_ic_item_cheese",
+  "shopping_replenish_ic_item_chicken","shopping_replenish_ic_item_cloths",
+  "shopping_replenish_ic_item_coconut_oil","shopping_replenish_ic_item_coffee",
+  "shopping_replenish_ic_item_dishwashing_liquid","shopping_replenish_ic_item_fabric_softener",
+  "shopping_replenish_ic_item_fire_lighters","shopping_replenish_ic_item_fish",
+  "shopping_replenish_ic_item_frozen_berries","shopping_replenish_ic_item_frozen_vegetables",
+  "shopping_replenish_ic_item_low_carb_bread","shopping_replenish_ic_item_milk",
+  "shopping_replenish_ic_item_mouthwash","shopping_replenish_ic_item_mushrooms",
+  "shopping_replenish_ic_item_mustard","shopping_replenish_ic_item_nuts",
+  "shopping_replenish_ic_item_olive_oil","shopping_replenish_ic_item_placeholder",
+  "shopping_replenish_ic_item_pork","shopping_replenish_ic_item_shrimp",
+  "shopping_replenish_ic_item_soap_bar","shopping_replenish_ic_item_spices",
+  "shopping_replenish_ic_item_sponges","shopping_replenish_ic_item_strawberries",
+  "shopping_replenish_ic_item_sweeteners","shopping_replenish_ic_item_tea",
+  "shopping_replenish_ic_item_tomatoes","shopping_replenish_ic_item_toothpaste",
+  "shopping_replenish_ic_item_treats","shopping_replenish_ic_item_vegetables",
+  "shopping_replenish_ic_item_washing_machine_soap","shopping_replenish_ic_item_wood",
+  "shopping_replenish_ic_item_yogurt"
+];
+
+function kindFor(id, name) {
+  if (id === "backgrounds") return name === "shared_bg_jarvis" || name === "shopping_bg_tab" ? "layered" : "shape";
+  return "icon";
+}
+
+function render(id, names) {
+  const el = document.getElementById(id);
+  el.innerHTML = names.map(n => `
+    <div class="tile">
+      <img src="png/${n}.png" alt="${n}" loading="lazy" width="88" height="88" />
+      <div class="name">${n}</div>
+      <div class="kind">${kindFor(id, n)}</div>
+    </div>
+  `).join("");
+  document.getElementById(`count-${id}`).textContent = `${names.length} asset${names.length === 1 ? "" : "s"}`;
+}
+
+render("backgrounds", backgrounds);
+render("system", system);
+render("launcher", launcher);
+render("items", items);
+
+const total = backgrounds.length + system.length + launcher.length + items.length;
+document.getElementById("statusbar").innerHTML = `
+  <div class="stat"><span class="label">Total Assets</span><span class="value">${total}</span></div>
+  <div class="stat"><span class="label">Categories</span><span class="value">4</span></div>
+  <div class="stat"><span class="label">Format</span><span class="value">XML → SVG → PNG</span></div>
+`;
+</script>
+</body>
+</html>
