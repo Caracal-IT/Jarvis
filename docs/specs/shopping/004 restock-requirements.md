@@ -68,7 +68,7 @@ This document covers Replenish-based add flows only:
 
 [X] Selection interactions must be stable and responsive in normal usage.  
 [X] User-facing language must remain concise and in Standard American English.  
-[X] Visual treatment must align with the Jarvis / Iron Man theme as defined in `docs/style-guide/ux-style-guide.md`.
+[X] Visual treatment must align with the Jarvis / Iron Man theme as defined in `docs/standards/design/style-guide.md`.
 
 ## Acceptance Criteria
 

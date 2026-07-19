@@ -27,9 +27,15 @@
 
 **Resources:**
 - Prefix layout files with their component type: `fragment_`, `activity_`, `item_`, `dialog_`
-- Prefix drawable files with their usage type: `ic_` (icon), `bg_` (background), `img_` (image)
+- Prefix drawable files with their usage type — `ic_` (icon), `bg_` (background), `img_` (image) —
+  and scope feature-specific assets with the owning feature: `<feature>_<type>_<name>.xml`,
+  e.g. `shopping_list_ic_barcode_scan.xml`, `shopping_replenish_ic_item_avocados.xml`.
+  Assets shared across every feature (chrome, launcher/splash, generic system icons) use
+  `shared_<type>_<name>.xml`, e.g. `shared_ic_network.xml`. Assets with no feature meaning at
+  all (a generic button/dialog background reused everywhere) omit the prefix entirely:
+  `bg_button.xml`, `bg_dialog.xml`.
 - Prefix string resource keys with the screen/feature name: `shopping_title`, `base_items_empty_message`
-- Example: `fragment_shopping_list.xml`, `ic_shopping_cart.xml`, `strings.xml`
+- Example: `fragment_shopping_list.xml`, `shopping_list_ic_barcode_scan.xml`, `strings.xml`
 
 **Packages:**
 - Use lowercase, dot-separated package names.
@@ -76,10 +82,10 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
 ## Resource Management
 
 ### All Values Must Be in Resource Files
-- **Strings** → `res/values/strings.xml`
-- **Colors** → `res/values/colors.xml`
-- **Dimensions** → `res/values/dimens.xml`
-- **Styles and Themes** → `res/values/themes.xml`, `res/values/styles.xml`
+- **Strings** → `res/values/shared_strings.xml`
+- **Colors** → `res/values/shared_colors.xml`
+- **Dimensions** → `res/values/shared_dimens.xml`
+- **Styles and Themes** → `res/values/shared_themes.xml`, `res/values/shared_styles.xml`
 - **Drawables** → `res/drawable/` or `res/mipmap/` (for launcher icons)
 - **Navigation** → `res/navigation/`
 
@@ -93,7 +99,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
 <TextView
     android:text="@string/shopping_title"
     android:textColor="@color/iron_man_red"
-    android:textSize="@dimen/text_size_medium" />
+    android:textSize="@dimen/text_size_body" />
 ```
 
 ---

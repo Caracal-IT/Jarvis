@@ -8,13 +8,13 @@ description: >
 Before performing any work on this project, read and apply the following standards documents
 in order:
 
-1. `docs/standards/readme.md` — Project standards overview.
-2. `docs/standards/ai-assistant-instructions.md` — **Canonical source of truth. Non-negotiable.**
-3. `docs/standards/kotlin-android-best-practices.md` — Kotlin and Android conventions.
-4. `docs/standards/licenses.md` — Dependency license policy.
-5. `docs/standards/license-quick-reference.md` — License quick-reference checklist.
+1. `docs/standards/readme.md` — **Canonical source of truth. Non-negotiable.**
+2. `docs/standards/kotlin-android-best-practices.md` — Kotlin and Android conventions.
+3. `docs/standards/licenses.md` — Dependency license policy.
+4. `docs/standards/license-quick-reference.md` — License quick-reference checklist.
+5. `docs/standards/design/style-guide.md` — Visual design system, required for any UI change.
 
-Apply every rule in `docs/standards/ai-assistant-instructions.md` to all code, responses,
+Apply every rule in `docs/standards/readme.md` to all code, responses,
 comments, and documentation produced in this session.
 
 Key non-negotiable rules (full details in the file above):

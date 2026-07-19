@@ -18,10 +18,9 @@ These standards ensure:
 
 ## Documents in This Folder
 
-### 0. ai-assistant-instructions.md ← Start Here
-The **single source of truth** for all AI assistants. Every AI assistant must read this file
-before any other. It contains the six core rules, full protocol, pre-work checklists,
-architecture requirements, license policy, and validation commands.
+This `readme.md` is the **single source of truth** for all AI assistants — the
+starting point before any other document. It contains the core rules, the
+pre-work checklist, and pointers to every other standards document below.
 
 > **GitHub Copilot** is automatically pointed here via `.github/copilot-instructions.md`.
 >
@@ -55,9 +54,9 @@ Quick-reference checklist for license compliance before adding any dependency.
 ### 4. design/style-guide.md
 The Jarvis visual design system: the "Iron Man / Arc Reactor" dark-tech
 aesthetic, color palette and semantic usage rules, typography, spacing
-tokens, shape/elevation/component patterns, and a pre-submission UI
-checklist. **MUST** be followed for any layout, drawable, theme, or style
-resource changes.
+tokens, shape/elevation/component patterns, interaction and motion
+patterns, and a pre-submission UI checklist. **MUST** be followed for any
+layout, drawable, theme, or style resource changes.
 
 ## Markdown File Naming Convention (Non-Negotiable)
 
@@ -65,7 +64,14 @@ All `.md` files in this project **MUST** use:
 - **Lowercase only** — no uppercase letters.
 - **Hyphens to separate words** — no spaces, underscores, or camelCase.
 
-Example: `ai-assistant-instructions.md`, `readme.md`, `license-quick-reference.md`
+Example: `kotlin-android-best-practices.md`, `readme.md`, `license-quick-reference.md`
+
+**Exception — numbered spec files:** files under `docs/specs/` intentionally
+use a `NNN slug.md` pattern (a three-digit index, a space, then the
+kebab-case name, e.g. `002 home-requirements.md`). The space after the
+index is load-bearing — `.github/scripts/generate_docs_summary.py` matches
+it with `^\d{3}\s` to build `docs/readme.md` and order specs. Do not
+"fix" these to hyphens; that would break the generator.
 
 ## AI Assistant Instructions
 
@@ -178,5 +184,5 @@ For questions about these standards or to propose updates, please contact the te
 
 ---
 
-**Last Updated:** March 7, 2026
+**Last Updated:** July 19, 2026
 **Status:** Active - Must be followed for all new code and changes

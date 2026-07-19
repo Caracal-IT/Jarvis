@@ -18,6 +18,7 @@ The active root of `docs/specs/` must contain only:
 
 - `001 readme.md`
 - `002 home-requirements.md`
+- `003 documentation-summary-requirements.md`
 
 Feature requirements must be placed in separate feature folders (for example, `shopping/`).
 

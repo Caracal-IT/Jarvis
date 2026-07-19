@@ -108,7 +108,7 @@ This document covers:
 [X] List interactions must be responsive and stable.  
 [X] Text and labels must be clear and concise.  
 [X] User-facing text must be in Standard American English.  
-[X] Presentation must align with the Jarvis / Iron Man visual standards as defined in `docs/style-guide/ux-style-guide.md`.
+[X] Presentation must align with the Jarvis / Iron Man visual standards as defined in `docs/standards/design/style-guide.md`.
 
 ## Acceptance Criteria
 

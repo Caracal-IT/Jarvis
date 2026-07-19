@@ -5,7 +5,7 @@ This is an Android application with a Jarvis-themed interface, featuring Iron Ma
 ## 🤖 AI Development Guidelines
 
 This project has strict guidelines for AI-generated code and assets to maintain quality and thematic consistency.
-Please refer to [`docs/standards/ai-assistant-instructions.md`](docs/standards/ai-assistant-instructions.md) for the full rules on:
+Please refer to [`docs/standards/readme.md`](docs/standards/readme.md) for the full rules on:
 1.  **Best Practices** (Kotlin/Android standards)
 2.  **Resource Management** (Strict usage of `strings.xml`, `colors.xml`, etc.)
 3.  **Design Patterns** (MVVM, Clean Architecture)
@@ -19,7 +19,7 @@ Please refer to [`docs/standards/ai-assistant-instructions.md`](docs/standards/a
 
 ## 🎨 Theme & Assets
 
-For complete visual design specifications, see [`docs/style-guide/ux-style-guide.md`](docs/style-guide/ux-style-guide.md).
+For complete visual design specifications, see [`docs/standards/design/style-guide.md`](docs/standards/design/style-guide.md).
 
 **Key Colors:**
 - **Primary Color**: Iron Man Red (`#7A0019`)

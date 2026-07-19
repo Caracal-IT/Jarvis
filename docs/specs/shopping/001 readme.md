@@ -26,7 +26,7 @@ Define what Shopping must deliver when the feature is complete.
 1. This folder covers Shopping requirements only.
 2. Home-level requirements remain in `docs/specs/002 home-requirements.md`.
 3. Standards and engineering rules remain in `docs/standards/`.
-4. Visual and interaction styling remains in `docs/style-guide/ux-style-guide.md`.
+4. Visual and interaction styling remains in `docs/standards/design/style-guide.md`.
 
 ## Maintenance Rule
 
