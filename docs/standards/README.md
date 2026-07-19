@@ -52,8 +52,12 @@ Full license policy for all project dependencies.
 ### 3. license-quick-reference.md
 Quick-reference checklist for license compliance before adding any dependency.
 
-### 4. copilot-compliance-checklist.md
-GitHub Copilot-specific compliance checklist.
+### 4. design/style-guide.md
+The Jarvis visual design system: the "Iron Man / Arc Reactor" dark-tech
+aesthetic, color palette and semantic usage rules, typography, spacing
+tokens, shape/elevation/component patterns, and a pre-submission UI
+checklist. **MUST** be followed for any layout, drawable, theme, or style
+resource changes.
 
 ## Markdown File Naming Convention (Non-Negotiable)
 
@@ -141,17 +145,6 @@ AI assistants must:
 - All code must comply with `kotlin-android-best-practices.md` guidelines.
 - No exceptions without explicit approval and documentation.
 
-**GitHub Copilot** is automatically instructed via `.github/copilot-instructions.md`, which
-redirects it to `docs/standards/ai-assistant-instructions.md` — the single source of truth.
-
-**JetBrains AI Assistant** (Android Studio / IntelliJ IDEA) is automatically loaded with project
-context via `.idea/ai-context.md`, which redirects it to `docs/standards/ai-assistant-instructions.md`.
-A reusable prompt template is also available at `prompts/jarvis-standards.md` — use it via
-**AI Assistant → Prompt Library** at the start of any session.
-
-**All other AI assistants** (ChatGPT, Claude, etc.) must be manually directed to read
-`docs/standards/ai-assistant-instructions.md` at the start of every session.
-
 ### Common Commands Reference
 
 ```bash
@@ -178,20 +171,6 @@ If you believe an exception to these standards is necessary:
 2. Explain why the standard cannot be followed
 3. Propose an alternative that maintains code quality
 4. Request approval before implementation
-
-## Version History
-
-- **v3.2** (March 7, 2026) - Added markdown file naming rule
-  - Added Rule 6 — Markdown File Naming to `ai-assistant-instructions.md`
-  - Renamed all non-compliant `.md` files to lowercase kebab-case
-  - Updated all internal references across all documentation files
-- **v3.1** (March 7, 2026) - Added Standard American English rule and JetBrains AI support
-  - Added `.idea/ai-context.md` and `prompts/jarvis-standards.md`
-  - Added Standard American English as a non-negotiable requirement
-- **v3.0** (March 7, 2026) - Merged AI instructions into single source of truth
-  - Created `.github/copilot-instructions.md`
-- **v2.0** (March 7, 2026) - Updated to Kotlin and Android standards
-- **v1.0** (March 6, 2026) - Initial standards documentation created
 
 ## Contact and Questions
 
