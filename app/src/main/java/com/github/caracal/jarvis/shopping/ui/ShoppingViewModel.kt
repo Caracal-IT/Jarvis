@@ -84,7 +84,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      * @param name The display name for the new item.
      * @param categoryId The ID of the category to assign.
      * @param isBaseline Whether the item should persist in the Replenish List.
-     * @return True if the item was added successfully, false on validation or duplicate error.
+     * @return True if the item was added successfully, false on validation error.
      */
     fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean = false): Boolean {
         val validation = NamingValidator.validate(name)
@@ -92,12 +92,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
             _addItemError.value = validation.errorMessage
             return false
         }
-        val result = repository.addShoppingItem(name, categoryId, isBaseline)
-        if (result == null) {
-            _addItemError.value = "An item with that name already exists in this category."
-            return false
-        }
-
+        repository.addShoppingItem(name, categoryId, isBaseline)
         _addItemError.value = null
         refreshLists()
         return true

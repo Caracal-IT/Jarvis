@@ -2,11 +2,11 @@ package com.github.caracal.jarvis
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.github.caracal.jarvis.databinding.MainActivityBinding
 
 /**
  * Main entry-point activity for the Jarvis application.
@@ -16,31 +16,33 @@ import androidx.core.view.WindowInsetsCompat
  */
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: MainActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.main_activity)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val rootView = findViewById<android.view.View>(R.id.main)
-        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        findViewById<Button>(R.id.btnShopping).setOnClickListener {
+        binding.btnShopping.setOnClickListener {
             startActivity(Intent(this, ShoppingActivity::class.java))
         }
 
-        findViewById<Button>(R.id.btnSystem).setOnClickListener {
+        binding.btnSystem.setOnClickListener {
             openPlaceholderFeature(getString(R.string.title_system))
         }
 
-        findViewById<Button>(R.id.btnNetwork).setOnClickListener {
+        binding.btnNetwork.setOnClickListener {
             openPlaceholderFeature(getString(R.string.title_comms))
         }
 
-        findViewById<Button>(R.id.btnPower).setOnClickListener {
+        binding.btnPower.setOnClickListener {
             openPlaceholderFeature(getString(R.string.title_power))
         }
     }

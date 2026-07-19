@@ -218,7 +218,8 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
                     )
                 )
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Failed to parse persisted shopping list; resetting to empty.", e)
             allItems.clear()
         }
     }
@@ -241,6 +242,7 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
     }
 
     companion object {
+        private const val TAG = "SharedPrefsShoppingRepository"
         private const val PREFS_NAME = "shopping_prefs"
         private const val KEY_SHOPPING_LIST = "shopping_list_v1"
         private const val FIELD_ID = "id"

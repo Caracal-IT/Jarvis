@@ -94,10 +94,12 @@ class BarcodeScannerFragment : DialogFragment() {
             val imageAnalyzer = ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor!!, BarcodeAnalyzer { barcodes ->
-                        onBarcodesDetected(barcodes)
-                    })
+                .also { analysis ->
+                    cameraExecutor?.let { executor ->
+                        analysis.setAnalyzer(executor, BarcodeAnalyzer { barcodes ->
+                            onBarcodesDetected(barcodes)
+                        })
+                    }
                 }
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -105,8 +107,9 @@ class BarcodeScannerFragment : DialogFragment() {
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
-            } catch (_: Exception) {
-                Toast.makeText(requireContext(), "Camera binding failed.", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                android.util.Log.e(TAG, "Camera binding failed.", e)
+                Toast.makeText(requireContext(), R.string.msg_camera_binding_failed, Toast.LENGTH_SHORT).show()
             }
         }, getMainExecutor(requireContext()))
     }
@@ -125,7 +128,7 @@ class BarcodeScannerFragment : DialogFragment() {
                 _binding?.scanOverlay?.pulse()
             } catch (t: Throwable) {
                 // Non-fatal: log and continue
-                android.util.Log.w("BarcodeScannerFragment", "Overlay pulse failed", t)
+                android.util.Log.w(TAG, "Overlay pulse failed", t)
             }
             if (mode == MODE_FOR_EDIT) {
                 // Return the barcode to the edit screen.
@@ -204,6 +207,7 @@ class BarcodeScannerFragment : DialogFragment() {
         private const val MODE_FOR_LIST = 2
 
         private const val TAG_RESULT = "barcode_result"
+        private const val TAG = "BarcodeScannerFragment"
 
         fun newInstanceForEdit() = BarcodeScannerFragment().apply {
             arguments = Bundle().apply {

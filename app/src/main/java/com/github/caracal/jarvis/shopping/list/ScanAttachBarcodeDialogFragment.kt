@@ -27,7 +27,9 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
         val activity = requireActivity()
         val fm = activity.supportFragmentManager
         val candidate = fm.findFragmentByTag("shopping_list") as? ShoppingFragment
-        candidate?.viewModel ?: throw IllegalStateException("ScanAttachBarcodeDialogFragment must be hosted under ShoppingFragment")
+        candidate?.viewModel ?: throw IllegalStateException(
+            "ScanAttachBarcodeDialogFragment must be hosted under ShoppingFragment"
+        )
     }
 
     // Keep typed adapters so we can update them without unsafe casts
@@ -75,7 +77,9 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
             val newBarcodes = (item.barcodes + barcode).distinct()
             val updated = shoppingViewModel.updateShoppingItem(item.id, item.name, item.categoryId, newBarcodes)
             if (updated) {
-                Toast.makeText(requireContext(), getString(R.string.msg_barcode_linked, item.name), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(), getString(R.string.msg_barcode_linked, item.name), Toast.LENGTH_SHORT
+                ).show()
                 dismiss()
             } else {
                 Toast.makeText(requireContext(), getString(R.string.action_manage_barcodes), Toast.LENGTH_SHORT).show()
@@ -91,10 +95,14 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
             val categoryId = categories[catIndex].id
             val added = shoppingViewModel.addShoppingItemWithBarcode(name, categoryId, barcode)
             if (added) {
-                Toast.makeText(requireContext(), getString(R.string.msg_item_added_to_list, name), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(), getString(R.string.msg_item_added_to_list, name), Toast.LENGTH_SHORT
+                ).show()
                 dismiss()
             } else {
-                Toast.makeText(requireContext(), "Failed to add item (duplicate?).", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(), R.string.msg_add_item_duplicate_failed, Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

@@ -1,31 +1,33 @@
 package com.github.caracal.jarvis
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.github.caracal.jarvis.databinding.FeaturePlaceholderActivityBinding
 
 /**
  * Reusable placeholder activity for Home features that are not implemented yet.
  */
 class FeaturePlaceholderActivity : AppCompatActivity() {
 
+    private lateinit var binding: FeaturePlaceholderActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.feature_placeholder_activity)
+        binding = FeaturePlaceholderActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val rootView = findViewById<android.view.View>(R.id.feature_placeholder_root)
-        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.featurePlaceholderRoot) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
         val title = intent.getStringExtra(EXTRA_TITLE) ?: getString(R.string.app_name)
-        findViewById<TextView>(R.id.tvFeatureTitle).text = title
+        binding.tvFeatureTitle.text = title
     }
 
     companion object {

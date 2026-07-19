@@ -59,9 +59,11 @@ interface ShoppingRepository {
      * @param name Canonical generic name for the new item.
      * @param categoryId The ID of the category this item belongs to.
      * @param isBaseline Whether this item should persist in the Replenish List after removal from Shopping List.
-     * @return The newly created [ShoppingItem], or null if a duplicate exists.
+     * @return The newly created or updated [ShoppingItem]. If a duplicate name already exists in
+     *   the same category, that existing item is merged onto the Shopping List and returned instead
+     *   of creating a new one.
      */
-    fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean = false): ShoppingItem?
+    fun addShoppingItem(name: String, categoryId: String, isBaseline: Boolean = false): ShoppingItem
 
     /**
      * Renames an existing Shopping List item.
