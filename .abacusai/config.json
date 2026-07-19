@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rg *)",
+      "Bash(find *)",
+      "Bash(awk *)",
+      "Bash(grep *)",
+      "Bash(sed *)",
+      "Bash(./gradlew *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}
