@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/spacing_medium">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,9 +32,9 @@
 
         <ImageButton
             android:id="@+id/btnAddBarcode"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="@dimen/shopping_list_button_size"
+            android:layout_height="@dimen/shopping_list_button_size"
+            android:layout_marginStart="@dimen/spacing_small"
             android:src="@android:drawable/ic_input_add"
             android:contentDescription="@string/action_add"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -47,6 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="true"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="@dimen/spacing_small" />
 
 </LinearLayout>

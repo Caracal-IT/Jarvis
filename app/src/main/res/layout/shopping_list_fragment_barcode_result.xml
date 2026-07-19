@@ -18,14 +18,14 @@
         <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/shopping_list_input_height"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
             <ImageButton
                 android:id="@+id/btnBack"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/touch_target_height"
+                android:layout_height="@dimen/touch_target_height"
                 android:src="@drawable/shared_ic_arrow_back"
                 android:contentDescription="@string/action_back"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shopping_list_bg_spinner"
-            android:padding="12dp" />
+            android:padding="@dimen/shopping_list_spinner_padding" />
 
         <Button
             android:id="@+id/btnLinkItem"
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_small"
             android:background="@drawable/shopping_list_bg_spinner"
-            android:padding="12dp" />
+            android:padding="@dimen/shopping_list_spinner_padding" />
 
         <Button
             android:id="@+id/btnAddNewItem"

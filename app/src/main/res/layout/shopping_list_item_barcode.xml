@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingVertical="6dp">
+    android:paddingVertical="@dimen/padding_vertical_small">
 
     <TextView
         android:id="@+id/tvBarcode"
@@ -19,8 +19,8 @@
 
     <ImageButton
         android:id="@+id/btnDeleteBarcode"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/shopping_list_button_size_small"
+        android:layout_height="@dimen/shopping_list_button_size_small"
         android:src="@android:drawable/ic_menu_delete"
         android:contentDescription="@string/cd_remove_barcode"
         android:background="?attr/selectableItemBackgroundBorderless"

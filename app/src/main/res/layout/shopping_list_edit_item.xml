@@ -18,14 +18,14 @@
         <!-- Header row -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/shopping_list_input_height"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
             <ImageButton
                 android:id="@+id/btnBack"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/touch_target_height"
+                android:layout_height="@dimen/touch_target_height"
                 android:src="@drawable/shared_ic_arrow_back"
                 android:contentDescription="@string/action_back"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -71,7 +71,7 @@
             android:layout_marginTop="@dimen/spacing_medium"
             android:prompt="@string/hint_select_category"
             android:background="@drawable/shopping_list_bg_spinner"
-            android:padding="12dp" />
+            android:padding="@dimen/shopping_list_spinner_padding" />
 
         <!-- Barcodes section header -->
         <LinearLayout
@@ -93,8 +93,8 @@
 
             <ImageButton
                 android:id="@+id/btnScanBarcode"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/shopping_list_button_size"
+                android:layout_height="@dimen/shopping_list_button_size"
                 android:src="@drawable/shopping_list_ic_barcode_scan"
                 android:contentDescription="@string/cd_scan_barcode"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -130,8 +130,8 @@
 
             <ImageButton
                 android:id="@+id/btnAddBarcode"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/shopping_list_button_size"
+                android:layout_height="@dimen/shopping_list_button_size"
                 android:layout_marginStart="@dimen/spacing_small"
                 android:src="@android:drawable/ic_input_add"
                 android:contentDescription="@string/action_add"
@@ -145,7 +145,7 @@
             android:id="@+id/rvBarcodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="160dp"
+            android:maxHeight="@dimen/shopping_list_max_height"
             android:nestedScrollingEnabled="true"
             android:layout_marginTop="@dimen/spacing_small" />
 

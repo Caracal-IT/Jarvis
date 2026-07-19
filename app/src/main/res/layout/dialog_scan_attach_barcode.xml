@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="@dimen/spacing_medium">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:text="@string/title_scan_barcode"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="@dimen/spacing_small" />
 
         <Button
             android:id="@+id/btnScan"
@@ -25,7 +25,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="@dimen/shopping_list_spinner_padding" />
 
         <TextView
             android:layout_width="match_parent"
@@ -37,13 +37,13 @@
             android:id="@+id/spinnerExistingItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="@dimen/spacing_extra_small" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilExistingBarcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/spacing_small"
             android:hint="@string/hint_barcode">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -57,12 +57,12 @@
             android:id="@+id/btnLinkExisting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/spacing_small"
             android:text="@string/action_link_barcode" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            android:layout_height="@dimen/shopping_list_spinner_padding" />
 
         <TextView
             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
             android:id="@+id/tilNewItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/spacing_extra_small"
             android:hint="@string/hint_item_name">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -88,13 +88,13 @@
             android:id="@+id/spinnerNewCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="@dimen/spacing_small" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilNewBarcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/spacing_small"
             android:hint="@string/hint_barcode">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -108,19 +108,19 @@
             android:id="@+id/btnAddNewWithBarcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/spacing_small"
             android:text="@string/action_add_new_item" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="8dp" />
+            android:layout_height="@dimen/spacing_small" />
 
         <Button
             android:id="@+id/btnClose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/action_done"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="@dimen/spacing_small" />
 
     </LinearLayout>
 </ScrollView>

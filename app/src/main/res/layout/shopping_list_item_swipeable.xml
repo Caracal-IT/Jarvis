@@ -19,14 +19,14 @@
     <!-- Left actions container (revealed when swiping right) - EDIT BUTTON -->
     <LinearLayout
         android:id="@+id/leftActions"
-        android:layout_width="80dp"
+        android:layout_width="@dimen/shopping_list_swipe_action_width"
         android:layout_height="match_parent"
         android:alpha="0"
         android:visibility="invisible">
 
         <ImageButton
             android:id="@+id/btnRename"
-            android:layout_width="80dp"
+            android:layout_width="@dimen/shopping_list_swipe_action_width"
             android:layout_height="match_parent"
             android:src="@drawable/shopping_list_ic_rename"
             android:contentDescription="@string/action_rename"
@@ -38,7 +38,7 @@
     <!-- Right action button (DELETE - revealed when swiping left) -->
     <ImageButton
         android:id="@+id/btnDelete"
-        android:layout_width="80dp"
+        android:layout_width="@dimen/shopping_list_swipe_action_width"
         android:layout_height="match_parent"
         android:src="@android:drawable/ic_menu_delete"
         android:contentDescription="@string/action_remove"
@@ -59,13 +59,13 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="@dimen/spacing_medium"
-        android:minHeight="48dp">
+        android:minHeight="@dimen/touch_target_height">
 
         <FrameLayout
             android:layout_width="@dimen/replenish_item_image_size"
             android:layout_height="@dimen/replenish_item_image_size"
             android:background="@drawable/shopping_list_bg_icon_circle"
-            android:padding="4dp">
+            android:padding="@dimen/spacing_extra_small">
 
             <ImageView
                 android:id="@+id/ivShoppingItemImage"
@@ -104,8 +104,8 @@
         <!-- NEW: Inline barcode action icon (no visible text) -->
         <ImageButton
             android:id="@+id/btnItemBarcode"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/shopping_list_button_size"
+            android:layout_height="@dimen/shopping_list_button_size"
             android:layout_marginStart="@dimen/spacing_small"
             android:src="@drawable/shopping_list_ic_barcode_scan"
             android:contentDescription="@string/cd_scan_barcode"

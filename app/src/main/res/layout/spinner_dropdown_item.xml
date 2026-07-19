@@ -3,7 +3,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
+    android:padding="@dimen/shopping_list_spinner_padding"
     android:textColor="@color/iron_man_gold"
     android:textSize="@dimen/text_size_body"
     android:fontFamily="monospace"

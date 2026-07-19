@@ -2,16 +2,34 @@
 <resources>
     <dimen name="text_size_title">24sp</dimen>
     <dimen name="text_size_body">16sp</dimen>
+    <dimen name="text_size_button">14sp</dimen>
     <dimen name="spacing_medium">16dp</dimen>
     <dimen name="text_size_tab">12sp</dimen>
     <dimen name="text_size_category_header">18sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_extra_small">4dp</dimen>
     <dimen name="spacing_large">24dp</dimen>
     <dimen name="tab_height">48dp</dimen>
     <dimen name="icon_size_menu">48dp</dimen>
+    <dimen name="icon_size_main">32dp</dimen>
     <dimen name="replenish_item_height">84dp</dimen>
     <dimen name="replenish_item_image_size">52dp</dimen>
     <dimen name="barcode_list_height">200dp</dimen>
     <dimen name="fab_bottom_padding">80dp</dimen>
+    <!-- Main activity dimensions -->
+    <dimen name="main_margin_top">64dp</dimen>
+    <dimen name="main_card_width">140dp</dimen>
+    <dimen name="main_card_height">120dp</dimen>
+    <!-- Shopping list dimensions -->
+    <dimen name="shopping_list_swipe_action_width">80dp</dimen>
+    <dimen name="shopping_list_input_height">56dp</dimen>
+    <dimen name="shopping_list_spinner_padding">12dp</dimen>
+    <dimen name="shopping_list_button_size_small">36dp</dimen>
+    <dimen name="shopping_list_button_size">40dp</dimen>
+    <dimen name="shopping_list_max_height">160dp</dimen>
+    <!-- Padding dimensions -->
+    <dimen name="padding_vertical_small">6dp</dimen>
+    <!-- Touch target dimensions -->
+    <dimen name="touch_target_height">48dp</dimen>
 </resources>
