@@ -10,6 +10,12 @@ import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.DialogScanAttachBarcodeBinding
 import com.github.caracal.jarvis.shopping.ShoppingFragment
 
+/**
+ * Dialog offering two ways to attach a barcode to a Shopping List item: linking a scanned or
+ * manually entered barcode to an existing item, or creating a brand-new item with that barcode.
+ *
+ * Also exposes a shortcut to launch [BarcodeScannerFragment] directly for scan-first flows.
+ */
 class ScanAttachBarcodeDialogFragment : DialogFragment() {
 
     private var _binding: DialogScanAttachBarcodeBinding? = null
