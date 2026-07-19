@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.github.caracal.jarvis.JarvisApplication
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ShoppingListAddItemBinding
 import com.github.caracal.jarvis.shopping.data.ShoppingCategory
@@ -22,7 +23,7 @@ class AddItemFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val shoppingViewModel: ShoppingViewModel by activityViewModels {
-        ShoppingViewModelFactory(requireContext())
+        ShoppingViewModelFactory((requireActivity().application as JarvisApplication).shoppingRepository)
     }
 
     private var categories: List<ShoppingCategory> = emptyList()

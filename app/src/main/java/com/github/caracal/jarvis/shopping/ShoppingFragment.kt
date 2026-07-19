@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
+import com.github.caracal.jarvis.JarvisApplication
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ShoppingFragmentBinding
 import com.github.caracal.jarvis.shopping.list.ShoppingListFragment
@@ -28,7 +29,7 @@ class ShoppingFragment : Fragment() {
 
     /** Shared ViewModel scoped to the Activity. */
     internal val viewModel: ShoppingViewModel by activityViewModels {
-        ShoppingViewModelFactory(requireContext())
+        ShoppingViewModelFactory((requireActivity().application as JarvisApplication).shoppingRepository)
     }
 
     private lateinit var shoppingListFragment: ShoppingListFragment

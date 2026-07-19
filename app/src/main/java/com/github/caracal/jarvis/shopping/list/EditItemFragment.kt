@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.caracal.jarvis.JarvisApplication
 import com.github.caracal.jarvis.R
 import com.github.caracal.jarvis.databinding.ShoppingListEditItemBinding
 import com.github.caracal.jarvis.shopping.data.ShoppingCategory
@@ -24,7 +25,7 @@ class EditItemFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val shoppingViewModel: ShoppingViewModel by activityViewModels {
-        ShoppingViewModelFactory(requireContext())
+        ShoppingViewModelFactory((requireActivity().application as JarvisApplication).shoppingRepository)
     }
 
     private lateinit var itemId: String

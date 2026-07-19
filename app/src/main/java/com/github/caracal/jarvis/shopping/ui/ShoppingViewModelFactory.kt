@@ -1,21 +1,20 @@
 package com.github.caracal.jarvis.shopping.ui
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.github.caracal.jarvis.shopping.data.SharedPrefsShoppingRepository
+import com.github.caracal.jarvis.shopping.data.ShoppingRepository
 
 /**
- * Factory for creating [ShoppingViewModel] instances with the correct [SharedPrefsShoppingRepository].
+ * Factory for creating [ShoppingViewModel] instances with an injected [ShoppingRepository].
  *
- * @param context The context used to access SharedPreferences.
+ * @param repository The repository instance to inject into the created ViewModel.
  */
-class ShoppingViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+class ShoppingViewModelFactory(private val repository: ShoppingRepository) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ShoppingViewModel::class.java)) {
-            return ShoppingViewModel(SharedPrefsShoppingRepository(context.applicationContext)) as T
+            return ShoppingViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
