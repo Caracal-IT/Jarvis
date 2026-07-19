@@ -85,11 +85,14 @@ class EditItemDialogFragment : DialogFragment() {
         // Scan barcode button — open scanner and wait for result
         binding.btnScanBarcode.setOnClickListener {
             setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY) { _, bundle ->
-                val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
+                val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE)
+                    ?: return@setFragmentResultListener
                 if (scanned.isNotEmpty() && scanned !in barcodes) {
                     barcodes.add(scanned)
                     barcodeAdapter.submitList(barcodes.toList())
-                    Toast.makeText(requireContext(), getString(R.string.msg_barcode_found, scanned), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(), getString(R.string.msg_barcode_found, scanned), Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             BarcodeScannerFragment.newInstanceForEdit()

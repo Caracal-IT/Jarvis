@@ -9,7 +9,8 @@
       "Bash(./gradlew *)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(python3 *)"
     ]
   }
 }

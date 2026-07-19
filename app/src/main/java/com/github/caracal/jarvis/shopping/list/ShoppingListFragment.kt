@@ -30,8 +30,11 @@ class ShoppingListFragment : Fragment() {
             onMenuRemove = { row -> shoppingViewModel.removeShoppingItem(row.item.id) },
             onItemBarcode = { row ->
                 // Use Fragment Result API to listen for the scan result from the scanner page.
-                childFragmentManager.setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner) { _, bundle ->
-                    val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
+                childFragmentManager.setFragmentResultListener(
+                    BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner
+                ) { _, bundle ->
+                    val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE)
+                        ?: return@setFragmentResultListener
                     val updatedBarcodes = (row.item.barcodes + scanned).distinct()
                     shoppingViewModel.updateShoppingItem(
                         row.item.id,

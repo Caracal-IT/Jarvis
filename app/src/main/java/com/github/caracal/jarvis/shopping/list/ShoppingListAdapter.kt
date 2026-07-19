@@ -175,8 +175,10 @@ class ShoppingListAdapter(
             newItem: ShoppingDisplayItem
         ): Boolean =
             when (oldItem) {
-                is ShoppingDisplayItem.Header -> newItem is ShoppingDisplayItem.Header && oldItem.category.id == newItem.category.id
-                is ShoppingDisplayItem.Item -> newItem is ShoppingDisplayItem.Item && oldItem.item.id == newItem.item.id
+                is ShoppingDisplayItem.Header ->
+                    newItem is ShoppingDisplayItem.Header && oldItem.category.id == newItem.category.id
+                is ShoppingDisplayItem.Item ->
+                    newItem is ShoppingDisplayItem.Item && oldItem.item.id == newItem.item.id
             }
 
         override fun areContentsTheSame(

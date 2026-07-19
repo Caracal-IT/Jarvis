@@ -51,7 +51,12 @@ interface ShoppingRepository {
      * @param isBaseline Whether this item should persist in the Replenish List after removal from Shopping List.
      * @return True if the item was added, false if a duplicate exists.
      */
-    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean = false): Boolean
+    fun addShoppingItemWithBarcode(
+        name: String,
+        categoryId: String,
+        barcode: String,
+        isBaseline: Boolean = false
+    ): Boolean
 
     /**
      * Adds a new item to the Shopping List.

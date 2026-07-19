@@ -60,7 +60,12 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
     override fun findByBarcode(barcode: String): ShoppingItem? =
         allItems.find { barcode in it.barcodes }
 
-    override fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean): Boolean {
+    override fun addShoppingItemWithBarcode(
+        name: String,
+        categoryId: String,
+        barcode: String,
+        isBaseline: Boolean
+    ): Boolean {
         val trimmed = name.trim()
         val existing = allItems.find {
             it.name.equals(trimmed, ignoreCase = true) && it.categoryId == categoryId

@@ -91,8 +91,11 @@ class EditItemFragment : Fragment() {
         }
 
         binding.btnScanBarcode.setOnClickListener {
-            childFragmentManager.setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner) { _, bundle ->
-                val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
+            childFragmentManager.setFragmentResultListener(
+                BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner
+            ) { _, bundle ->
+                val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE)
+                    ?: return@setFragmentResultListener
                 addBarcode(scanned)
             }
             BarcodeScannerFragment.newInstanceForEdit()
@@ -114,7 +117,9 @@ class EditItemFragment : Fragment() {
             current.add(barcode)
             barcodeAdapter.submitList(current)
         } else {
-            Toast.makeText(requireContext(), getString(R.string.msg_barcode_already_linked, ""), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(), getString(R.string.msg_barcode_already_linked, ""), Toast.LENGTH_SHORT
+            ).show()
         }
     }
 

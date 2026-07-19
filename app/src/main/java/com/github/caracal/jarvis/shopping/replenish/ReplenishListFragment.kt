@@ -39,8 +39,11 @@ class ReplenishListFragment : Fragment() {
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             },
             onItemBarcode = { row ->
-                childFragmentManager.setFragmentResultListener(BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner) { _, bundle ->
-                    val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE) ?: return@setFragmentResultListener
+                childFragmentManager.setFragmentResultListener(
+                    BarcodeScannerFragment.RESULT_KEY, viewLifecycleOwner
+                ) { _, bundle ->
+                    val scanned = bundle.getString(BarcodeScannerFragment.RESULT_BARCODE)
+                        ?: return@setFragmentResultListener
                     val updatedBarcodes = (row.item.barcodes + scanned).distinct()
                     shoppingViewModel.updateShoppingItem(
                         row.item.id,

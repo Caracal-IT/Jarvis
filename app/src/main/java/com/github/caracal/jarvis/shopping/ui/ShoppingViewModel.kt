@@ -62,7 +62,12 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
      * @param isBaseline Whether the item should persist in the Replenish List.
      * @return True if the item was added successfully.
      */
-    fun addShoppingItemWithBarcode(name: String, categoryId: String, barcode: String, isBaseline: Boolean = false): Boolean {
+    fun addShoppingItemWithBarcode(
+        name: String,
+        categoryId: String,
+        barcode: String,
+        isBaseline: Boolean = false
+    ): Boolean {
         val validation = NamingValidator.validate(name)
         if (!validation.isValid) {
             _addItemError.value = validation.errorMessage

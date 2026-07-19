@@ -56,8 +56,10 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
 
         // Wire buttons
         binding.btnScan.setOnClickListener {
-            // Find a fragment to host the scanner dialog - prefer parent fragment, else fallback to activity-tagged ShoppingFragment
-            val hostFragment = parentFragment ?: requireActivity().supportFragmentManager.findFragmentByTag("shopping_list")
+            // Find a fragment to host the scanner dialog - prefer parent fragment,
+            // else fallback to activity-tagged ShoppingFragment
+            val hostFragment = parentFragment
+                ?: requireActivity().supportFragmentManager.findFragmentByTag("shopping_list")
             val fm = when (hostFragment) {
                 is androidx.fragment.app.Fragment -> hostFragment.childFragmentManager
                 else -> childFragmentManager
@@ -91,7 +93,9 @@ class ScanAttachBarcodeDialogFragment : DialogFragment() {
             val name = binding.etNewItemName.text?.toString()?.trim() ?: ""
             val catIndex = binding.spinnerNewCategory.selectedItemPosition
             val barcode = binding.etNewBarcode.text?.toString()?.trim() ?: ""
-            if (name.isEmpty() || barcode.isEmpty() || catIndex < 0 || catIndex >= categories.size) return@setOnClickListener
+            if (name.isEmpty() || barcode.isEmpty() || catIndex < 0 || catIndex >= categories.size) {
+                return@setOnClickListener
+            }
             val categoryId = categories[catIndex].id
             val added = shoppingViewModel.addShoppingItemWithBarcode(name, categoryId, barcode)
             if (added) {
