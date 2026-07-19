@@ -39,6 +39,7 @@ class ShoppingViewModel(private val repository: ShoppingRepository) : ViewModel(
     val renameItemError: LiveData<String?> = _renameItemError
 
     init {
+        repository.addChangeListener { refreshLists() }
         refresh()
     }
 

@@ -13,11 +13,18 @@ import org.json.JSONObject
  * not currently on the shopping list.
  *
  * @param context Application context used to access SharedPreferences.
+ * @param syncPublisher Optional publisher notified of locally-originated state changes, for
+ *   cloud sync. Not invoked when a remote snapshot is applied via [applyRemoteSnapshot].
  */
-class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
+class SharedPrefsShoppingRepository(
+    context: Context,
+    private val syncPublisher: ShoppingSyncPublisher? = null
+) : ShoppingRepository {
 
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     private val allItems: MutableList<ShoppingItem> = mutableListOf()
+    private val changeListeners: MutableList<() -> Unit> = mutableListOf()
+    private var lastModified: Long = 0L
 
     init {
         loadFromPrefs()
@@ -184,6 +191,31 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
         return true
     }
 
+    override fun addChangeListener(listener: () -> Unit) {
+        changeListeners.add(listener)
+    }
+
+    override fun exportSnapshot(): String = buildStateJson().toString()
+
+    override fun applyRemoteSnapshot(json: String): Boolean {
+        val remoteState = try {
+            JSONObject(json)
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Failed to parse remote snapshot; ignoring.", e)
+            return false
+        }
+        val remoteTimestamp = remoteState.optLong(FIELD_TIMESTAMP, -1L)
+        if (remoteTimestamp <= lastModified) return false
+
+        val remoteItems = parseItems(remoteState.optJSONArray(FIELD_ITEMS))
+        allItems.clear()
+        allItems.addAll(remoteItems)
+        lastModified = remoteTimestamp
+        persistCurrentState()
+        notifyChangeListeners()
+        return true
+    }
+
     // ── Private helpers ──────────────────────────────────────────────────────
 
     private fun ensureBaselineItems() {
@@ -195,11 +227,14 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
                 changed = true
             }
         }
-        if (changed) saveToPrefs()
+        // Persist without bumping lastModified/publishing: this is default local population, not
+        // a user edit, and must not out-rank a not-yet-fetched but genuinely newer cloud snapshot.
+        if (changed) persistCurrentState()
     }
 
     private fun loadFromPrefs() {
         allItems.clear()
+        lastModified = prefs.getLong(KEY_LAST_MODIFIED, 0L)
         val json = prefs.getString(KEY_SHOPPING_LIST, null) ?: return
         val array = try {
             JSONArray(json)
@@ -207,6 +242,13 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
             android.util.Log.e(TAG, "Failed to parse persisted shopping list; resetting to empty.", e)
             return
         }
+        allItems.addAll(parseItems(array))
+    }
+
+    /** Parses a [FIELD_ITEMS]-shaped [JSONArray] into [ShoppingItem]s, skipping malformed records. */
+    private fun parseItems(array: JSONArray?): List<ShoppingItem> {
+        if (array == null) return emptyList()
+        val result = mutableListOf<ShoppingItem>()
         for (i in 0 until array.length()) {
             try {
                 val obj = array.getJSONObject(i)
@@ -217,7 +259,7 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
                         barcodes.add(barcodesArray.getString(j))
                     }
                 }
-                allItems.add(
+                result.add(
                     ShoppingItem(
                         id = obj.getString(FIELD_ID),
                         name = obj.getString(FIELD_NAME),
@@ -232,9 +274,11 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
                 android.util.Log.e(TAG, "Skipping malformed shopping item at index $i.", e)
             }
         }
+        return result
     }
 
-    private fun saveToPrefs() {
+    /** Builds the `{timestamp, items}` JSON representation of the current in-memory state. */
+    private fun buildStateJson(): JSONObject {
         val array = JSONArray()
         for (item in allItems) {
             val obj = JSONObject()
@@ -248,19 +292,46 @@ class SharedPrefsShoppingRepository(context: Context) : ShoppingRepository {
             obj.put(FIELD_BARCODES, barcodes)
             array.put(obj)
         }
-        prefs.edit { putString(KEY_SHOPPING_LIST, array.toString()) }
+        return JSONObject().apply {
+            put(FIELD_TIMESTAMP, lastModified)
+            put(FIELD_ITEMS, array)
+        }
+    }
+
+    /** Writes the current in-memory state and [lastModified] to SharedPreferences. */
+    private fun persistCurrentState() {
+        val state = buildStateJson()
+        prefs.edit {
+            putString(KEY_SHOPPING_LIST, state.getJSONArray(FIELD_ITEMS).toString())
+            putLong(KEY_LAST_MODIFIED, lastModified)
+        }
+    }
+
+    private fun notifyChangeListeners() {
+        changeListeners.toList().forEach { it() }
+    }
+
+    /** Persists a locally-originated change: bumps [lastModified], saves, notifies, and publishes. */
+    private fun saveToPrefs() {
+        lastModified = System.currentTimeMillis()
+        persistCurrentState()
+        notifyChangeListeners()
+        syncPublisher?.publish(exportSnapshot())
     }
 
     companion object {
         private const val TAG = "SharedPrefsShoppingRepository"
         private const val PREFS_NAME = "shopping_prefs"
         private const val KEY_SHOPPING_LIST = "shopping_list_v1"
+        private const val KEY_LAST_MODIFIED = "shopping_list_last_modified_v1"
         private const val FIELD_ID = "id"
         private const val FIELD_NAME = "name"
         private const val FIELD_CATEGORY_ID = "category_id"
         private const val FIELD_IS_BASELINE = "is_baseline"
         private const val FIELD_BARCODES = "barcodes"
         private const val FIELD_IS_ON_SHOPPING_LIST = "is_on_shopping_list"
+        private const val FIELD_TIMESTAMP = "timestamp"
+        private const val FIELD_ITEMS = "items"
 
         private val itemComparator: Comparator<ShoppingItem> = compareBy(
             { BaselineData.categoryById(it.categoryId)?.name?.lowercase() ?: "" },

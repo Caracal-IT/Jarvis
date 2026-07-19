@@ -5,6 +5,16 @@
     <string name="title_system">System</string>
     <string name="title_comms">Network</string>
     <string name="title_power">Armor</string>
+    <!-- System Settings -->
+    <string name="title_cloud_sync">Shopping List Cloud Sync</string>
+    <string name="label_enable_cloud_sync">Enable Cloud Sync</string>
+    <string name="hint_mqtt_host">Broker Host</string>
+    <string name="hint_mqtt_port">Port</string>
+    <string name="hint_mqtt_username">Username</string>
+    <string name="hint_mqtt_password">Password</string>
+    <string name="msg_sync_settings_saved">Sync settings saved.</string>
+    <string name="error_mqtt_host_required">Broker host is required.</string>
+    <string name="error_mqtt_port_invalid">Enter a valid port number.</string>
     <string name="placeholder_coming_soon">— COMING SOON —</string>
     <string name="feature_temporarily_unavailable_message">This feature is temporarily unavailable.</string>
     <!-- Shopping Feature -->

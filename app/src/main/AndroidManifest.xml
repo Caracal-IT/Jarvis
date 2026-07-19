@@ -3,6 +3,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
@@ -28,6 +29,10 @@
             android:exported="false" />
         <activity
             android:name=".FeaturePlaceholderActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SystemSettingsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
     </application>

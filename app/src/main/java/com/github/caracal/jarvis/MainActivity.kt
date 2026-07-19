@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnSystem.setOnClickListener {
-            openPlaceholderFeature(getString(R.string.title_system))
+            startActivity(Intent(this, SystemSettingsActivity::class.java))
         }
 
         binding.btnNetwork.setOnClickListener {

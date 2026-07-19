@@ -56,4 +56,21 @@ class ShoppingViewModelTest {
 
         assertTrue(viewModel.shoppingList.value.isNullOrEmpty())
     }
+
+    @Test
+    fun `applying a newer remote snapshot refreshes the shopping list`() {
+        val repository = FakeShoppingRepository()
+        val viewModel = ShoppingViewModel(repository)
+        assertTrue(viewModel.shoppingList.value.isNullOrEmpty())
+
+        val remoteSnapshot = """
+            {"timestamp":1,"items":[{"id":"remote-1","name":"Bread","category_id":"cat_1",
+            "is_baseline":false,"is_on_shopping_list":true,"barcodes":[]}]}
+        """.trimIndent()
+        val applied = repository.applyRemoteSnapshot(remoteSnapshot)
+
+        assertTrue(applied)
+        assertEquals(1, viewModel.shoppingList.value?.size)
+        assertEquals("Bread", viewModel.shoppingList.value?.first()?.name)
+    }
 }

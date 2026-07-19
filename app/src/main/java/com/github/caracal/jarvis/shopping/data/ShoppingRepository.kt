@@ -112,4 +112,29 @@ interface ShoppingRepository {
      * @return True if the item was added, false if it is already in the Shopping List.
      */
     fun addBaselineItemToShoppingList(baselineItemId: String): Boolean
+
+    /**
+     * Registers a listener invoked whenever persisted state changes, whether from a local
+     * mutation or an applied remote sync snapshot.
+     *
+     * @param listener Callback invoked after each change.
+     */
+    fun addChangeListener(listener: () -> Unit)
+
+    /**
+     * Serializes the full Shopping List state (all items plus a last-modified timestamp) for
+     * publishing to a cloud sync channel.
+     *
+     * @return The JSON snapshot.
+     */
+    fun exportSnapshot(): String
+
+    /**
+     * Applies a remote snapshot produced by [exportSnapshot], replacing local state only if the
+     * remote snapshot is newer than the current local state (last-write-wins).
+     *
+     * @param json The remote snapshot JSON.
+     * @return True if the remote snapshot was newer and was applied.
+     */
+    fun applyRemoteSnapshot(json: String): Boolean
 }

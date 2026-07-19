@@ -3,6 +3,8 @@ package com.github.caracal.jarvis.shopping.ui
 import com.github.caracal.jarvis.shopping.data.ShoppingCategory
 import com.github.caracal.jarvis.shopping.data.ShoppingItem
 import com.github.caracal.jarvis.shopping.data.ShoppingRepository
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.UUID
 
 /**
@@ -15,6 +17,8 @@ class FakeShoppingRepository(
 ) : ShoppingRepository {
 
     private val items: MutableList<ShoppingItem> = initialItems.toMutableList()
+    private val changeListeners: MutableList<() -> Unit> = mutableListOf()
+    private var lastModified: Long = 0L
 
     override fun getShoppingList(): List<ShoppingItem> = items.filter { it.isOnShoppingList }
 
@@ -122,6 +126,58 @@ class FakeShoppingRepository(
         val item = items[index]
         if (item.isOnShoppingList) return false
         items[index] = item.copy(isOnShoppingList = true)
+        return true
+    }
+
+    override fun addChangeListener(listener: () -> Unit) {
+        changeListeners.add(listener)
+    }
+
+    override fun exportSnapshot(): String {
+        val array = JSONArray()
+        items.forEach { item ->
+            val obj = JSONObject()
+            obj.put("id", item.id)
+            obj.put("name", item.name)
+            obj.put("category_id", item.categoryId)
+            obj.put("is_baseline", item.isBaseline)
+            obj.put("is_on_shopping_list", item.isOnShoppingList)
+            obj.put("barcodes", JSONArray(item.barcodes))
+            array.put(obj)
+        }
+        return JSONObject().apply {
+            put("timestamp", lastModified)
+            put("items", array)
+        }.toString()
+    }
+
+    override fun applyRemoteSnapshot(json: String): Boolean {
+        val state = JSONObject(json)
+        val remoteTimestamp = state.optLong("timestamp", -1L)
+        if (remoteTimestamp <= lastModified) return false
+
+        val array = state.optJSONArray("items") ?: JSONArray()
+        items.clear()
+        for (i in 0 until array.length()) {
+            val obj = array.getJSONObject(i)
+            val barcodes = mutableListOf<String>()
+            val barcodesArray = obj.optJSONArray("barcodes")
+            if (barcodesArray != null) {
+                for (j in 0 until barcodesArray.length()) barcodes.add(barcodesArray.getString(j))
+            }
+            items.add(
+                ShoppingItem(
+                    id = obj.getString("id"),
+                    name = obj.getString("name"),
+                    categoryId = obj.getString("category_id"),
+                    isBaseline = obj.optBoolean("is_baseline", false),
+                    barcodes = barcodes,
+                    isOnShoppingList = obj.optBoolean("is_on_shopping_list", true)
+                )
+            )
+        }
+        lastModified = remoteTimestamp
+        changeListeners.toList().forEach { it() }
         return true
     }
 }
