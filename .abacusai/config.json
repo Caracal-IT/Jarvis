@@ -11,7 +11,12 @@
       "Bash(git commit *)",
       "Bash(curl *)",
       "Bash(python3 *)",
-      "Bash(mkdir *)"
+      "Bash(mkdir *)",
+      "Bash(cat *)",
+      "Bash(cd \"/tmp\")",
+      "Bash(rm *)",
+      "Bash(unzip *)",
+      "Bash(cd /tmp/hmq)"
     ]
   }
 }

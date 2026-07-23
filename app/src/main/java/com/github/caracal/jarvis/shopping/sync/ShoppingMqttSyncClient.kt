@@ -15,7 +15,10 @@ import java.util.UUID
  *
  * Publishes locally-originated state changes as a retained message on [TOPIC], and applies
  * incoming retained/live messages via [onSnapshotReceived]. Connection is expected to be driven
- * by the app's foreground/background lifecycle via [connect] and [disconnect].
+ * by the app's foreground/background lifecycle via [connect] and [disconnect]. The subscription
+ * to [TOPIC] is (re-)established automatically on every successful connect, including automatic
+ * reconnects after a dropped connection, so remote changes keep being received for the lifetime
+ * of this client.
  *
  * @param host The MQTT broker hostname.
  * @param port The MQTT broker TLS port.
@@ -40,11 +43,18 @@ class ShoppingMqttSyncClient(
         .serverPort(port)
         .sslWithDefaultConfig()
         .automaticReconnectWithDefaultConfig()
+        // The client does not use a persistent session, so an automatic reconnect after a
+        // dropped connection (network blip, backgrounding, broker-side timeout, etc.) re-opens
+        // the MQTT session but does NOT restore the topic subscription on its own. Without this
+        // listener, a device silently stops receiving other devices' published changes after the
+        // first reconnect. Re-subscribing here on every ConnAck (initial connect and every
+        // automatic reconnect alike) keeps the subscription alive for the client's lifetime.
+        .addConnectedListener { subscribe() }
         .buildAsync()
 
     private var connectRequested = false
 
-    /** Connects to the broker and subscribes to [TOPIC]. Safe to call repeatedly. */
+    /** Connects to the broker. Safe to call repeatedly. */
     fun connect() {
         if (connectRequested) return
         connectRequested = true
@@ -60,7 +70,6 @@ class ShoppingMqttSyncClient(
                     return@whenComplete
                 }
                 Log.i(TAG, "Connected to MQTT broker at $host:$port.")
-                subscribe()
             }
     }
 
