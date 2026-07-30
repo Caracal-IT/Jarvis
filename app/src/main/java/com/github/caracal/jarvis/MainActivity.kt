@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
             openPlaceholderFeature(getString(R.string.title_comms))
         }
 
-        binding.btnPower.setOnClickListener {
-            openPlaceholderFeature(getString(R.string.title_power))
+        binding.btnPostShopping.setOnClickListener {
+            startActivity(Intent(this, PostShoppingActivity::class.java))
         }
     }
 

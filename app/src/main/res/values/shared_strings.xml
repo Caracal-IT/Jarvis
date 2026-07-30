@@ -4,7 +4,26 @@
     <string name="title_shopping">Shopping</string>
     <string name="title_system">System</string>
     <string name="title_comms">Network</string>
-    <string name="title_power">Armor</string>
+    <string name="title_post_shopping">Scan</string>
+    <!-- Post-Shopping / Receipt Scan -->
+    <string name="hint_scan_receipt">Point camera at your receipt, then tap to scan</string>
+    <string name="label_scanned_text">Scanned Text</string>
+    <string name="msg_no_text_detected">No text found on that image. Try again with better lighting.</string>
+    <string name="msg_no_items_detected">No items detected yet.</string>
+    <string name="label_default_shop_name">Receipt</string>
+    <string name="label_subtotal">Subtotal</string>
+    <string name="label_subtotal_zero_rated">Subtotal (0%)</string>
+    <string name="label_subtotal_standard_rated">Subtotal (15%)</string>
+    <string name="label_tax">Tax</string>
+    <string name="label_total">Total</string>
+    <string name="cd_capture_receipt">Scan receipt</string>
+    <string name="status_capturing_image">Capturing image…</string>
+    <string name="status_reading_text">Reading receipt text…</string>
+    <string name="status_ai_processing">Analyzing with local AI…</string>
+    <string name="label_ai_badge">AI</string>
+    <string name="label_source_ai">Enhanced with local AI</string>
+    <string name="label_source_basic">Basic scan (no local AI model)</string>
+    <string name="msg_capture_failed">Couldn\'t capture the image. Try again.</string>
     <!-- System Settings -->
     <string name="title_cloud_sync">Shopping List Cloud Sync</string>
     <string name="label_enable_cloud_sync">Enable Cloud Sync</string>

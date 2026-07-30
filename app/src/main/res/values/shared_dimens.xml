@@ -32,4 +32,6 @@
     <dimen name="padding_vertical_small">6dp</dimen>
     <!-- Touch target dimensions -->
     <dimen name="touch_target_height">48dp</dimen>
+    <!-- Post-Shopping dimensions -->
+    <dimen name="postshopping_capture_button_size">72dp</dimen>
 </resources>

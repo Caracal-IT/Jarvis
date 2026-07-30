@@ -89,7 +89,7 @@
             app:iconTint="@color/iron_man_cyan" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnPower"
+            android:id="@+id/btnPostShopping"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/main_card_width"
             android:layout_height="@dimen/main_card_height"
@@ -97,11 +97,11 @@
             android:background="@drawable/bg_button"
             android:fontFamily="monospace"
             android:padding="@dimen/spacing_medium"
-            android:text="@string/title_power"
+            android:text="@string/title_post_shopping"
             android:textColor="@color/iron_man_cyan"
             android:textSize="@dimen/text_size_button"
             app:backgroundTint="@null"
-            app:icon="@drawable/shared_ic_power"
+            app:icon="@drawable/shared_ic_receipt"
             app:iconGravity="textTop"
             app:iconSize="@dimen/icon_size_main"
             app:iconTint="@color/iron_man_cyan" />

@@ -12,9 +12,11 @@ fragmentKtx = "1.8.9"
 lifecycleVersion = "2.11.0"
 camerax = "1.6.1"
 mlkitBarcodeScanning = "17.3.0"
+mlkitTextRecognition = "16.0.1"
 coreTesting = "2.2.0"
 hivemqMqttClient = "1.3.17"
 json = "20260522"
+mediapipeTasksGenai = "0.10.27"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,9 +36,11 @@ camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.r
 camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
 camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
 mlkit-barcode = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "mlkitBarcodeScanning" }
+mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
 androidx-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "coreTesting" }
 hivemq-mqtt-client = { group = "com.hivemq", name = "hivemq-mqtt-client", version.ref = "hivemqMqttClient" }
 json = { group = "org.json", name = "json", version.ref = "json" }
+mediapipe-tasks-genai = { group = "com.google.mediapipe", name = "tasks-genai", version.ref = "mediapipeTasksGenai" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

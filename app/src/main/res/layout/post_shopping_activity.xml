@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Activity layout for the Post-Shopping feature.
+    Lets the user scan a store receipt with the camera: a still image is
+    captured on tap, processed off-screen (never saved to disk), and the
+    parsed result is shown once processing completes.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/postShoppingRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+        <!-- Top bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_height"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/overlay_dim"
+            android:padding="@dimen/spacing_small">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="@dimen/icon_size_menu"
+                android:layout_height="@dimen/icon_size_menu"
+                android:src="@drawable/shared_ic_arrow_back"
+                android:contentDescription="@string/action_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/iron_man_gold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_post_shopping"
+                android:textColor="@color/iron_man_gold"
+                android:textSize="@dimen/text_size_body"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:paddingStart="@dimen/spacing_small"
+                android:paddingEnd="@dimen/spacing_small" />
+
+        </LinearLayout>
+
+        <!-- Camera preview -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/cameraPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="@string/hint_scan_receipt"
+                android:textColor="@color/iron_man_cyan"
+                android:textSize="@dimen/text_size_small"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:background="@color/overlay_dim"
+                android:padding="@dimen/spacing_small" />
+
+            <ImageButton
+                android:id="@+id/btnCapture"
+                android:layout_width="@dimen/postshopping_capture_button_size"
+                android:layout_height="@dimen/postshopping_capture_button_size"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:background="@drawable/postshopping_bg_capture_button"
+                android:src="@drawable/shared_ic_camera"
+                android:contentDescription="@string/cd_capture_receipt"
+                android:padding="@dimen/spacing_medium" />
+
+            <!-- Processing overlay: covers just the viewfinder, shown from the
+                 moment capture starts until the parsed result is ready. -->
+            <FrameLayout
+                android:id="@+id/processingOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/overlay_scrim_strong"
+                android:visibility="gone"
+                android:clickable="true"
+                android:focusable="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminateTint="@color/iron_man_gold" />
+
+                    <TextView
+                        android:id="@+id/tvProcessingStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:textColor="@color/iron_man_gold"
+                        android:textSize="@dimen/text_size_body"
+                        android:fontFamily="monospace"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/tvAiBadgeProcessing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:background="@drawable/postshopping_bg_ai_badge"
+                        android:paddingStart="@dimen/spacing_small"
+                        android:paddingEnd="@dimen/spacing_small"
+                        android:paddingTop="@dimen/spacing_extra_small"
+                        android:paddingBottom="@dimen/spacing_extra_small"
+                        android:text="@string/label_ai_badge"
+                        android:textColor="@color/iron_man_cyan"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_small"
+                        android:fontFamily="monospace"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <!-- Parsed receipt panel -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/bg_dialog"
+            android:padding="@dimen/spacing_medium">
+
+            <TextView
+                android:id="@+id/tvShopName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_default_shop_name"
+                android:textColor="@color/iron_man_gold"
+                android:textSize="@dimen/text_size_title"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/iron_man_cyan"
+                android:textSize="@dimen/text_size_small"
+                android:fontFamily="monospace"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvSourceBadge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/neutral_grey_400"
+                android:textSize="@dimen/text_size_small"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:visibility="gone"
+                android:paddingBottom="@dimen/spacing_small" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvReceiptItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvNoItemsDetected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/msg_no_items_detected"
+                        android:textColor="@color/iron_man_cyan"
+                        android:textSize="@dimen/text_size_small"
+                        android:fontFamily="monospace" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/iron_man_gold"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small" />
+
+            <LinearLayout
+                android:id="@+id/rowSubtotalZeroRated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_subtotal_zero_rated"
+                    android:textColor="@color/neutral_grey_400"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+                <TextView
+                    android:id="@+id/tvSubtotalZeroRated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/neutral_grey_400"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rowSubtotalStandardRated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_subtotal_standard_rated"
+                    android:textColor="@color/neutral_grey_400"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+                <TextView
+                    android:id="@+id/tvSubtotalStandardRated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/neutral_grey_400"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_subtotal"
+                    android:textColor="@color/iron_man_cyan"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+                <TextView
+                    android:id="@+id/tvSubtotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/iron_man_cyan"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_tax"
+                    android:textColor="@color/iron_man_cyan"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+                <TextView
+                    android:id="@+id/tvTax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/iron_man_cyan"
+                    android:textSize="@dimen/text_size_small"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/spacing_extra_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_total"
+                    android:textColor="@color/iron_man_gold"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_body"
+                    android:fontFamily="monospace" />
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/iron_man_gold"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_body"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+</LinearLayout>

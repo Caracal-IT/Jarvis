@@ -32,7 +32,7 @@ The Home Page must provide a fast, clear, and reliable command center for the us
    - Shopping
    - System
    - Network
-   - Armor  
+   - Post-Shopping  
 [X] Each action must have a clear label and icon.
 
 ### Navigation

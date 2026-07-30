@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Circular shutter button background for the receipt capture control -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/iron_man_gold" />
+    <stroke
+        android:width="2dp"
+        android:color="@color/iron_man_gold_dark" />
+</shape>

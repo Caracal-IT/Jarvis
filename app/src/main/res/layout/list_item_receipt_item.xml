@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/spacing_extra_small"
+    android:paddingBottom="@dimen/spacing_extra_small">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvReceiptItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/iron_man_cyan"
+            android:textSize="@dimen/text_size_small"
+            android:fontFamily="monospace" />
+
+        <TextView
+            android:id="@+id/tvReceiptItemQtyPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/neutral_grey_400"
+            android:textSize="@dimen/text_size_small"
+            android:fontFamily="monospace"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvReceiptItemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/iron_man_gold"
+        android:textSize="@dimen/text_size_small"
+        android:fontFamily="monospace"
+        android:paddingStart="@dimen/spacing_small"
+        android:paddingEnd="0dp" />
+
+</LinearLayout>

@@ -16,7 +16,9 @@
       "Bash(cd \"/tmp\")",
       "Bash(rm *)",
       "Bash(unzip *)",
-      "Bash(cd /tmp/hmq)"
+      "Bash(cd /tmp/hmq)",
+      "Bash(javap *)",
+      "Bash(cd /tmp/genai_inspect)"
     ]
   }
 }
