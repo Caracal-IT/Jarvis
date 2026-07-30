@@ -83,6 +83,156 @@ class ReceiptParserTest {
     }
 
     @Test
+    fun `parse keeps the pending item name when a size column shares the quantity's line`() {
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            AQUARTZ M/WATER
+            5LT      2 @ 32.99           65.98 A
+            """.trimIndent()
+        )
+
+        assertEquals(
+            listOf(ReceiptItem("AQUARTZ M/WATER", 65.98, quantity = 2.0, unitPrice = 32.99)),
+            receipt.items
+        )
+    }
+
+    @Test
+    fun `parse reads name, quantity and price off a single merged item line`() {
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            AQUARTZ M/WATER    5LT    2 @ 32.99      65.98 A
+            """.trimIndent()
+        )
+
+        assertEquals(
+            listOf(ReceiptItem("AQUARTZ M/WATER", 65.98, quantity = 2.0, unitPrice = 32.99)),
+            receipt.items
+        )
+    }
+
+    @Test
+    fun `parse ignores amounts printed below the total, even beside footer text`() {
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            JACOBS KRONUNG        230GR      124.99 A
+            TOTAL     FOR 7 ITEMS            409.04
+            ROUNDED TOTAL                    409.00
+            THANK YOU FOR SHOPPING AT        372.05 A
+            Sign up for SPAR REWARDS at       36.99 *
+            """.trimIndent()
+        )
+
+        assertEquals(listOf(ReceiptItem("JACOBS KRONUNG", 124.99)), receipt.items)
+        assertEquals(409.00, receipt.total)
+    }
+
+    @Test
+    fun `parse reads tax off the vat table rather than the table's own heading`() {
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            TOTAL     FOR 7 ITEMS            409.04
+            -------- TAX INVOICE --------
+            VAT rate    excl.     TAX      incl.
+            0.00%       36.99     0.00     36.99 *
+            15.00%     323.52    48.53    372.05 A
+            """.trimIndent()
+        )
+
+        assertTrue(receipt.items.isEmpty())
+        assertEquals(48.53, receipt.tax)
+        assertEquals(36.99, receipt.subtotalZeroRated)
+        assertEquals(323.52, receipt.subtotalStandardRated)
+        assertEquals(360.51, receipt.subtotal)
+    }
+
+    @Test
+    fun `parse keeps the pending item name when an amount column drifts in front of the price`() {
+        // The photo is skewed, so the unit price of the row above lands on this row.
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            AQUARTZ M/WATER    5LT
+            32.99                 65.98 A
+            """.trimIndent()
+        )
+
+        assertEquals(listOf(ReceiptItem("AQUARTZ M/WATER", 65.98)), receipt.items)
+    }
+
+    @Test
+    fun `parse reads a price whose VAT class OCR returned as a lookalike letter`() {
+        // "А" here is Cyrillic (U+0410), which is what OCR returns for this slip's VAT class.
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            JACOBS KRONUNG        230GR      124.99 А
+            """.trimIndent()
+        )
+
+        assertEquals(listOf(ReceiptItem("JACOBS KRONUNG", 124.99)), receipt.items)
+    }
+
+    @Test
+    fun `parse recognizes a total whose keyword OCR misread with digits`() {
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            JACOBS KRONUNG        230GR      124.99 A
+            T0TAL     FOR 7 ITEMS            409.04
+            """.trimIndent()
+        )
+
+        assertEquals(listOf(ReceiptItem("JACOBS KRONUNG", 124.99)), receipt.items)
+        assertEquals(409.04, receipt.total)
+    }
+
+    @Test
+    fun `parse does not read the header's VAT registration number as a tax label`() {
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            TEL: 046 622 4737
+            VAT: 4500296092
+            AQUARTZ M/WATER    5LT    2 @ 32.99      65.98 A
+            JACOBS KRONUNG     230GR                124.99 A
+            """.trimIndent()
+        )
+
+        assertEquals(
+            listOf(
+                ReceiptItem("AQUARTZ M/WATER", 65.98, quantity = 2.0, unitPrice = 32.99),
+                ReceiptItem("JACOBS KRONUNG", 124.99)
+            ),
+            receipt.items
+        )
+        assertNull(receipt.tax)
+    }
+
+    @Test
+    fun `parse does not mistake a percentage-priced item for a vat table row`() {
+        val receipt = ReceiptParser.parse(
+            """
+            SPAR OAK COTTAGE
+            10% OFF COFFEE                    12.50
+            JACOBS KRONUNG        230GR      124.99 A
+            """.trimIndent()
+        )
+
+        assertEquals(
+            listOf(
+                ReceiptItem("10% OFF COFFEE", 12.50),
+                ReceiptItem("JACOBS KRONUNG", 124.99)
+            ),
+            receipt.items
+        )
+    }
+
+    @Test
     fun `parse keeps single-line name and price items working`() {
         val receipt = ReceiptParser.parse(
             """

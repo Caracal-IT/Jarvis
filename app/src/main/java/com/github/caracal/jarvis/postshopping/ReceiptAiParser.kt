@@ -78,7 +78,11 @@ class ReceiptAiParser(context: Context) {
         item exactly as abbreviated on the receipt, together with its
         quantity, unit price and line total price. Also extract the
         subtotal for each VAT/tax rate present (0% and 15%), the overall
-        subtotal, the total tax amount and the final total. Format the date
+        subtotal, the total tax amount and the final total. Nothing printed
+        below the total is a purchased item - payment, change, rounding, the
+        VAT summary table and the footer must all stay out of "items". The
+        total tax is the sum of the VAT table's TAX column, never a
+        VAT-inclusive amount. Format the date
         as ISO-8601 (yyyy-MM-dd). If no date is printed on the receipt, use
         null. If a line item's quantity or unit price cannot be determined,
         use null for that field only - never drop the item. Respond with
