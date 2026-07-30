@@ -24,6 +24,8 @@ import com.github.caracal.jarvis.postshopping.ReceiptAiParser
 import com.github.caracal.jarvis.postshopping.ReceiptData
 import com.github.caracal.jarvis.postshopping.ReceiptItemAdapter
 import com.github.caracal.jarvis.postshopping.ReceiptParser
+import com.github.caracal.jarvis.postshopping.ReceiptRowReconstructor
+import com.github.caracal.jarvis.postshopping.PositionedLine
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
@@ -180,15 +182,19 @@ class PostShoppingActivity : AppCompatActivity() {
     /**
      * ML Kit's [Text.text] concatenates text blocks in detection order, which
      * for a tilted or multi-column photo does not reliably match top-to-bottom
-     * reading order. Re-sorting every line by its bounding box's vertical
-     * position reconstructs the receipt's actual line order, which
-     * [ReceiptParser] relies on to pair an item's name with its price.
+     * reading order, and a receipt's wide gap between the description and
+     * price columns can make ML Kit report them as separate lines despite
+     * sharing one printed row. [ReceiptRowReconstructor] rebuilds each
+     * physical row from bounding-box geometry so [ReceiptParser] sees the
+     * receipt the way a single-column printout would have produced it.
      */
     private fun readingOrderText(visionText: Text): String =
-        visionText.textBlocks
-            .flatMap { it.lines }
-            .sortedBy { it.boundingBox?.top ?: 0 }
-            .joinToString("\n") { it.text }
+        ReceiptRowReconstructor.reconstruct(
+            visionText.textBlocks.flatMap { it.lines }.mapNotNull { line ->
+                val box = line.boundingBox ?: return@mapNotNull null
+                PositionedLine(top = box.top, bottom = box.bottom, left = box.left, text = line.text)
+            }
+        )
 
     private fun onTextRecognized(visionText: Text) {
         val recognizedText = readingOrderText(visionText)
@@ -196,9 +202,11 @@ class PostShoppingActivity : AppCompatActivity() {
             finishScan(receipt = null)
             return
         }
+        android.util.Log.d(TAG, "Recognized text (reading order):\n$recognizedText")
 
         updateProcessingStatus(getString(R.string.status_reading_text))
         val heuristicReceipt = ReceiptParser.parse(recognizedText)
+        android.util.Log.d(TAG, "Heuristic parse items: ${heuristicReceipt.items}")
 
         if (receiptAiParser.isAvailable()) {
             updateProcessingStatus(getString(R.string.status_ai_processing), showAiBadge = true)
