@@ -2,13 +2,17 @@ package com.github.caracal.jarvis.shopping.sync
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.util.Log
 import com.github.caracal.jarvis.shopping.data.ShoppingSyncPublisher
 import com.hivemq.client.mqtt.MqttClient
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient
+import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 import java.util.UUID
+import java.util.zip.GZIPOutputStream
 
 /**
  * Syncs the Shopping List across devices over a HiveMQ Cloud MQTT broker.
@@ -108,6 +112,60 @@ class ShoppingMqttSyncClient(
             }
     }
 
+    /**
+     * Publishes [json] as-is (no compression) as a one-off event to the receipt-data topic
+     * (separate from and not retained like [TOPIC]). Invokes [onResult] on the main thread with
+     * whether the publish succeeded.
+     */
+    fun publishReceiptData(json: String, onResult: (Boolean) -> Unit) {
+        publishPayload(RECEIPT_DATA_TOPIC, json.toByteArray(StandardCharsets.UTF_8), "receipt data", onResult)
+    }
+
+    /**
+     * Gzip-compresses and Base64-encodes [jpegBytes], wraps it in a `{encoding, data}` JSON
+     * envelope (see [buildCompressedEnvelope]), then publishes it as a one-off event to the
+     * receipt-photo topic (separate from and not retained like [TOPIC]). Invokes [onResult] on the
+     * main thread with whether the publish succeeded.
+     */
+    fun publishReceiptPhoto(jpegBytes: ByteArray, onResult: (Boolean) -> Unit) {
+        val envelope = buildCompressedEnvelope(jpegBytes).toByteArray(StandardCharsets.UTF_8)
+        publishPayload(RECEIPT_PHOTO_TOPIC, envelope, "receipt photo", onResult)
+    }
+
+    private fun publishPayload(topic: String, payload: ByteArray, label: String, onResult: (Boolean) -> Unit) {
+        if (!client.state.isConnected) {
+            Log.w(TAG, "Skipping $label publish; not connected to MQTT broker.")
+            mainHandler.post { onResult(false) }
+            return
+        }
+        client.publishWith()
+            .topic(topic)
+            .qos(MqttQos.AT_LEAST_ONCE)
+            .payload(payload)
+            .send()
+            .whenComplete { result, throwable ->
+                val nackError = result?.error?.orElse(null)
+                when {
+                    throwable != null -> Log.e(TAG, "Failed to publish $label.", throwable)
+                    nackError != null -> Log.e(TAG, "$label publish was rejected by the broker.", nackError)
+                    else -> Log.i(TAG, "Published $label (${payload.size} bytes).")
+                }
+                mainHandler.post { onResult(throwable == null && nackError == null) }
+            }
+    }
+
+    /** Gzip-compresses [bytes], Base64-encodes the result, and wraps it as `{"encoding", "data"}` JSON. */
+    private fun buildCompressedEnvelope(bytes: ByteArray): String {
+        val compressed = ByteArrayOutputStream().apply {
+            GZIPOutputStream(this).use { it.write(bytes) }
+        }.toByteArray()
+        val base64Data = Base64.encodeToString(compressed, Base64.NO_WRAP)
+        return JSONObject()
+            .put("encoding", "gzip+base64")
+            .put("data", base64Data)
+            .toString()
+    }
+
     private fun subscribe() {
         client.subscribeWith()
             .topicFilter(TOPIC)
@@ -133,5 +191,7 @@ class ShoppingMqttSyncClient(
     companion object {
         private const val TAG = "ShoppingMqttSyncClient"
         private const val TOPIC = "jarvis/shopping-list/v1/state"
+        private const val RECEIPT_DATA_TOPIC = "jarvis/shopping-list/v1/receipt-data"
+        private const val RECEIPT_PHOTO_TOPIC = "jarvis/shopping-list/v1/receipt-photo"
     }
 }

@@ -81,4 +81,32 @@ class JarvisApplication : Application() {
         shoppingSyncClient = client
         if (isForeground) client.connect()
     }
+
+    /**
+     * Publishes the given receipt-data JSON to cloud sync's receipt-data topic via the active
+     * [shoppingSyncClient], if cloud sync is enabled and connected. Invokes [onResult] with
+     * `false` immediately, without attempting a publish, when no client is active.
+     */
+    fun publishReceiptData(json: String, onResult: (Boolean) -> Unit) {
+        val client = shoppingSyncClient
+        if (client == null) {
+            onResult(false)
+            return
+        }
+        client.publishReceiptData(json, onResult)
+    }
+
+    /**
+     * Publishes the given receipt-photo JPEG bytes to cloud sync's receipt-photo topic via the
+     * active [shoppingSyncClient], if cloud sync is enabled and connected. Invokes [onResult] with
+     * `false` immediately, without attempting a publish, when no client is active.
+     */
+    fun publishReceiptPhoto(jpegBytes: ByteArray, onResult: (Boolean) -> Unit) {
+        val client = shoppingSyncClient
+        if (client == null) {
+            onResult(false)
+            return
+        }
+        client.publishReceiptPhoto(jpegBytes, onResult)
+    }
 }

@@ -24,6 +24,11 @@
     <string name="label_source_ai">Enhanced with local AI</string>
     <string name="label_source_basic">Basic scan (no local AI model)</string>
     <string name="msg_capture_failed">Couldn\'t capture the image. Try again.</string>
+    <string name="action_upload_receipt_data">Upload Data</string>
+    <string name="action_upload_receipt_photo">Upload Photo</string>
+    <string name="msg_receipt_data_uploaded">Receipt data uploaded.</string>
+    <string name="msg_receipt_photo_uploaded">Receipt photo uploaded.</string>
+    <string name="msg_receipt_upload_failed">Upload failed. Check your cloud sync connection.</string>
     <!-- System Settings -->
     <string name="title_cloud_sync">Shopping List Cloud Sync</string>
     <string name="label_enable_cloud_sync">Enable Cloud Sync</string>

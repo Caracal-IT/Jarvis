@@ -2,7 +2,13 @@ package com.github.caracal.jarvis
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageFormat
+import android.graphics.Matrix
+import android.graphics.Rect
+import android.graphics.YuvImage
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -26,10 +32,12 @@ import com.github.caracal.jarvis.postshopping.ReceiptItemAdapter
 import com.github.caracal.jarvis.postshopping.ReceiptParser
 import com.github.caracal.jarvis.postshopping.ReceiptRowReconstructor
 import com.github.caracal.jarvis.postshopping.PositionedLine
+import com.github.caracal.jarvis.postshopping.toJson
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import java.io.ByteArrayOutputStream
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -59,6 +67,20 @@ class PostShoppingActivity : AppCompatActivity() {
 
     /** True from the moment a capture is requested until a result (or failure) is shown. */
     private val isScanning = AtomicBoolean(false)
+
+    /** The most recently rendered scan result, used by the "Upload Data" button. */
+    private var lastReceipt: ReceiptData? = null
+
+    /**
+     * JPEG bytes of the frame the current [lastReceipt] was scanned from, used by the "Upload
+     * Photo" button. Written from [cameraExecutor] in [ReceiptTextAnalyzer.analyze] or
+     * [processDebugSampleReceipt]; read from the main thread only after [finishScan] has posted
+     * the corresponding result back via [runOnUiThread], which provides the necessary
+     * happens-before edge - so plain visibility here is safe without extra synchronization.
+     */
+    @Volatile
+    private var lastCapturedPhotoJpeg: ByteArray? = null
+
     private val receiptItemAdapter = ReceiptItemAdapter()
     private lateinit var receiptAiParser: ReceiptAiParser
     private val dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
@@ -88,6 +110,8 @@ class PostShoppingActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener { finish() }
         binding.btnCapture.setOnClickListener { onCaptureTapped() }
+        binding.btnUploadReceiptData.setOnClickListener { uploadReceiptData() }
+        binding.btnUploadReceiptPhoto.setOnClickListener { uploadReceiptPhoto() }
 
         binding.rvReceiptItems.layoutManager = LinearLayoutManager(this)
         binding.rvReceiptItems.adapter = receiptItemAdapter
@@ -158,7 +182,9 @@ class PostShoppingActivity : AppCompatActivity() {
     private fun processDebugSampleReceipt() {
         cameraExecutor?.execute {
             try {
-                val bitmap = assets.open(DEBUG_SAMPLE_RECEIPT_ASSET).use { BitmapFactory.decodeStream(it) }
+                val jpegBytes = assets.open(DEBUG_SAMPLE_RECEIPT_ASSET).use { it.readBytes() }
+                lastCapturedPhotoJpeg = jpegBytes
+                val bitmap = BitmapFactory.decodeByteArray(jpegBytes, 0, jpegBytes.size)
                 val image = InputImage.fromBitmap(bitmap, 0)
                 recognizer.process(image)
                     .addOnSuccessListener { visionText -> onTextRecognized(visionText) }
@@ -250,6 +276,10 @@ class PostShoppingActivity : AppCompatActivity() {
             if (usedAi) R.string.label_source_ai else R.string.label_source_basic
         )
 
+        lastReceipt = receipt
+        binding.rowUploadActions.visibility = View.VISIBLE
+        binding.btnUploadReceiptPhoto.isEnabled = lastCapturedPhotoJpeg != null
+
         receiptItemAdapter.submitList(receipt.items)
         binding.tvNoItemsDetected.visibility = if (receipt.items.isEmpty()) View.VISIBLE else View.GONE
 
@@ -274,6 +304,95 @@ class PostShoppingActivity : AppCompatActivity() {
 
     private fun formatAmount(amount: Double?): String =
         if (amount == null) "-" else String.format(Locale.getDefault(), "%.2f", amount)
+
+    /** Publishes [lastReceipt] as JSON to cloud sync's receipt-data topic. */
+    private fun uploadReceiptData() {
+        val receipt = lastReceipt ?: return
+        binding.btnUploadReceiptData.isEnabled = false
+        (application as JarvisApplication).publishReceiptData(receipt.toJson()) { success ->
+            binding.btnUploadReceiptData.isEnabled = true
+            Toast.makeText(
+                this,
+                if (success) R.string.msg_receipt_data_uploaded else R.string.msg_receipt_upload_failed,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    /** Publishes [lastCapturedPhotoJpeg] to cloud sync's receipt-photo topic. */
+    private fun uploadReceiptPhoto() {
+        val photo = lastCapturedPhotoJpeg ?: return
+        binding.btnUploadReceiptPhoto.isEnabled = false
+        (application as JarvisApplication).publishReceiptPhoto(photo) { success ->
+            binding.btnUploadReceiptPhoto.isEnabled = true
+            Toast.makeText(
+                this,
+                if (success) R.string.msg_receipt_photo_uploaded else R.string.msg_receipt_upload_failed,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    /** Encodes this analyzed frame as a JPEG, rotated to match [ImageProxy.getImageInfo] orientation. */
+    @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
+    private fun ImageProxy.toJpegBytes(): ByteArray? {
+        val mediaImage = image ?: return null
+        return try {
+            val nv21 = yuv420888ToNv21(mediaImage)
+            val yuvImage = YuvImage(nv21, ImageFormat.NV21, mediaImage.width, mediaImage.height, null)
+            val out = ByteArrayOutputStream()
+            yuvImage.compressToJpeg(Rect(0, 0, mediaImage.width, mediaImage.height), 90, out)
+            rotateJpeg(out.toByteArray(), imageInfo.rotationDegrees)
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Failed to encode captured frame as JPEG.", e)
+            null
+        }
+    }
+
+    /**
+     * Converts a [YUV_420_888][ImageFormat.YUV_420_888] [Image] to NV21, respecting each plane's
+     * row/pixel stride rather than assuming the semi-planar layout most (but not all) devices use.
+     */
+    private fun yuv420888ToNv21(image: Image): ByteArray {
+        val width = image.width
+        val height = image.height
+        val chromaWidth = (width + 1) / 2
+        val chromaHeight = (height + 1) / 2
+        val nv21 = ByteArray(width * height + 2 * chromaWidth * chromaHeight)
+
+        val yPlane = image.planes[0]
+        var pos = 0
+        for (row in 0 until height) {
+            val rowStart = row * yPlane.rowStride
+            for (col in 0 until width) {
+                nv21[pos++] = yPlane.buffer.get(rowStart + col * yPlane.pixelStride)
+            }
+        }
+
+        val uPlane = image.planes[1]
+        val vPlane = image.planes[2]
+        for (row in 0 until chromaHeight) {
+            val uRowStart = row * uPlane.rowStride
+            val vRowStart = row * vPlane.rowStride
+            for (col in 0 until chromaWidth) {
+                nv21[pos++] = vPlane.buffer.get(vRowStart + col * vPlane.pixelStride)
+                nv21[pos++] = uPlane.buffer.get(uRowStart + col * uPlane.pixelStride)
+            }
+        }
+        return nv21
+    }
+
+    private fun rotateJpeg(jpegBytes: ByteArray, rotationDegrees: Int): ByteArray {
+        if (rotationDegrees == 0) return jpegBytes
+        val bitmap = BitmapFactory.decodeByteArray(jpegBytes, 0, jpegBytes.size) ?: return jpegBytes
+        val matrix = Matrix().apply { postRotate(rotationDegrees.toFloat()) }
+        val rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        val out = ByteArrayOutputStream()
+        rotated.compress(Bitmap.CompressFormat.JPEG, 90, out)
+        bitmap.recycle()
+        if (rotated !== bitmap) rotated.recycle()
+        return out.toByteArray()
+    }
 
     private fun showProcessing(status: String) {
         runOnUiThread {
@@ -312,6 +431,8 @@ class PostShoppingActivity : AppCompatActivity() {
                 imageProxy.close()
                 return
             }
+
+            lastCapturedPhotoJpeg = imageProxy.toJpegBytes()
 
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             recognizer.process(image)
