@@ -10,4 +10,5 @@
    <include domain="sharedpref" path="."/>
    <exclude domain="sharedpref" path="device.xml"/>
 -->
+    <exclude domain="sharedpref" path="mqtt_sync_settings.xml" />
 </full-backup-content>
